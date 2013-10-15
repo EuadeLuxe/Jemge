@@ -30,11 +30,12 @@ import com.jemge.j2d.Renderer2D;
 public class JGame extends Game {
     @Override
     public void create() {
-        new Engine();
+        new Engine(this);
     }
 
     @Override
     public void render() {
+    	super.render();
         Jemge.engine.update();
         Jemge.renderer2D.render();
     }

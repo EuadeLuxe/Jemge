@@ -10,8 +10,7 @@ public class Demo extends JGame {
         
         config.setTitle("Settings");
         config.setGL(Version.GL_20);
-        config.loadSettings("C:/Users/KGROSS/Desktop/GitHub/Jemge/User.cfg"); // Must be in the binary folder
-        
+        config.loadSettings("User.cfg");
         new JApp(new Demo(), config);
     }
 }

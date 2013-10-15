@@ -1,8 +1,9 @@
 package com.jemge.core;
 import java.awt.Canvas;
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl.LwjglFiles;
 import com.badlogic.gdx.backends.lwjgl.LwjglGraphics;
 
 public class JApp extends LwjglApplication {
@@ -14,15 +15,15 @@ public class JApp extends LwjglApplication {
 		super(listener, useGL2, canvas);
 	}
 	
-	public JApp(ApplicationListener listener, LwjglApplicationConfiguration config) {
+	public JApp(ApplicationListener listener, JConfig config) {
 		super(listener, config);
 	}
 	
-	public JApp(ApplicationListener listener, LwjglApplicationConfiguration config, Canvas canvas) {
+	public JApp(ApplicationListener listener, JConfig config, Canvas canvas) {
 		super(listener, config, canvas);
 	}
 	
-	public JApp(ApplicationListener listener, LwjglApplicationConfiguration config, LwjglGraphics graphics) {
+	public JApp(ApplicationListener listener, JConfig config, LwjglGraphics graphics) {
 		super(listener, config, graphics);
 	}
 	
