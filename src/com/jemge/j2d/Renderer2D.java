@@ -100,9 +100,9 @@ public class Renderer2D implements Disposable {
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
-        cameraView.setCenter(camera.position.x,
+      /*  cameraView.setCenter(camera.position.x,
                 camera.position.y);
-
+*/
         spriteBatch.setProjectionMatrix(camera.combined);
         spriteBatch.begin();
 
