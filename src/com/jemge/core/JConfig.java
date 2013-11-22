@@ -71,7 +71,7 @@ public class JConfig extends LwjglApplicationConfiguration {
 						this.vSyncEnabled = (Integer.parseInt(values[1]) == 1);
 					break;
 					case "Render.VSync":
-						this.useCPUSynch = (Integer.parseInt(values[1]) == 1);
+						//this.useCPUSynch = (Integer.parseInt(values[1]) == 1);
 					break;
 					case "Render.FullscreenEnabled":
 						this.fullscreen = (Integer.parseInt(values[1]) == 1);

@@ -1,5 +1,5 @@
 package examples.HelloWorld;
-import com.jemge.core.JApp;
+import com.jemge.core.JAppLWJGL;
 import com.jemge.core.JConfig;
 import com.jemge.core.JGame;
 import com.jemge.core.JConfig.Version;
@@ -12,6 +12,6 @@ public class Demo extends JGame {
         config.setGL(Version.GL_20);
         config.setFullscreen();
         
-        new JApp(new Demo(), config);
+        new JAppLWJGL(new Demo(), config);
     }
 }

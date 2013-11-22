@@ -1,5 +1,5 @@
 package examples.Settings;
-import com.jemge.core.JApp;
+import com.jemge.core.JAppLWJGL;
 import com.jemge.core.JConfig;
 import com.jemge.core.JGame;
 import com.jemge.core.JConfig.Version;
@@ -11,6 +11,6 @@ public class Demo extends JGame {
         config.setTitle("Settings");
         config.setGL(Version.GL_20);
         config.loadSettings("User.cfg");
-        new JApp(new Demo(), config);
+        new JAppLWJGL(new Demo(), config);
     }
 }

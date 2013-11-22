@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.jemge.box2d.Physics2D;
 import com.jemge.box2d.PolygonObject;
-import com.jemge.core.JApp;
+import com.jemge.core.JAppLWJGL;
 import com.jemge.core.JConfig;
 import com.jemge.core.JConfig.Version;
 import com.jemge.core.JGame;
@@ -53,6 +53,6 @@ public class Box2dTest extends JGame {
         JConfig config = new JConfig();
         config.setGL(Version.GL_20);
         
-        new JApp(new Box2dTest(), config);   //finally create the lwjgl application.
+        new JAppLWJGL(new Box2dTest(), config);   //finally create the lwjgl application.
     }
 }

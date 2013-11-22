@@ -17,15 +17,13 @@
 package com.jemge.j2d;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 /**
  * The renderer class. The rendering is done automatically, you just have to add the objects.
@@ -40,7 +38,7 @@ public class Renderer2D implements Disposable {
 
     private static Renderer2D renderer2D;
 
-    private final List<RendererObject> renderTargets;
+    private final HashMap<Integer, Layer> renderTargets;
     private final SpriteBatch spriteBatch;
     private final OrthographicCamera camera;
 
@@ -58,24 +56,55 @@ public class Renderer2D implements Disposable {
     public Renderer2D() {
         renderer2D = this;
 
-        renderTargets = new ArrayList<RendererObject>();
+        renderTargets = new HashMap<Integer, Layer>();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         cameraView = new Rectangle(0, 0, camera.viewportWidth, camera.viewportHeight);
-
         spriteBatch = new SpriteBatch();
+
+        renderTargets.put(0, new Layer());
     }
 
     //Public
+
+    public Layer addLayer(Layer layer, int num){
+        renderTargets.put(num, layer);
+
+        return layer;
+    }
+
+    public void deleteLayer(int num){
+        renderTargets.remove(num);
+    }
+
+    /**
+     * Adds a new object to the renderer.
+     */
+
+    public RendererObject add(int layer, RendererObject rendererObject) {
+        renderTargets.get(layer).addObject(rendererObject);
+
+        return rendererObject;
+    }
+
+    /**
+     * Deletes an object from the renderer.
+     */
+
+
+    public void remove(int layer, RendererObject rendererObject) {
+        renderTargets.get(layer).deleteObject(rendererObject);
+
+    }
 
     /**
      * Adds a new object to the renderer.
      */
 
     public RendererObject add(RendererObject rendererObject) {
-        renderTargets.add(rendererObject);
+        renderTargets.get(0).addObject(rendererObject);
 
         return rendererObject;
     }
@@ -86,8 +115,7 @@ public class Renderer2D implements Disposable {
 
 
     public void remove(RendererObject rendererObject) {
-        renderTargets.remove(rendererObject);
-
+        renderTargets.get(0).deleteObject(rendererObject);
     }
 
     /**
@@ -96,34 +124,42 @@ public class Renderer2D implements Disposable {
 
     public void render() {
 
-        Gdx.gl20.glClearColor(0, 0, 0.2f, 1);
+        Gdx.gl20.glClearColor(0, 0, 0, 1);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
-      /*  cameraView.setCenter(camera.position.x,
+        cameraView.setCenter(camera.position.x,
                 camera.position.y);
-*/
+
         spriteBatch.setProjectionMatrix(camera.combined);
         spriteBatch.begin();
 
         renderMode = RenderMode.INACTIVE;
 
-        for (RendererObject rend : renderTargets) {
-            if(!rend.needRender()) continue;
+        for (Layer layer : renderTargets.values()) {
 
-            if (rend.hasTransparent() && !(renderMode == RenderMode.ENABLED)) {    //with blending
-                spriteBatch.enableBlending();
+            for (RendererObject rend : layer.getRendererObjects()) {
+                if (!rend.needRender()) continue;
 
-                renderMode = RenderMode.ENABLED;
-            } else if (!rend.hasTransparent() && !(renderMode == RenderMode.DISABLED)) {  //without blending
-                spriteBatch.disableBlending();
+                if (rend.hasTransparent() && !(renderMode == RenderMode.ENABLED)) {    //with blending
+                    spriteBatch.enableBlending();
 
-                renderMode = RenderMode.DISABLED;
+                    renderMode = RenderMode.ENABLED;
+                } else if (!rend.hasTransparent() && !(renderMode == RenderMode.DISABLED)) {  //without blending
+                    spriteBatch.disableBlending();
+
+                    renderMode = RenderMode.DISABLED;
+                }
+                rend.render(spriteBatch);
+
             }
-            rend.render(spriteBatch);
-
         }
         spriteBatch.end();
+    }
+
+    public void resize(int width, int height) {
+      //  camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
     }
 
     /**
@@ -134,8 +170,11 @@ public class Renderer2D implements Disposable {
     public void dispose() {
         spriteBatch.dispose();
 
-        for (RendererObject rend : renderTargets) {
-            rend.dispose();
+        for (Layer layer : renderTargets.values()) {
+            for (RendererObject rend : layer.getRendererObjects()) {
+                rend.dispose();
+
+            }
         }
     }
 
@@ -155,7 +194,7 @@ public class Renderer2D implements Disposable {
      * @return Returns an instance of the camera.
      */
 
-    public Camera getCamera() {
+    public OrthographicCamera getCamera() {
         return camera;
     }
 
