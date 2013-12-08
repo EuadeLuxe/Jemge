@@ -69,7 +69,7 @@ public class ZoneBasedCulling {
     }
 
     public boolean testCull(Entity entity){
-        return final_render_list.contains(entity) && entity.needRender();
+        return final_render_list.contains(entity);
     }
 
 }

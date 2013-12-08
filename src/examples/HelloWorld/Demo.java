@@ -1,8 +1,9 @@
 package examples.HelloWorld;
+
 import com.jemge.core.JAppLWJGL;
 import com.jemge.core.JConfig;
-import com.jemge.core.JGame;
 import com.jemge.core.JConfig.Version;
+import com.jemge.core.JGame;
 
 public class Demo extends JGame {
 	public static void main(String[] args){
