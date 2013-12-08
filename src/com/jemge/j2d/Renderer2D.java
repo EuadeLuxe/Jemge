@@ -22,6 +22,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
+import com.jemge.j2d.culling.ZoneBasedCulling;
 
 import java.util.HashMap;
 
@@ -38,15 +39,20 @@ public class Renderer2D implements Disposable {
 
     private static Renderer2D renderer2D;
 
-    private final HashMap<Integer, Layer> renderTargets;
+    public final HashMap<Integer, Layer> renderTargets;
+    private final HashMap<RendererObject, Entity> entityHashMap;
     private final SpriteBatch spriteBatch;
     private final OrthographicCamera camera;
+
+    public final ZoneBasedCulling culling;
+
 
     private RenderMode renderMode;
 
     //Protected
 
     protected final Rectangle cameraView;
+
 
     public enum RenderMode {
         INACTIVE, ENABLED, DISABLED
@@ -56,7 +62,8 @@ public class Renderer2D implements Disposable {
     public Renderer2D() {
         renderer2D = this;
 
-        renderTargets = new HashMap<Integer, Layer>();
+        renderTargets = new HashMap<>();
+        entityHashMap = new HashMap<>();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -65,6 +72,7 @@ public class Renderer2D implements Disposable {
         spriteBatch = new SpriteBatch();
 
         renderTargets.put(0, new Layer());
+        culling = new ZoneBasedCulling();
     }
 
     //Public
@@ -86,6 +94,11 @@ public class Renderer2D implements Disposable {
     public RendererObject add(int layer, RendererObject rendererObject) {
         renderTargets.get(layer).addObject(rendererObject);
 
+        if(rendererObject instanceof Entity){
+            entityHashMap.put(rendererObject, (Entity) rendererObject);
+            culling.putObject((Entity) rendererObject);
+        }
+
         return rendererObject;
     }
 
@@ -105,6 +118,11 @@ public class Renderer2D implements Disposable {
 
     public RendererObject add(RendererObject rendererObject) {
         renderTargets.get(0).addObject(rendererObject);
+
+        if(rendererObject instanceof Entity){
+            entityHashMap.put(rendererObject, (Entity) rendererObject);
+            culling.putObject((Entity) rendererObject);
+        }
 
         return rendererObject;
     }
@@ -131,15 +149,20 @@ public class Renderer2D implements Disposable {
         cameraView.setCenter(camera.position.x,
                 camera.position.y);
 
+        culling.cull(cameraView);
+
         spriteBatch.setProjectionMatrix(camera.combined);
         spriteBatch.begin();
 
         renderMode = RenderMode.INACTIVE;
 
+
         for (Layer layer : renderTargets.values()) {
 
             for (RendererObject rend : layer.getRendererObjects()) {
-                if (!rend.needRender()) continue;
+                if(rend instanceof Entity){
+                    if(!culling.testCull((Entity) rend)) continue;
+                }
 
                 if (rend.hasTransparent() && !(renderMode == RenderMode.ENABLED)) {    //with blending
                     spriteBatch.enableBlending();
@@ -155,11 +178,6 @@ public class Renderer2D implements Disposable {
             }
         }
         spriteBatch.end();
-    }
-
-    public void resize(int width, int height) {
-      //  camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
     }
 
     /**

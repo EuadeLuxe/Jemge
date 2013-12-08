@@ -33,6 +33,4 @@ public interface RendererObject {
 
     public void dispose();
 
-    boolean needRender();
-
 }

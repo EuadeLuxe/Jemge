@@ -31,7 +31,7 @@ import com.jemge.core.Jemge;
  * @see RendererObject
  */
 
-public class JSprite extends Sprite implements RendererObject {
+public class JSprite extends Sprite implements RendererObject, Entity{
 
     //for static jsprite's
     private boolean isStatic = false;
@@ -103,6 +103,34 @@ public class JSprite extends Sprite implements RendererObject {
 
         //Inside the camera view?
         return Jemge.renderer2D.cameraView.overlaps(getBoundingRectangle());
+    }
+
+    public boolean contains(Rectangle rectangle) {
+        if (isStatic) {
+            return cachedBound.overlaps(rectangle);
+        }
+
+        //Inside the camera view?
+        return getBoundingRectangle().overlaps(rectangle);
+    }
+
+    @Override
+    public boolean getData(String name) {
+        if(name.equalsIgnoreCase("static")){
+            return isStatic;
+        }
+
+        return false;
+    }
+
+    @Override
+    public Rectangle getRectangle() {
+        if (isStatic) {
+            return cachedBound;
+        }
+
+        //Inside the camera view?
+        return getBoundingRectangle();
     }
 
     public JSprite setStatic(boolean set) {
