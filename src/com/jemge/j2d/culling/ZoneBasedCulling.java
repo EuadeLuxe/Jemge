@@ -36,6 +36,14 @@ public class ZoneBasedCulling {
         }
     }
 
+    public void removeObject(Entity object){
+        if (!object.getData("static")) {
+            dynamic_objects.remove(object);
+        }else{
+            zone_map.get(existZone(object)).remove(object);
+        }
+    }
+
     private CullingZone existZone(Entity object) {
         for(CullingZone zone : zone_map.keySet()){
             if(zone.overlaps(object.getRectangle())){

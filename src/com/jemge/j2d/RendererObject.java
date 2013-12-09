@@ -32,5 +32,4 @@ public interface RendererObject {
     public void render(SpriteBatch spriteBatch);
 
     public void dispose();
-
 }

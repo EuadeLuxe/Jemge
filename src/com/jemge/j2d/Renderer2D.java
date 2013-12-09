@@ -92,6 +92,9 @@ public class Renderer2D implements Disposable {
      */
 
     public RendererObject add(int layer, RendererObject rendererObject) {
+        if(!renderTargets.keySet().contains(layer)){
+            renderTargets.put(layer, new Layer());
+        }
         renderTargets.get(layer).addObject(rendererObject);
 
         if(rendererObject instanceof Entity){
@@ -110,6 +113,9 @@ public class Renderer2D implements Disposable {
     public void remove(int layer, RendererObject rendererObject) {
         renderTargets.get(layer).deleteObject(rendererObject);
 
+        if(rendererObject instanceof Entity){
+            culling.removeObject((Entity) rendererObject);
+        }
     }
 
     /**
@@ -134,6 +140,9 @@ public class Renderer2D implements Disposable {
 
     public void remove(RendererObject rendererObject) {
         renderTargets.get(0).deleteObject(rendererObject);
+        if(rendererObject instanceof Entity){
+            culling.removeObject((Entity) rendererObject);
+        }
     }
 
     /**
