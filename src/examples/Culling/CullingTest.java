@@ -25,8 +25,8 @@ public class CullingTest extends JGame {
         texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
         logger = new FPSLogger();
 
-        for(int x = 0; x < 100; x++){
-            for(int y = 0; y < 100; y++){
+        for(int x = 0; x < 250; x++){
+            for(int y = 0; y < 250; y++){
                 Renderer2D.getRenderer2D().add(new JSprite(texture, x * 64, y * 64, 64, 64).setStatic(true));
 
             }
@@ -39,7 +39,7 @@ public class CullingTest extends JGame {
     public void render() {
         super.render();  //never forget to call "super.render"!
 
-        getCamera().position.add(1f, 0f, 0);
+        getCamera().position.add(5f, 0f, 0);
 
         logger.log();
     }

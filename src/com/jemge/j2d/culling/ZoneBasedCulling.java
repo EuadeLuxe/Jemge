@@ -8,11 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ZoneBasedCulling {
+    public static final float ZONE_SIZE = 4096;
     private final HashMap<CullingZone, ArrayList<Entity>> zone_map;
-    private final List<Entity> dynamic_objects;
-    private final List<Entity> final_render_list;
-
-    public static final float ZONE_SIZE = 2048;
+    private final ArrayList<Entity> dynamic_objects;
+    private final ArrayList<Entity> final_render_list;
 
     public ZoneBasedCulling() {
         zone_map = new HashMap<>();

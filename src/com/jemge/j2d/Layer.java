@@ -8,7 +8,7 @@ public class Layer {
     private final List<RendererObject> rendererObjects;
 
     public Layer() {
-        rendererObjects = new ArrayList<RendererObject>(1);
+        rendererObjects = new ArrayList<>(1);
     }
 
     public RendererObject addObject(RendererObject rend) {

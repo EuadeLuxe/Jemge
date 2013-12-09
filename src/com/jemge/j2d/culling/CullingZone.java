@@ -6,15 +6,8 @@ import com.jemge.j2d.Entity;
 import java.util.ArrayList;
 
 public class CullingZone extends Rectangle {
-    public CullingZone() {
-    }
-
     public CullingZone(float x, float y, float width, float height) {
         super(x, y, width, height);
-    }
-
-    public CullingZone(CullingZone rect) {
-        super(rect);
     }
 
     public ArrayList<Entity> getCullingList(ZoneBasedCulling culling){

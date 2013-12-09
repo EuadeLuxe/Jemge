@@ -66,7 +66,7 @@ public class JSprite extends Sprite implements RendererObject, Entity{
     }
 
     /**
-     * @return Is this jsprite transparent?
+     * @return Is this jsprite transparent? Override.
      */
 
     @Override
@@ -105,22 +105,9 @@ public class JSprite extends Sprite implements RendererObject, Entity{
         return Jemge.renderer2D.cameraView.overlaps(getBoundingRectangle());
     }
 
-    public boolean contains(Rectangle rectangle) {
-        if (isStatic) {
-            return cachedBound.overlaps(rectangle);
-        }
-
-        //Inside the camera view?
-        return getBoundingRectangle().overlaps(rectangle);
-    }
-
     @Override
     public boolean getData(String name) {
-        if(name.equalsIgnoreCase("static")){
-            return isStatic;
-        }
-
-        return false;
+        return name.equalsIgnoreCase("static") && isStatic;
     }
 
     @Override
@@ -129,7 +116,6 @@ public class JSprite extends Sprite implements RendererObject, Entity{
             return cachedBound;
         }
 
-        //Inside the camera view?
         return getBoundingRectangle();
     }
 
