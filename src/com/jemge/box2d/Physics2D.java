@@ -1,14 +1,10 @@
 package com.jemge.box2d;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.jemge.core.EngineModule;
-import com.jemge.j2d.JSprite;
 
 import java.util.HashMap;
-import java.util.Iterator;
 
 
 public class Physics2D implements EngineModule{
@@ -21,7 +17,7 @@ public class Physics2D implements EngineModule{
 
     @Override
     public void init() {
-        worlds = new HashMap();
+        worlds = new HashMap(1);
         worlds.put("main", new World(new Vector2(0, -15f), true));
     }
 

@@ -1,10 +1,10 @@
 package com.jemge.core;
-import java.awt.Canvas;
+
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglFiles;
 import com.badlogic.gdx.backends.lwjgl.LwjglGraphics;
+
+import java.awt.*;
 
 public class JAppLWJGL extends LwjglApplication {
 	public JAppLWJGL(ApplicationListener listener) {

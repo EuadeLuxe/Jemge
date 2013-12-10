@@ -9,9 +9,9 @@ public class JConfig extends LwjglApplicationConfiguration {
 	
 	public enum Version {
 		GL_20
-	};
-	
-	public JConfig() {
+	}
+
+    public JConfig() {
 		this.title = "JEMGEngine";
 	}
 	

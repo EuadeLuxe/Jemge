@@ -31,7 +31,7 @@ import com.jemge.core.Jemge;
  * @see RendererObject
  */
 
-public class JSprite extends Sprite implements RendererObject {
+public class JSprite extends Sprite implements RendererObject, Entity{
 
     //for static jsprite's
     private boolean isStatic = false;
@@ -66,7 +66,7 @@ public class JSprite extends Sprite implements RendererObject {
     }
 
     /**
-     * @return Is this jsprite transparent?
+     * @return Is this jsprite transparent? Override.
      */
 
     @Override
@@ -103,6 +103,20 @@ public class JSprite extends Sprite implements RendererObject {
 
         //Inside the camera view?
         return Jemge.renderer2D.cameraView.overlaps(getBoundingRectangle());
+    }
+
+    @Override
+    public boolean getData(String name) {
+        return name.equalsIgnoreCase("static") && isStatic;
+    }
+
+    @Override
+    public Rectangle getRectangle() {
+        if (isStatic) {
+            return cachedBound;
+        }
+
+        return getBoundingRectangle();
     }
 
     public JSprite setStatic(boolean set) {
