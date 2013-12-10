@@ -22,6 +22,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
+import com.jemge.input.InputListener;
+import com.jemge.input.InputManager;
 import com.jemge.j2d.culling.ZoneBasedCulling;
 
 import java.util.HashMap;
@@ -44,7 +46,8 @@ public class Renderer2D implements Disposable {
     private final SpriteBatch spriteBatch;
     private final OrthographicCamera camera;
 
-    public final ZoneBasedCulling culling;
+    private final ZoneBasedCulling culling;
+    private final InputManager inputManager;
 
 
     private RenderMode renderMode;
@@ -72,18 +75,20 @@ public class Renderer2D implements Disposable {
         spriteBatch = new SpriteBatch();
 
         renderTargets.put(0, new Layer());
+
         culling = new ZoneBasedCulling();
+        inputManager = new InputManager();
     }
 
     //Public
 
-    public Layer addLayer(Layer layer, int num){
+    public Layer addLayer(Layer layer, int num) {
         renderTargets.put(num, layer);
 
         return layer;
     }
 
-    public void deleteLayer(int num){
+    public void deleteLayer(int num) {
         renderTargets.remove(num);
     }
 
@@ -92,14 +97,17 @@ public class Renderer2D implements Disposable {
      */
 
     public RendererObject add(int layer, RendererObject rendererObject) {
-        if(!renderTargets.keySet().contains(layer)){
+        if (!renderTargets.keySet().contains(layer)) {
             renderTargets.put(layer, new Layer());
         }
         renderTargets.get(layer).addObject(rendererObject);
 
-        if(rendererObject instanceof Entity){
+        if (rendererObject instanceof Entity) {
             entityHashMap.put(rendererObject, (Entity) rendererObject);
             culling.putObject((Entity) rendererObject);
+        }
+        if (rendererObject instanceof InputListener) {
+            inputManager.addListener((InputListener) rendererObject);
         }
 
         return rendererObject;
@@ -113,8 +121,12 @@ public class Renderer2D implements Disposable {
     public void remove(int layer, RendererObject rendererObject) {
         renderTargets.get(layer).deleteObject(rendererObject);
 
-        if(rendererObject instanceof Entity){
+        if (rendererObject instanceof Entity) {
             culling.removeObject((Entity) rendererObject);
+        }
+
+        if (rendererObject instanceof InputListener) {
+            inputManager.removeListener((InputListener) rendererObject);
         }
     }
 
@@ -125,9 +137,13 @@ public class Renderer2D implements Disposable {
     public RendererObject add(RendererObject rendererObject) {
         renderTargets.get(0).addObject(rendererObject);
 
-        if(rendererObject instanceof Entity){
+        if (rendererObject instanceof Entity) {
             entityHashMap.put(rendererObject, (Entity) rendererObject);
             culling.putObject((Entity) rendererObject);
+        }
+
+        if (rendererObject instanceof InputListener) {
+            inputManager.addListener((InputListener) rendererObject);
         }
 
         return rendererObject;
@@ -140,8 +156,12 @@ public class Renderer2D implements Disposable {
 
     public void remove(RendererObject rendererObject) {
         renderTargets.get(0).deleteObject(rendererObject);
-        if(rendererObject instanceof Entity){
+        if (rendererObject instanceof Entity) {
             culling.removeObject((Entity) rendererObject);
+        }
+
+        if (rendererObject instanceof InputListener) {
+            inputManager.removeListener((InputListener) rendererObject);
         }
     }
 
@@ -159,6 +179,7 @@ public class Renderer2D implements Disposable {
                 camera.position.y);
 
         culling.cull(cameraView);
+        inputManager.testAll();
 
         spriteBatch.setProjectionMatrix(camera.combined);
         spriteBatch.begin();
@@ -169,8 +190,8 @@ public class Renderer2D implements Disposable {
         for (Layer layer : renderTargets.values()) {
 
             for (RendererObject rend : layer.getRendererObjects()) {
-                if(rend instanceof Entity){
-                    if(!culling.testCull((Entity) rend)) continue;
+                if (rend instanceof Entity) {
+                    if (!culling.testCull((Entity) rend)) continue;
                 }
 
                 if (rend.hasTransparent() && !(renderMode == RenderMode.ENABLED)) {    //with blending

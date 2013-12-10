@@ -18,6 +18,8 @@ public class ZoneBasedCulling {
         final_render_list = new ArrayList<>(256);
         dynamic_objects = new ArrayList<>(32);
 
+
+
     }
 
     public void putObject(Entity object) {
