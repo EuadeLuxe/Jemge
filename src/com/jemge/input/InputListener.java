@@ -14,30 +14,12 @@
  *  limitations under the License.
  */
 
-package com.jemge.j2d;
+package com.jemge.input;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.badlogic.gdx.math.Rectangle;
 
-public class Layer {
+public interface InputListener {
 
-    private final List<RendererObject> rendererObjects;
-
-    public Layer() {
-        rendererObjects = new ArrayList<>(1);
-    }
-
-    public RendererObject addObject(RendererObject rend) {
-        rendererObjects.add(rend);
-
-        return rend;
-    }
-
-    public void deleteObject(RendererObject rend) {
-        rendererObjects.remove(rend);
-    }
-
-    public List<RendererObject> getRendererObjects() {
-        return rendererObjects;
-    }
+    public void clicked();
+    public Rectangle getRectangle();
 }
