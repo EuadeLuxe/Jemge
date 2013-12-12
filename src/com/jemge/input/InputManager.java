@@ -50,7 +50,7 @@ public class InputManager {
         }
     }
 
-    protected Vector2 getPositionByCam(){
+    public static Vector2 getPositionByCam(){
         final Vector3 input_position = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         final Vector2 position_by_cam = new Vector2();
         Jemge.renderer2D.getCamera().unproject(input_position);
