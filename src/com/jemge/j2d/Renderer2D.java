@@ -17,6 +17,7 @@
 package com.jemge.j2d;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -45,6 +46,7 @@ public class Renderer2D implements Disposable {
     private final HashMap<RendererObject, Entity> entityHashMap;
     private final SpriteBatch spriteBatch;
     private final OrthographicCamera camera;
+    private final Background background;
 
     private final ZoneBasedCulling culling;
     private final InputManager inputManager;
@@ -73,6 +75,9 @@ public class Renderer2D implements Disposable {
 
         cameraView = new Rectangle(0, 0, camera.viewportWidth, camera.viewportHeight);
         spriteBatch = new SpriteBatch();
+
+        background = new Background();
+        background.setColor(Color.BLACK);
 
         renderTargets.put(0, new Layer());
 
@@ -171,7 +176,7 @@ public class Renderer2D implements Disposable {
 
     public void render() {
 
-        Gdx.gl20.glClearColor(0, 0, 0, 1);
+        Gdx.gl20.glClearColor(background.getColor().r, background.getColor().g, background.getColor().b, 0);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
@@ -244,6 +249,10 @@ public class Renderer2D implements Disposable {
 
     public OrthographicCamera getCamera() {
         return camera;
+    }
+
+    public Background getBackground(){
+        return background;
     }
 
 
