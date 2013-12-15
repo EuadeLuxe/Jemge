@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.jemge.core.JAppLWJGL;
 import com.jemge.core.JConfig;
 import com.jemge.core.JGame;
+import com.jemge.core.Jemge;
 import com.jemge.j2d.JSprite;
 import com.jemge.j2d.Renderer2D;
+import com.jemge.resource.TextureResource;
 
 
 public class CullingTest extends JGame {
@@ -21,13 +23,13 @@ public class CullingTest extends JGame {
     public void create() {
         super.create(); //important call, don't forget it!
 
-        Texture texture = new Texture(Gdx.files.internal("erdeundgras.jpg")); //just a placeholder
-        texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        Jemge.manager.addResource("tile", new TextureResource("erdeundgras.jpg"));
+
         logger = new FPSLogger();
 
-        for(int x = 0; x < 250; x++){
-            for(int y = 0; y < 250; y++){
-                Renderer2D.getRenderer2D().add(new JSprite(texture, x * 64, y * 64, 64, 64).setStatic(true));
+        for(int x = 0; x < 500; x++){
+            for(int y = 0; y < 500; y++){
+                Renderer2D.getRenderer2D().add(new JSprite(Jemge.manager.getTexture("tile"),x * 64, y * 64, 64, 64).setStatic(true));
 
             }
         }

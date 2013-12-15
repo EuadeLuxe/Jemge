@@ -1,6 +1,7 @@
 <module rename-to="com.jemge">
-    <inherits name='com.google.gwt.user.User'/>
-    <source path="com/jemge/core" />
-    <source path="com/jemge/j2d" />
-    <source path="com/jemge/box2d" />
+<inherits name='com.google.gwt.user.User'/>
+<source path="com/jemge/core" />
+<source path="com/jemge/j2d" />
+<source path="com/jemge/box2d" />
+<source path="com/jemge/input" />
 </module>

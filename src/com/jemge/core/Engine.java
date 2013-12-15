@@ -19,6 +19,7 @@ package com.jemge.core;
 
 import com.jemge.box2d.Physics2D;
 import com.jemge.j2d.Renderer2D;
+import com.jemge.resource.ResourceManager;
 
 /**
  * The core of the engine. Initializes the components of the engine and dispose them.
@@ -40,6 +41,7 @@ public class Engine {
 
         Jemge.engine = this;
         Jemge.renderer2D = new Renderer2D();
+        Jemge.manager = new ResourceManager();
         //game.setScreen(new Splash(game));
     }
 

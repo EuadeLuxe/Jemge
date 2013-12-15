@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ZoneBasedCulling {
-    public static final float ZONE_SIZE = 1024;
+public class ZoneBasedCulling implements CullingSystem {
+    public static final float ZONE_SIZE = 512;
     private final HashMap<CullingZone, ArrayList<Entity>> zone_map;
     private final ArrayList<Entity> dynamic_objects;
     private final ArrayList<Entity> final_render_list;
@@ -77,8 +77,8 @@ public class ZoneBasedCulling {
         final_render_list.addAll(dynamic_objects);
     }
 
-    public boolean testCull(Entity entity){
-        return final_render_list.contains(entity);
+    public ArrayList<Entity> getFinalRenderList(){
+        return final_render_list;
     }
 
 }

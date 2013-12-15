@@ -25,6 +25,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
 import com.jemge.input.InputListener;
 import com.jemge.input.InputManager;
+import com.jemge.j2d.culling.CullingSystem;
 import com.jemge.j2d.culling.ZoneBasedCulling;
 
 import java.util.HashMap;
@@ -48,8 +49,8 @@ public class Renderer2D implements Disposable {
     private final OrthographicCamera camera;
     private final Background background;
 
-    private final ZoneBasedCulling culling;
     private final InputManager inputManager;
+    private CullingSystem culling;
 
 
     private RenderMode renderMode;
@@ -194,21 +195,25 @@ public class Renderer2D implements Disposable {
 
         for (Layer layer : renderTargets.values()) {
 
-            for (RendererObject rend : layer.getRendererObjects()) {
-                if (rend instanceof Entity) {
-                    if (!culling.testCull((Entity) rend)) continue;
+            for (Entity object : culling.getFinalRenderList()) {
+                if (!layer.getRendererObjects().contains(object)) {
+                    continue;
+                }
+                if (!(object instanceof RendererObject)) {
+                    continue;
                 }
 
-                if (rend.hasTransparent() && !(renderMode == RenderMode.ENABLED)) {    //with blending
+
+                if (((RendererObject) object).hasTransparent() && !(renderMode == RenderMode.ENABLED)) {    //with blending
                     spriteBatch.enableBlending();
 
                     renderMode = RenderMode.ENABLED;
-                } else if (!rend.hasTransparent() && !(renderMode == RenderMode.DISABLED)) {  //without blending
+                } else if (!((RendererObject) object).hasTransparent() && !(renderMode == RenderMode.DISABLED)) {  //without blending
                     spriteBatch.disableBlending();
 
                     renderMode = RenderMode.DISABLED;
                 }
-                rend.render(spriteBatch);
+                ((RendererObject) object).render(spriteBatch);
 
             }
         }
@@ -243,6 +248,10 @@ public class Renderer2D implements Disposable {
         return renderer2D;
     }
 
+    public void setCullingSystem(CullingSystem system){
+        culling = system;
+    }
+
     /**
      * @return Returns an instance of the camera.
      */
@@ -251,7 +260,7 @@ public class Renderer2D implements Disposable {
         return camera;
     }
 
-    public Background getBackground(){
+    public Background getBackground() {
         return background;
     }
 

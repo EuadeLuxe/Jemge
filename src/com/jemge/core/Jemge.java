@@ -17,6 +17,7 @@
 package com.jemge.core;
 
 import com.jemge.j2d.Renderer2D;
+import com.jemge.resource.ResourceManager;
 
 /**
  * Static references to the {@link Engine} and {@link Renderer2D} instances.
@@ -28,4 +29,5 @@ public class Jemge {
 
     public static Engine engine;
     public static Renderer2D renderer2D;
+    public static ResourceManager manager;
 }

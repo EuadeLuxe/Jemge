@@ -23,6 +23,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.jemge.core.Jemge;
+import com.jemge.core.system.UpdateListener;
 
 /**
  * Default object for drawing textures.
@@ -35,8 +36,11 @@ public class JSprite extends Sprite implements RendererObject, Entity{
 
     //for static jsprite's
     private boolean isStatic = false;
+    private boolean hasTransparent = false;
 
     private Rectangle cachedBound;
+
+    public UpdateListener listener;
 
 
     public JSprite() {
@@ -71,7 +75,13 @@ public class JSprite extends Sprite implements RendererObject, Entity{
 
     @Override
     public boolean hasTransparent() {
-        return false;
+        return hasTransparent;
+    }
+
+    public JSprite setTransparent(boolean is){
+        hasTransparent = is;
+
+        return this;
     }
 
 
@@ -81,7 +91,11 @@ public class JSprite extends Sprite implements RendererObject, Entity{
 
     @Override
     public void render(SpriteBatch spriteBatch) {
-        super.draw(spriteBatch);
+        draw(spriteBatch);
+
+        if(listener != null){
+            listener.update(this);
+        }
 
     }
 
