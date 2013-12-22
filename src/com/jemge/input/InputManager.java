@@ -33,7 +33,6 @@ public class InputManager {
 
     public void addListener(InputListener listener){
         listeners.add(listener);
-
     }
 
     public void removeListener(InputListener listener){

@@ -24,7 +24,7 @@ public class Layer {
     private final List<RendererObject> rendererObjects;
 
     public Layer() {
-        rendererObjects = new ArrayList<>(1);
+        rendererObjects = new ArrayList<>();
     }
 
     public RendererObject addObject(RendererObject rend) {
