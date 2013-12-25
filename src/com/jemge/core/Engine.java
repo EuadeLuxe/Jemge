@@ -18,6 +18,7 @@ package com.jemge.core;
 
 
 import com.jemge.box2d.Physics2D;
+import com.jemge.input.InputManager;
 import com.jemge.j2d.Renderer2D;
 import com.jemge.resource.ResourceManager;
 
@@ -33,7 +34,7 @@ public class Engine {
 
     public Engine(JGame game) {
         modules = new EngineModule[]{
-                new Physics2D()
+                new Physics2D(), new InputManager()
         };
         for (EngineModule module : modules) {
             module.init();
@@ -54,5 +55,25 @@ public class Engine {
 
     public void dispose() {
         Renderer2D.getRenderer2D().dispose();
+    }
+
+    public Physics2D getPhysics2D(){
+        for(EngineModule module : modules){
+            if(module instanceof Physics2D){
+                return (Physics2D) module;
+            }
+        }
+
+        throw new NullPointerException();
+    }
+
+    public InputManager getInputManager(){
+        for(EngineModule module : modules){
+            if(module instanceof InputManager){
+                return (InputManager) module;
+            }
+        }
+
+        throw new NullPointerException();
     }
 }

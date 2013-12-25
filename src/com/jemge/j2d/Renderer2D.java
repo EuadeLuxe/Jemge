@@ -23,6 +23,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
+import com.jemge.core.Jemge;
 import com.jemge.input.InputListener;
 import com.jemge.input.InputManager;
 import com.jemge.j2d.culling.CullingSystem;
@@ -44,7 +45,6 @@ public class Renderer2D implements Disposable {
     private static Renderer2D renderer2D;
 
     public final HashMap<Integer, Layer> renderTargets;
-    private final HashMap<RendererObject, Entity> entityHashMap;
     private final SpriteBatch spriteBatch;
     private final OrthographicCamera camera;
     private final Background background;
@@ -69,7 +69,6 @@ public class Renderer2D implements Disposable {
         renderer2D = this;
 
         renderTargets = new HashMap<>();
-        entityHashMap = new HashMap<>();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -83,7 +82,7 @@ public class Renderer2D implements Disposable {
         renderTargets.put(0, new Layer());
 
         culling = new ZoneBasedCulling();
-        inputManager = new InputManager();
+        inputManager = Jemge.engine.getInputManager();
     }
 
     //Public
@@ -109,7 +108,6 @@ public class Renderer2D implements Disposable {
         renderTargets.get(layer).addObject(rendererObject);
 
         if (rendererObject instanceof Entity) {
-            entityHashMap.put(rendererObject, (Entity) rendererObject);
             culling.putObject((Entity) rendererObject);
         }
         if (rendererObject instanceof InputListener) {
@@ -144,7 +142,6 @@ public class Renderer2D implements Disposable {
         renderTargets.get(0).addObject(rendererObject);
 
         if (rendererObject instanceof Entity) {
-            entityHashMap.put(rendererObject, (Entity) rendererObject);
             culling.putObject((Entity) rendererObject);
         }
 
@@ -185,12 +182,12 @@ public class Renderer2D implements Disposable {
                 camera.position.y);
 
         culling.cull(cameraView);
-        inputManager.testAll();
 
         spriteBatch.setProjectionMatrix(camera.combined);
         spriteBatch.begin();
 
         renderMode = RenderMode.INACTIVE;
+        background.update(spriteBatch);
 
 
         for (Layer layer : renderTargets.values()) {

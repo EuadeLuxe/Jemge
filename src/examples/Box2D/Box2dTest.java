@@ -10,6 +10,8 @@ import com.jemge.core.JAppLWJGL;
 import com.jemge.core.JConfig;
 import com.jemge.core.JConfig.Version;
 import com.jemge.core.JGame;
+import com.jemge.core.Jemge;
+import com.jemge.resource.TextureResource;
 
 /**
  * Box2d example:
@@ -29,6 +31,9 @@ public class Box2dTest extends JGame {
         debugRenderer = new Box2DDebugRenderer();
 
         new PolygonObject(0, 0, getCamera().viewportWidth, 30, BodyDef.BodyType.StaticBody); // ground platform
+
+        Jemge.manager.addResource("background", new TextureResource("erdeundgras.jpg")); //Just an example texture
+        Jemge.renderer2D.getBackground().setTexture(Jemge.manager.getTexture("background"));
     }
 
     /**
