@@ -78,7 +78,7 @@ public class JSprite extends Sprite implements RendererObject, Entity{
         return hasTransparent;
     }
 
-    public JSprite setTransparent(boolean is){
+    public JSprite setOpaque(boolean is){
         hasTransparent = is;
 
         return this;
