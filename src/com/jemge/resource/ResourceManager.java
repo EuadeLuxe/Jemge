@@ -41,4 +41,12 @@ public class ResourceManager {
 
         throw new NullPointerException();
     }
+
+    public AudioResource getSound(String name){
+        if(resourceList.get(name) instanceof AudioResource){
+            return (AudioResource) resourceList.get(name);
+        }
+
+        throw new NullPointerException();
+    }
 }
