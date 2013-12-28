@@ -8,11 +8,31 @@ public abstract class JScreen implements Screen {
     private Renderer2D renderer2D;
 
     @Override
+    public void render(float v) {
+
+    }
+
+    @Override
+    public void resize(int i, int i2) {
+
+    }
+
+    @Override
     public void show() {
         if(renderer2D == null){
             renderer2D = new Renderer2D();
         }
         Jemge.renderer2D = renderer2D;
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
     }
 
     @Override
