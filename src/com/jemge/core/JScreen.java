@@ -1,0 +1,30 @@
+package com.jemge.core;
+
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Camera;
+import com.jemge.j2d.Renderer2D;
+
+public abstract class JScreen implements Screen {
+    private Renderer2D renderer2D;
+
+    @Override
+    public void show() {
+        if(renderer2D == null){
+            renderer2D = new Renderer2D();
+        }
+        Jemge.renderer2D = renderer2D;
+    }
+
+    @Override
+    public final void dispose() {
+        Jemge.engine.dispose();
+    }
+
+    public Camera getCamera() {
+        return Renderer2D.getRenderer2D().getCamera();
+    }
+
+    public Renderer2D getRenderer2D(){
+        return renderer2D;
+    }
+}

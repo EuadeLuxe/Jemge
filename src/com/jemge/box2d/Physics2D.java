@@ -34,7 +34,7 @@ public class Physics2D implements EngineModule{
     @Override
     public void init() {
         worlds = new HashMap(1);
-        worlds.put("main", new World(new Vector2(0, -15f), true));
+        worlds.put("main", new World(new Vector2(0, -20f), true));
     }
 
     @Override

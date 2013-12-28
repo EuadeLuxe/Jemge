@@ -13,9 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
 package com.jemge.j2d;
-
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -37,14 +35,8 @@ public class JSprite extends Sprite implements RendererObject, Entity{
     //for static jsprite's
     private boolean isStatic = false;
     private boolean hasTransparent = false;
-
     private Rectangle cachedBound;
-
     public UpdateListener listener;
-
-
-    public JSprite() {
-    }
 
     public JSprite(Texture texture) {
         super(texture);

@@ -48,5 +48,4 @@ public class JGame extends Game {
     public Camera getCamera() {
         return Renderer2D.getRenderer2D().getCamera();
     }
-
 }
