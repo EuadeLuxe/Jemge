@@ -8,7 +8,6 @@ import com.jemge.box2d.Physics2D;
 import com.jemge.box2d.PolygonObject;
 import com.jemge.core.JAppLWJGL;
 import com.jemge.core.JConfig;
-import com.jemge.core.JConfig.Version;
 import com.jemge.core.JGame;
 import com.jemge.core.Jemge;
 import com.jemge.resource.TextureResource;
@@ -56,7 +55,6 @@ public class Box2dTest extends JGame {
     
     public static void main(String[] args){
         JConfig config = new JConfig();
-        config.setGL(Version.GL_20);
         
         new JAppLWJGL(new Box2dTest(), config);   //finally create the lwjgl application.
     }

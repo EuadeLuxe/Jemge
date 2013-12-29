@@ -36,8 +36,7 @@ public class ScreenTest extends JGame {
     public static void main(String[] args){
         JConfig config = new JConfig();
 
-        config.setTitle("Hello World");
-        config.setGL(JConfig.Version.GL_20);
+        config.setTitle("JScreen Test");
 
         new JAppLWJGL(new ScreenTest(), config);
     }

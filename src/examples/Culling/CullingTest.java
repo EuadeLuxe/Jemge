@@ -48,7 +48,6 @@ public class CullingTest extends JGame {
 
     public static void main(String[] args){
         JConfig config = new JConfig();
-        config.setGL(JConfig.Version.GL_20);
         config.vSyncEnabled = true;
 
         new JAppLWJGL(new CullingTest(), config);   //finally create the lwjgl application.

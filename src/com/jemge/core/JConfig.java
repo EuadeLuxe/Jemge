@@ -6,21 +6,10 @@ import com.badlogic.gdx.files.FileHandle;
 
 public class JConfig extends LwjglApplicationConfiguration {
 	protected String settings = "";
-	
-	public enum Version {
-		GL_20
-	}
 
     public JConfig() {
 		this.title = "JEMGEngine";
-	}
-	
-	public void setGL(Version gl_version) {
-		switch(gl_version) {
-			case GL_20:
-				this.useGL20 = true;
-			break;
-		}
+        this.useGL20 = true;
 	}
 	
 	public void setTitle(String name) {
