@@ -11,7 +11,7 @@ public class ScreenB extends JScreen {
     }
 
     @Override
-    public void show(){
+    public void show() {
         super.show();
         getRenderer2D().getBackground().setColor(Color.BLUE);
     }

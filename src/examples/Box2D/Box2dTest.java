@@ -52,10 +52,10 @@ public class Box2dTest extends JGame {
             new PolygonObject(position.x, position.y, 30, 30, BodyDef.BodyType.DynamicBody); // and create a new box
         }
     }
-    
-    public static void main(String[] args){
+
+    public static void main(String[] args) {
         JConfig config = new JConfig();
-        
+
         new JAppLWJGL(new Box2dTest(), config);   //finally create the lwjgl application.
     }
 }

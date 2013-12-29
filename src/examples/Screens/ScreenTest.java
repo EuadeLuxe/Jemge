@@ -6,26 +6,26 @@ import com.jemge.core.JConfig;
 import com.jemge.core.JGame;
 
 public class ScreenTest extends JGame {
-   enum MODE{
-       SCREEN_A, SCREEN_B
-   }
+    enum MODE {
+        SCREEN_A, SCREEN_B
+    }
+
     private MODE mode = MODE.SCREEN_A;
 
     @Override
-    public void create(){
+    public void create() {
         super.create();
         setScreen(new ScreenA());
 
     }
 
     @Override
-    public void render(){
+    public void render() {
         super.render();
-        if(Gdx.input.justTouched() && mode == MODE.SCREEN_A){
+        if (Gdx.input.justTouched() && mode == MODE.SCREEN_A) {
             setScreen(new ScreenB());
             mode = MODE.SCREEN_B;
-        }
-        else if(Gdx.input.justTouched() && mode == MODE.SCREEN_B){
+        } else if (Gdx.input.justTouched() && mode == MODE.SCREEN_B) {
             setScreen(new ScreenA());
             mode = MODE.SCREEN_A;
         }
@@ -33,7 +33,7 @@ public class ScreenTest extends JGame {
     }
 
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         JConfig config = new JConfig();
 
         config.setTitle("JScreen Test");
