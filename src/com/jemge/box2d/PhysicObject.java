@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 
 public class PhysicObject {
     protected Vector2 position;
-    protected Body body;
+    public Body body;
     protected Fixture fixture;
 
     public PhysicObject setPhysicData(float density, float friction, float restitution) {

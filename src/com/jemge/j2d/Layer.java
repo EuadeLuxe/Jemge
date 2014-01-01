@@ -21,23 +21,23 @@ import java.util.List;
 
 public class Layer {
 
-    private final List<RendererObject> rendererObjects;
+    private final List<Object> rendererObjects;
 
     public Layer() {
         rendererObjects = new ArrayList<>();
     }
 
-    public RendererObject addObject(RendererObject rend) {
+    public Object addObject(Object rend) {
         rendererObjects.add(rend);
 
         return rend;
     }
 
-    public void deleteObject(RendererObject rend) {
+    public void deleteObject(Object rend) {
         rendererObjects.remove(rend);
     }
 
-    public List<RendererObject> getRendererObjects() {
+    public List<Object> getRendererObjects() {
         return rendererObjects;
     }
 }

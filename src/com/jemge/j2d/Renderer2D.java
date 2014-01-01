@@ -59,7 +59,7 @@ public class Renderer2D implements Disposable {
 
     //Protected
 
-    protected final Rectangle cameraView;
+    public final Rectangle cameraView;
 
 
     public enum RenderMode {
@@ -104,7 +104,7 @@ public class Renderer2D implements Disposable {
      * Adds a new object to the renderer.
      */
 
-    public RendererObject add(int layer, RendererObject rendererObject) {
+    public Object add(int layer, Object rendererObject) {
         if (!renderTargets.keySet().contains(layer)) {
             renderTargets.put(layer, new Layer());
         }
@@ -125,7 +125,7 @@ public class Renderer2D implements Disposable {
      */
 
 
-    public void remove(int layer, RendererObject rendererObject) {
+    public void remove(int layer, Object rendererObject) {
         renderTargets.get(layer).deleteObject(rendererObject);
 
         if (rendererObject instanceof Entity) {
@@ -141,7 +141,7 @@ public class Renderer2D implements Disposable {
      * Adds a new object to the renderer.
      */
 
-    public RendererObject add(RendererObject rendererObject) {
+    public Object add(Object rendererObject) {
         renderTargets.get(0).addObject(rendererObject);
 
         if (rendererObject instanceof Entity) {
@@ -160,7 +160,7 @@ public class Renderer2D implements Disposable {
      */
 
 
-    public void remove(RendererObject rendererObject) {
+    public void remove(Object rendererObject) {
         renderTargets.get(0).deleteObject(rendererObject);
         if (rendererObject instanceof Entity) {
             culling.removeObject((Entity) rendererObject);
@@ -234,8 +234,10 @@ public class Renderer2D implements Disposable {
         spriteBatch.dispose();
 
         for (Layer layer : renderTargets.values()) {
-            for (RendererObject rend : layer.getRendererObjects()) {
-                rend.dispose();
+            for (Object rend : layer.getRendererObjects()) {
+                if(rend instanceof RendererObject){
+                    ((RendererObject) rend).dispose();
+                }
 
             }
         }
