@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
 import com.jemge.core.Jemge;
@@ -46,6 +47,7 @@ public class Renderer2D implements Disposable {
 
     public final HashMap<Integer, Layer> renderTargets;
     private final SpriteBatch spriteBatch;
+    private final ShapeRenderer shapeRenderer;
     private final OrthographicCamera camera;
     private final Background background;
 
@@ -75,6 +77,7 @@ public class Renderer2D implements Disposable {
 
         cameraView = new Rectangle(0, 0, camera.viewportWidth, camera.viewportHeight);
         spriteBatch = new SpriteBatch();
+        shapeRenderer = new ShapeRenderer();
 
         background = new Background();
         background.setColor(Color.BLACK);
@@ -184,6 +187,7 @@ public class Renderer2D implements Disposable {
         culling.cull(cameraView);
 
         spriteBatch.setProjectionMatrix(camera.combined);
+        shapeRenderer.setProjectionMatrix(camera.combined);
         spriteBatch.begin();
 
         renderMode = RenderMode.INACTIVE;
@@ -194,6 +198,10 @@ public class Renderer2D implements Disposable {
 
             for (Entity object : culling.getFinalRenderList()) {
                 if (!layer.getRendererObjects().contains(object)) {
+                    continue;
+                }
+                if(object instanceof Shape){
+                    ((Shape) object).renderShape(shapeRenderer);
                     continue;
                 }
                 if (!(object instanceof RendererObject)) {
