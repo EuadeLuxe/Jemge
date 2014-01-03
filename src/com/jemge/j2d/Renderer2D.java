@@ -195,7 +195,11 @@ public class Renderer2D implements Disposable {
 
 
         for (Layer layer : renderTargets.values()) {
-
+            for(Object object : layer.getRendererObjects()){
+                if(object instanceof Shape){
+                    ((Shape) object).renderShape(shapeRenderer);
+                }
+            }
             for (Entity object : culling.getFinalRenderList()) {
                 if (!layer.getRendererObjects().contains(object)) {
                     continue;
