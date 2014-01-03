@@ -34,7 +34,7 @@ public class JAppLWJGL extends LwjglApplication {
 		super(listener, config, graphics);
 	}
 	
-	public JAppLWJGL(ApplicationListener listener, String title, int width, int height, boolean useGL2) {
-		super(listener, title, width, height, useGL2);
+	public JAppLWJGL(ApplicationListener listener, String title, int width, int height) {
+		super(listener, title, width, height, true);
 	}
 }

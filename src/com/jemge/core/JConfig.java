@@ -57,13 +57,13 @@ public class JConfig extends LwjglApplicationConfiguration {
 						this.height = Integer.parseInt(values[1]);
 					break;
 					case "Render.VSyncEnabled":
-						this.vSyncEnabled = (Integer.parseInt(values[1]) == 1);
+						this.vSyncEnabled = Integer.parseInt(values[1]) == 1;
 					break;
 					case "Render.VSync":
 						//this.useCPUSynch = (Integer.parseInt(values[1]) == 1);
 					break;
 					case "Render.FullscreenEnabled":
-						this.fullscreen = (Integer.parseInt(values[1]) == 1);
+						this.fullscreen = Integer.parseInt(values[1]) == 1;
 					break;
 				}
 			}
