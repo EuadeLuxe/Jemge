@@ -43,7 +43,11 @@ public class Background {
     }
 
     public void setTexture(Texture texture) {
-        this.texture = new JSprite(texture);
+        if(texture == null){
+            this.texture = new JSprite(texture, 0, 0);
+        }else{
+            this.texture.setTexture(texture);
+        }
 
         Jemge.renderer2D.addLayer(new Layer(), -1);
         mode = MODE.TEXTURE;

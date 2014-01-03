@@ -22,12 +22,12 @@ import com.jemge.j2d.Entity;
 import java.util.ArrayList;
 
 public class CullingZone extends Rectangle {
+    private final ArrayList<Entity> final_render_list = new ArrayList<>(64);
     public CullingZone(float x, float y, float width, float height) {
         super(x, y, width, height);
     }
 
     public ArrayList<Entity> getCullingList(ZoneBasedCulling culling){
-        final ArrayList<Entity> final_render_list = new ArrayList<>(64);
         for(Entity entity : culling.getMyList(this)){
             if(entity.needRender()){
                 final_render_list.add(entity);

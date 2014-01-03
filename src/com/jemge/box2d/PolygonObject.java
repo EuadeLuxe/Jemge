@@ -20,6 +20,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class PolygonObject extends PhysicObject {
+    private final static BodyDef bodyDef = new BodyDef();
+
     protected float height;
     protected float width;
 
@@ -27,7 +29,6 @@ public class PolygonObject extends PhysicObject {
         height = h;
         width = w;
 
-        BodyDef bodyDef = new BodyDef();
         bodyDef.type = type;
         bodyDef.position.set(x, y).add(width / 2, height / 2);
 

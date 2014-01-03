@@ -7,12 +7,13 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 
 public class CircleObject extends PhysicObject {
+    private final static BodyDef bodyDef = new BodyDef();
+
     private float radius;
 
     public CircleObject(float x, float y, float radius, BodyDef.BodyType type) {
         this.radius = radius;
 
-        BodyDef bodyDef = new BodyDef();
         bodyDef.type = type;
         bodyDef.position.set(x, y).add(radius / 2, radius / 2);
 
