@@ -196,7 +196,7 @@ public class Renderer2D implements Disposable {
 
         for (Layer layer : renderTargets.values()) {
             for(Object object : layer.getRendererObjects()){
-                if(object instanceof Shape){
+                if(object instanceof Shape && !(object instanceof Entity)){
                     ((Shape) object).renderShape(shapeRenderer);
                 }
             }
@@ -211,7 +211,6 @@ public class Renderer2D implements Disposable {
                 if (!(object instanceof RendererObject)) {
                     continue;
                 }
-
 
                 if (((RendererObject) object).hasTransparent() && !(renderMode == RenderMode.ENABLED)) {    //with blending
                     spriteBatch.enableBlending();
