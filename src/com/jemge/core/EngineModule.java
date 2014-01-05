@@ -21,4 +21,6 @@ public interface EngineModule {
     public void init();
 
     public void update();
+
+    public void dispose();
 }

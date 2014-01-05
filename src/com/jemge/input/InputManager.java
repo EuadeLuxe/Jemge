@@ -45,7 +45,7 @@ public class InputManager implements EngineModule {
         listeners.remove(listener);
     }
 
-    public static Vector2 getPositionByCam(){
+    public static Vector2 getInputPosition(){
         input_position.set(Gdx.input.getX(), Gdx.input.getY(), 0);
         Jemge.renderer2D.getCamera().unproject(input_position);
         position_by_cam.set(input_position.x, input_position.y);
@@ -57,11 +57,15 @@ public class InputManager implements EngineModule {
     public void update() {
         if(Gdx.input.isTouched()){
             for(InputListener listener : listeners){
-                if(listener.getRectangle().contains(getPositionByCam())){
+                if(listener.getRectangle().contains(getInputPosition())){
                     listener.clicked();
                 }
             }
         }
+    }
+
+    @Override
+    public void dispose(){
 
     }
 }

@@ -6,6 +6,9 @@ import com.jemge.core.JConfig;
 import com.jemge.core.JGame;
 
 public class ScreenTest extends JGame {
+    private final ScreenA screenA = new ScreenA();
+    private final ScreenB screenB = new ScreenB();
+
     enum MODE {
         SCREEN_A, SCREEN_B
     }
@@ -15,7 +18,7 @@ public class ScreenTest extends JGame {
     @Override
     public void create() {
         super.create();
-        setScreen(new ScreenA());
+        setScreen(screenA);
 
     }
 
@@ -23,13 +26,12 @@ public class ScreenTest extends JGame {
     public void render() {
         super.render();
         if (Gdx.input.justTouched() && mode == MODE.SCREEN_A) {
-            setScreen(new ScreenB());
+            setScreen(screenB);
             mode = MODE.SCREEN_B;
         } else if (Gdx.input.justTouched() && mode == MODE.SCREEN_B) {
-            setScreen(new ScreenA());
+            setScreen(screenA);
             mode = MODE.SCREEN_A;
         }
-        //It's intended that it always produces a new instance. Testing memory usage.
     }
 
 

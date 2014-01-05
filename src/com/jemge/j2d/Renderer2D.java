@@ -237,9 +237,9 @@ public class Renderer2D implements Disposable {
         spriteBatch.dispose();
 
         for (Layer layer : renderTargets.values()) {
-            for (Object rend : layer.getRendererObjects()) {
-                if(rend instanceof RendererObject){
-                    ((RendererObject) rend).dispose();
+            for (Object disposable : layer.getRendererObjects()) {
+                if(disposable instanceof Disposable){
+                    ((Disposable) disposable).dispose();
                 }
 
             }

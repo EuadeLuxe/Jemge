@@ -57,4 +57,11 @@ public class Physics2D implements EngineModule{
     public static World getMainWorld(){
         return worlds.get("main");
     }
+
+    @Override
+    public void dispose(){
+        for(World world : worlds.values()){
+            world.dispose();
+        }
+    }
 }

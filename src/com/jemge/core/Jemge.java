@@ -1,5 +1,5 @@
 /*
- * Copyright [2013] @author file
+ * Copyright [2014] @author file
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package com.jemge.core;
 
 import com.jemge.j2d.Renderer2D;
+import com.jemge.resource.AudioManager;
 import com.jemge.resource.ResourceManager;
 
 /**
@@ -30,4 +31,5 @@ public class Jemge {
     public static Engine engine;
     public static Renderer2D renderer2D;
     public static ResourceManager manager;
+    public static AudioManager audio;
 }

@@ -24,8 +24,9 @@ package com.jemge.j2d;
  */
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Disposable;
 
-public interface RendererObject {
+public interface RendererObject extends Disposable {
 
     public boolean hasTransparent();
 
