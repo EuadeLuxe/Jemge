@@ -8,5 +8,5 @@ public interface Resource {
 
     public ResourceType getType();
 
-    public String getPathAndName();
+    public String getName();
 }

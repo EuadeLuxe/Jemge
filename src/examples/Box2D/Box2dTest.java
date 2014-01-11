@@ -1,7 +1,6 @@
 package examples.Box2D;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.jemge.box2d.Physics2D;
@@ -10,6 +9,7 @@ import com.jemge.core.JAppLWJGL;
 import com.jemge.core.JConfig;
 import com.jemge.core.JGame;
 import com.jemge.core.Jemge;
+import com.jemge.input.InputManager;
 import com.jemge.resource.TextureResource;
 
 /**
@@ -46,10 +46,7 @@ public class Box2dTest extends JGame {
         debugRenderer.render(Physics2D.getMainWorld(), getCamera().combined);  //Render the box2d world
 
         if (Gdx.input.justTouched()) { //left click / touch screen?
-            Vector3 position = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0); //get mouse- / touch position
-            getCamera().unproject(position); //.. unproject it
-
-            new PolygonObject(position.x, position.y, 30, 30, BodyDef.BodyType.DynamicBody); // and create a new box
+            new PolygonObject(InputManager.getInputPosition().x, InputManager.getInputPosition().y, 30, 30, BodyDef.BodyType.DynamicBody); // and create a new box
         }
     }
 

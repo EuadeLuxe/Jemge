@@ -23,6 +23,8 @@ public interface Entity {
     public float getX();
     public float getY();
 
+    public float getRotation();
+
     public float getHeight();
     public float getWidth();
 

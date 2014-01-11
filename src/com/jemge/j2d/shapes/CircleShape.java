@@ -43,6 +43,11 @@ public class CircleShape implements Shape, Entity{
     }
 
     @Override
+    public float getRotation() {
+        return 0;
+    }
+
+    @Override
     public float getHeight() {
         return radius;
     }

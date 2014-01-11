@@ -54,7 +54,7 @@ public class Engine {
     }
 
     public void dispose() {
-        Renderer2D.getRenderer2D().dispose();
+        Jemge.renderer2D.dispose();
     }
 
     public Physics2D getPhysics2D(){

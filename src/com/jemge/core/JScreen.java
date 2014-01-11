@@ -41,7 +41,7 @@ public abstract class JScreen implements Screen {
     }
 
     public Camera getCamera() {
-        return Renderer2D.getRenderer2D().getCamera();
+        return Jemge.renderer2D.getCamera();
     }
 
     public Renderer2D getRenderer2D(){

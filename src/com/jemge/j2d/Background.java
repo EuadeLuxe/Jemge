@@ -43,7 +43,7 @@ public class Background {
     }
 
     public void setTexture(Texture texture) {
-        if(texture == null){
+        if(this.texture == null){
             this.texture = new JSprite(texture, 0, 0);
         }else{
             this.texture.setTexture(texture);

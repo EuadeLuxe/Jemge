@@ -24,6 +24,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
+import com.jemge.box2d.Physics2D;
+import com.jemge.box2d.box2dLight.RayHandler;
 import com.jemge.core.Jemge;
 import com.jemge.input.InputListener;
 import com.jemge.input.InputManager;
@@ -43,8 +45,6 @@ public class Renderer2D implements Disposable {
 
     //Private
 
-    private static Renderer2D renderer2D;
-
     public final HashMap<Integer, Layer> renderTargets;
     private final SpriteBatch spriteBatch;
     private final ShapeRenderer shapeRenderer;
@@ -54,6 +54,7 @@ public class Renderer2D implements Disposable {
     private final InputManager inputManager;
     private CullingSystem culling;
 
+    public RayHandler rayHandler;
 
     private RenderMode renderMode;
 
@@ -68,24 +69,21 @@ public class Renderer2D implements Disposable {
 
 
     public Renderer2D() {
-        renderer2D = this;
-
         renderTargets = new HashMap<>();
-
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
         cameraView = new Rectangle(0, 0, camera.viewportWidth, camera.viewportHeight);
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
-
-        background = new Background();
-        background.setColor(Color.BLACK);
-
-        renderTargets.put(0, new Layer());
-
         culling = new ZoneBasedCulling();
         inputManager = Jemge.engine.getInputManager();
+        background = new Background();
+        rayHandler = new RayHandler(Physics2D.getMainWorld());
+
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        background.setColor(Color.BLACK);
+        renderTargets.put(0, new Layer());
+        rayHandler.setAmbientLight(1.0f);
+
     }
 
     //Public
@@ -226,6 +224,9 @@ public class Renderer2D implements Disposable {
             }
         }
         spriteBatch.end();
+
+        rayHandler.setCombinedMatrix(camera.combined);
+        rayHandler.updateAndRender();
     }
 
     /**
@@ -235,6 +236,7 @@ public class Renderer2D implements Disposable {
     @Override
     public void dispose() {
         spriteBatch.dispose();
+        rayHandler.dispose();
 
         for (Layer layer : renderTargets.values()) {
             for (Object disposable : layer.getRendererObjects()) {
@@ -246,17 +248,6 @@ public class Renderer2D implements Disposable {
         }
     }
 
-    /**
-     * @return Returns an instance of the renderer.
-     */
-
-    public static Renderer2D getRenderer2D() {
-        if (renderer2D == null) {
-            new Renderer2D();
-        }
-
-        return renderer2D;
-    }
 
     public void setCullingSystem(CullingSystem system){
         culling = system;

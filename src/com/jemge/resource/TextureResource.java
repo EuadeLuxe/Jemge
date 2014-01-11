@@ -17,7 +17,7 @@ public class TextureResource extends Texture implements Resource{
     }
 
     @Override
-    public String getPathAndName() {
+    public String getName() {
         return name;
     }
 

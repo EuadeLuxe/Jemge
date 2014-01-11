@@ -15,7 +15,7 @@ public abstract class AudioResource implements Resource, Sound{
     }
 
     @Override
-    public String getPathAndName() {
+    public String getName() {
         return name;
     }
 }

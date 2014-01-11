@@ -1,14 +1,11 @@
 package examples.Culling;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.graphics.Texture;
 import com.jemge.core.JAppLWJGL;
 import com.jemge.core.JConfig;
 import com.jemge.core.JGame;
 import com.jemge.core.Jemge;
 import com.jemge.j2d.JSprite;
-import com.jemge.j2d.Renderer2D;
 import com.jemge.resource.TextureResource;
 
 
@@ -29,7 +26,7 @@ public class CullingTest extends JGame {
 
         for (int x = 0; x < 250; x++) {
             for (int y = 0; y < 250; y++) {
-                Renderer2D.getRenderer2D().add(new JSprite(Jemge.manager.getTexture("tile"), x * 64, y * 64, 64, 64).setStatic(true));
+                Jemge.renderer2D.add(new JSprite(Jemge.manager.getTexture("tile"), x * 64, y * 64, 64, 64).setStatic(true));
 
             }
         }
@@ -48,7 +45,6 @@ public class CullingTest extends JGame {
 
     public static void main(String[] args) {
         JConfig config = new JConfig();
-        config.vSyncEnabled = true;
 
         new JAppLWJGL(new CullingTest(), config);   //finally create the lwjgl application.
     }
