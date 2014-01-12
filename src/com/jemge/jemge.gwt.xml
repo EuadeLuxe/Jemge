@@ -5,4 +5,5 @@
 <source path="com/jemge/box2d" />
 <source path="com/jemge/input" />
 <source path="com/jemge/resource" />
+<source path="com/jemge/math" />
 </module>

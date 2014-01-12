@@ -22,6 +22,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.jemge.core.Jemge;
 import com.jemge.core.system.UpdateListener;
+import com.jemge.utils.StringHelper;
 
 /**
  * Default object for drawing textures.
@@ -113,7 +114,7 @@ public class JSprite extends Sprite implements RendererObject, Entity{
 
     @Override
     public boolean getData(String name) {
-        return name.equalsIgnoreCase("static") && isStatic;
+        return StringHelper.equals(name, "static") && isStatic;
     }
 
     @Override
@@ -124,6 +125,12 @@ public class JSprite extends Sprite implements RendererObject, Entity{
 
         return getBoundingRectangle();
     }
+
+    /**
+     * Static items do *not* update bounding rectangle.
+     * @param set
+     * @return
+     */
 
     public JSprite setStatic(boolean set) {
         isStatic = set;

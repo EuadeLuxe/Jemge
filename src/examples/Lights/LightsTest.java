@@ -33,7 +33,7 @@ public class LightsTest extends JGame {
 
         new PolygonObject(0, 0, getCamera().viewportWidth, 30, BodyDef.BodyType.StaticBody); // ground platform
 
-        mouse_light = new PointLight(Light.Quality.POOR, Color.WHITE, 500, 20, 20);
+        mouse_light = new PointLight(Light.Quality.NICE, Color.WHITE, 500, 20, 20);
     }
 
     /**

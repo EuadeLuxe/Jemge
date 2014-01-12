@@ -28,6 +28,7 @@ public class CullingZone extends Rectangle {
     }
 
     public ArrayList<Entity> getCullingList(ZoneBasedCulling culling){
+        final_render_list.clear();
         for(Entity entity : culling.getMyList(this)){
             if(entity.needRender()){
                 final_render_list.add(entity);

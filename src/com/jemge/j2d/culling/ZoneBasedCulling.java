@@ -21,13 +21,14 @@ import com.jemge.j2d.Entity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class ZoneBasedCulling implements CullingSystem {
-    public static final float ZONE_SIZE = 512;
+    public static float ZONE_SIZE = 1024;
     private final HashMap<CullingZone, ArrayList<Entity>> zone_map;
     private final ArrayList<Entity> dynamic_objects;
     private final ArrayList<Entity> final_render_list;
+
+    public static int zone_number;
 
     public ZoneBasedCulling() {
         zone_map = new HashMap<>();
@@ -74,6 +75,9 @@ public class ZoneBasedCulling implements CullingSystem {
         final CullingZone zone = new CullingZone(ZONE_SIZE, ZONE_SIZE, ZONE_SIZE, ZONE_SIZE);
         zone.setCenter(object.getX(), object.getY());
 
+        zone_number++;
+        System.out.println(zone_number);
+
         return zone;
     }
 
@@ -88,7 +92,9 @@ public class ZoneBasedCulling implements CullingSystem {
                 final_render_list.addAll(zone.getCullingList(this));
             }
         }
-        final_render_list.addAll(dynamic_objects);
+        if(dynamic_objects.size() != 0){
+            final_render_list.addAll(dynamic_objects);
+        }
     }
 
     public ArrayList<Entity> getFinalRenderList(){

@@ -71,6 +71,7 @@ public class Renderer2D implements Disposable {
     public Renderer2D() {
         renderTargets = new HashMap<>();
         camera = new OrthographicCamera();
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         cameraView = new Rectangle(0, 0, camera.viewportWidth, camera.viewportHeight);
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
@@ -79,7 +80,6 @@ public class Renderer2D implements Disposable {
         background = new Background();
         rayHandler = new RayHandler(Physics2D.getMainWorld());
 
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         background.setColor(Color.BLACK);
         renderTargets.put(0, new Layer());
         rayHandler.setAmbientLight(1.0f);

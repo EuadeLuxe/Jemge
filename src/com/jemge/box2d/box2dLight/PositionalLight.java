@@ -40,7 +40,7 @@ public abstract class PositionalLight extends Light {
     }
 
     @Override
-    public void attachToEntity(Entity entity, float offsetX, float offSetY){
+    public void attachToEntity(Entity entity, float offsetX, float offSetY) {
         this.entity = entity;
         bodyOffsetX = offsetX;
         bodyOffsetY = offSetY;
@@ -105,7 +105,7 @@ public abstract class PositionalLight extends Light {
             start.x = vec.x + dX;
             start.y = vec.y + dY;
             setDirection(angle * MathUtils.radiansToDegrees);
-        }else if (entity != null && !staticLight) {
+        } else if (entity != null && !staticLight) {
             final Vector2 vec = new Vector2(entity.getX(), entity.getY());
             float angle = entity.getRotation();
             final float cos = MathUtils.cos(angle);
