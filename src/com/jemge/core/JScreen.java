@@ -1,7 +1,7 @@
 package com.jemge.core;
 
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.jemge.j2d.Renderer2D;
 
 public abstract class JScreen implements Screen {
@@ -40,7 +40,7 @@ public abstract class JScreen implements Screen {
         Jemge.engine.dispose();
     }
 
-    public Camera getCamera() {
+    public OrthographicCamera getCamera() {
         return Jemge.renderer2D.getCamera();
     }
 

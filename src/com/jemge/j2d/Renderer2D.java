@@ -70,14 +70,17 @@ public class Renderer2D implements Disposable {
 
     public Renderer2D() {
         renderTargets = new HashMap<>();
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         cameraView = new Rectangle(0, 0, camera.viewportWidth, camera.viewportHeight);
+
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         culling = new ZoneBasedCulling();
-        inputManager = Jemge.engine.getInputManager();
         background = new Background();
+
+        inputManager = Jemge.engine.getInputManager();
         rayHandler = new RayHandler(Physics2D.getMainWorld());
 
         background.setColor(Color.BLACK);
@@ -179,6 +182,7 @@ public class Renderer2D implements Disposable {
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
+        cameraView.setSize(camera.viewportWidth, camera.viewportHeight);
         cameraView.setCenter(camera.position.x,
                 camera.position.y);
 
@@ -220,7 +224,6 @@ public class Renderer2D implements Disposable {
                     renderMode = RenderMode.DISABLED;
                 }
                 ((RendererObject) object).render(spriteBatch);
-
             }
         }
         spriteBatch.end();

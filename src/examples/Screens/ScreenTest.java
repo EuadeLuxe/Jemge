@@ -19,7 +19,6 @@ public class ScreenTest extends JGame {
     public void create() {
         super.create();
         setScreen(screenA);
-
     }
 
     @Override

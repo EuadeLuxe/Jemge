@@ -22,7 +22,7 @@ import com.jemge.j2d.Entity;
 import java.util.ArrayList;
 
 public class CullingZone extends Rectangle {
-    private final ArrayList<Entity> final_render_list = new ArrayList<>(64);
+    private final ArrayList<Entity> final_render_list = new ArrayList<>(128);
     public CullingZone(float x, float y, float width, float height) {
         super(x, y, width, height);
     }

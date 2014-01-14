@@ -24,8 +24,8 @@ public class CullingTest extends JGame {
 
         logger = new FPSLogger();
 
-        for (int x = 0; x < 250; x++) {
-            for (int y = 0; y < 250; y++) {
+        for (int x = 0; x < 500; x++) {
+            for (int y = 0; y < 500; y++) {
                 Jemge.renderer2D.add(new JSprite(Jemge.manager.getTexture("tile"), x * 64, y * 64, 64, 64).setStatic(true));
 
             }

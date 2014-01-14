@@ -39,7 +39,7 @@ public class ResourceManager {
             return (TextureResource) resourceList.get(name);
         }
 
-        throw new NullPointerException();
+        throw new NullPointerException("This texture doesn't exist.");
     }
 
     public AudioResource getSound(String name){
@@ -47,6 +47,6 @@ public class ResourceManager {
             return (AudioResource) resourceList.get(name);
         }
 
-        throw new NullPointerException();
+        throw new NullPointerException("This sound doesn't exist.");
     }
 }

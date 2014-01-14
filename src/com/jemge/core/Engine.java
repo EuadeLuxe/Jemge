@@ -20,6 +20,7 @@ package com.jemge.core;
 import com.jemge.box2d.Physics2D;
 import com.jemge.input.InputManager;
 import com.jemge.j2d.Renderer2D;
+import com.jemge.resource.AudioManager;
 import com.jemge.resource.ResourceManager;
 
 /**
@@ -43,6 +44,7 @@ public class Engine {
         Jemge.engine = this;
         Jemge.renderer2D = new Renderer2D();
         Jemge.manager = new ResourceManager();
+        Jemge.audio = new AudioManager();
         //game.setScreen(new Splash(game));
     }
 
