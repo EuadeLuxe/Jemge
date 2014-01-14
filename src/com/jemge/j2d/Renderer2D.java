@@ -83,7 +83,6 @@ public class Renderer2D implements Disposable {
         inputManager = Jemge.engine.getInputManager();
         rayHandler = new RayHandler(Physics2D.getMainWorld());
 
-        background.setColor(Color.BLACK);
         renderTargets.put(0, new Layer());
         rayHandler.setAmbientLight(1.0f);
 

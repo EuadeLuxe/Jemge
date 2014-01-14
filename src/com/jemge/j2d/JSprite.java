@@ -97,9 +97,6 @@ public class JSprite extends Sprite implements RendererObject, Entity{
      */
     @Override
     public void dispose() {
-        if (getTexture() == null) return;
-
-        getTexture().dispose();
     }
 
     @Override

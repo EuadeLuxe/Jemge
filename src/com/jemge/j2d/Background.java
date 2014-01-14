@@ -18,7 +18,7 @@ public class Background {
 
     public Background() {
         color = new Color();
-
+        color.set(Color.BLACK);
     }
 
     public void update(SpriteBatch spriteBatch) {

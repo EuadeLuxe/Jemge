@@ -35,7 +35,7 @@ public class Engine {
 
     public Engine(JGame game) {
         modules = new EngineModule[]{
-                new Physics2D(), new InputManager()
+                new Physics2D(), new InputManager(), new ResourceManager()
         };
         for (EngineModule module : modules) {
             module.init();
@@ -43,7 +43,7 @@ public class Engine {
 
         Jemge.engine = this;
         Jemge.renderer2D = new Renderer2D();
-        Jemge.manager = new ResourceManager();
+        Jemge.manager = getResourceManager();
         Jemge.audio = new AudioManager();
         //game.setScreen(new Splash(game));
     }
@@ -57,6 +57,10 @@ public class Engine {
 
     public void dispose() {
         Jemge.renderer2D.dispose();
+
+        for (EngineModule module : modules) {
+            module.dispose();
+        }
     }
 
     public Physics2D getPhysics2D(){
@@ -78,4 +82,14 @@ public class Engine {
 
         throw new NullPointerException();
     }
+    public ResourceManager getResourceManager(){
+        for(EngineModule module : modules){
+            if(module instanceof ResourceManager){
+                return (ResourceManager) module;
+            }
+        }
+
+        throw new NullPointerException();
+    }
+
 }

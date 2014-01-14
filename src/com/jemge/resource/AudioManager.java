@@ -20,7 +20,7 @@ public class AudioManager implements EngineModule {
         Jemge.renderer2D.cameraView.getCenter(temp1);
 
         if(position.x > temp1.x){
-            sound.getSound().setPan(id, 0.25f, 0.8f);
+            sound.getSound().setPan(id, 0.25f, 0.8f); // Should be relative to difference...
         }else if(position.x < temp1.x){
             sound.getSound().setPan(id, -0.25f, 0.8f);
         }

@@ -16,9 +16,11 @@
 
 package com.jemge.resource;
 
+import com.jemge.core.EngineModule;
+
 import java.util.HashMap;
 
-public class ResourceManager {
+public class ResourceManager implements EngineModule {
 
     private final HashMap<String, Resource> resourceList;
 
@@ -48,5 +50,23 @@ public class ResourceManager {
         }
 
         throw new NullPointerException("This sound doesn't exist.");
+    }
+
+    @Override
+    public void init() {}
+
+    @Override
+    public void update() {}
+
+    @Override
+    public void dispose() {
+        for(Resource resource : resourceList.values()){
+            if(resource instanceof TextureResource){
+                ((TextureResource) resource).dispose();
+            }
+            if(resource instanceof AudioResource){
+                ((AudioResource) resource).getSound().dispose();
+            }
+        }
     }
 }
