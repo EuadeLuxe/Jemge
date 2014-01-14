@@ -39,7 +39,7 @@ public class PolygonObject extends PhysicObject {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = polygonShape;
-        fixtureDef.density = 1.5f;
+        fixtureDef.density = 1.5f; //from box2d example, todo: maybe different values?
         fixtureDef.friction = 0.4f;
         fixtureDef.restitution = 0.1f;
 

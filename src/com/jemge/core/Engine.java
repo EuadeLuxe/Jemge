@@ -70,7 +70,7 @@ public class Engine {
             }
         }
 
-        throw new NullPointerException();
+        throw new NullPointerException("Did not found the Physics2d Module, where is it?");
     }
 
     public InputManager getInputManager(){
@@ -80,7 +80,7 @@ public class Engine {
             }
         }
 
-        throw new NullPointerException();
+        throw new NullPointerException("Did not found the InputManager, where is it?");
     }
     public ResourceManager getResourceManager(){
         for(EngineModule module : modules){
@@ -89,7 +89,7 @@ public class Engine {
             }
         }
 
-        throw new NullPointerException();
+        throw new NullPointerException("Did not found the ResourceManager, where is it?");
     }
 
 }
