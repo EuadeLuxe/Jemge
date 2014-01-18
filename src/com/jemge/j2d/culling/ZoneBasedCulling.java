@@ -28,8 +28,6 @@ public class ZoneBasedCulling implements CullingSystem {
     private final ArrayList<Entity> dynamic_objects;
     private final ArrayList<Entity> final_render_list;
 
-    public static int zone_number;
-
     public ZoneBasedCulling() {
         zone_map = new HashMap<>();
         final_render_list = new ArrayList<>(256);
@@ -74,9 +72,6 @@ public class ZoneBasedCulling implements CullingSystem {
     private CullingZone createZone(Entity object){
         final CullingZone zone = new CullingZone(ZONE_SIZE, ZONE_SIZE, ZONE_SIZE, ZONE_SIZE);
         zone.setCenter(object.getX(), object.getY());
-
-        zone_number++;
-        System.out.println(zone_number);
 
         return zone;
     }
