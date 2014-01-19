@@ -33,7 +33,7 @@ import com.jemge.utils.StringHelper;
 
 public class JSprite extends Sprite implements RendererObject, Entity{
 
-    //for static jsprite's
+    //for static jsprites
     private boolean isStatic = false;
     private boolean hasTransparent = false;
     private Rectangle cachedBound;

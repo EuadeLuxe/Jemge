@@ -18,6 +18,7 @@ package com.jemge.core;
 
 
 import com.jemge.box2d.Physics2D;
+import com.jemge.core.debug.Profiler;
 import com.jemge.input.InputManager;
 import com.jemge.j2d.Renderer2D;
 import com.jemge.resource.AudioManager;
@@ -61,6 +62,8 @@ public class Engine {
         for (EngineModule module : modules) {
             module.dispose();
         }
+
+        Profiler.getResults();
     }
 
     public Physics2D getPhysics2D(){

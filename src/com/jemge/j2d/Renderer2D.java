@@ -27,6 +27,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.jemge.box2d.Physics2D;
 import com.jemge.box2d.box2dLight.RayHandler;
 import com.jemge.core.Jemge;
+import com.jemge.core.debug.Profiler;
 import com.jemge.input.InputListener;
 import com.jemge.input.InputManager;
 import com.jemge.j2d.culling.CullingSystem;
@@ -176,7 +177,9 @@ public class Renderer2D implements Disposable {
      */
 
     public void render() {
+        Profiler.start(this, "");
 
+        Profiler.start(this, "prepare");
         Gdx.gl20.glClearColor(background.getColor().r, background.getColor().g, background.getColor().b, 0);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -185,8 +188,6 @@ public class Renderer2D implements Disposable {
         cameraView.setCenter(camera.position.x,
                 camera.position.y);
 
-        culling.cull(cameraView);
-
         spriteBatch.setProjectionMatrix(camera.combined);
         shapeRenderer.setProjectionMatrix(camera.combined);
         spriteBatch.begin();
@@ -194,6 +195,12 @@ public class Renderer2D implements Disposable {
         renderMode = RenderMode.INACTIVE;
         background.update(spriteBatch);
 
+        Profiler.stop(this, "prepare");
+        Profiler.start(this, "culling");
+
+        culling.cull(cameraView);
+        Profiler.stop(this, "culling");
+        Profiler.start(this, "rendering");
 
         for (Layer layer : renderTargets.values()) {
             for(Object object : layer.getRendererObjects()){
@@ -226,9 +233,12 @@ public class Renderer2D implements Disposable {
             }
         }
         spriteBatch.end();
+        Profiler.stop(this, "rendering");
 
         rayHandler.setCombinedMatrix(camera.combined);
         rayHandler.updateAndRender();
+
+        Profiler.stop(this, "");
     }
 
     /**
