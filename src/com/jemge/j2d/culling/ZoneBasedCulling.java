@@ -17,6 +17,7 @@
 package com.jemge.j2d.culling;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.jemge.core.debug.Profiler;
 import com.jemge.j2d.Entity;
 
 import java.util.ArrayList;
@@ -36,6 +37,8 @@ public class ZoneBasedCulling implements CullingSystem {
     }
 
     public void putObject(Entity object) {
+        Profiler.start(this, "new object");
+
         if (!object.getData("static")) {
             dynamic_objects.add(object);
             return;
@@ -45,10 +48,11 @@ public class ZoneBasedCulling implements CullingSystem {
             CullingZone zone = createZone(object);
             zone_map.put(zone, new ArrayList<Entity>());
             zone_map.get(zone).add(object);
-            return;
         }else{
             zone_map.get(existZone(object)).add(object);
         }
+
+        Profiler.stop(this, "new object");
     }
 
     public void removeObject(Entity object){
@@ -81,15 +85,19 @@ public class ZoneBasedCulling implements CullingSystem {
     }
 
     public void cull(Rectangle camera_view){
+        Profiler.start(this, "cull");
+
         final_render_list.clear();
         for(CullingZone zone : zone_map.keySet()){
             if(zone.overlaps(camera_view)){
-                final_render_list.addAll(zone.getCullingList(this));
+                zone.getCullingList(this, final_render_list);
             }
         }
         if(dynamic_objects.size() != 0){
             final_render_list.addAll(dynamic_objects);
         }
+
+        Profiler.stop(this, "cull");
     }
 
     public ArrayList<Entity> getFinalRenderList(){

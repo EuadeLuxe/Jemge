@@ -203,35 +203,9 @@ public class Renderer2D implements Disposable {
         Profiler.start(this, "rendering");
 
         for (Layer layer : renderTargets.values()) {
-            for(Object object : layer.getRendererObjects()){
-                if(object instanceof Shape && !(object instanceof Entity)){
-                    ((Shape) object).renderShape(shapeRenderer);
-                }
-            }
-            for (Entity object : culling.getFinalRenderList()) {
-                if (!layer.getRendererObjects().contains(object)) {
-                    continue;
-                }
-                if(object instanceof Shape){
-                    ((Shape) object).renderShape(shapeRenderer);
-                    continue;
-                }
-                if (!(object instanceof RendererObject)) {
-                    continue;
-                }
-
-                if (((RendererObject) object).hasTransparent() && !(renderMode == RenderMode.ENABLED)) {    //with blending
-                    spriteBatch.enableBlending();
-
-                    renderMode = RenderMode.ENABLED;
-                } else if (!((RendererObject) object).hasTransparent() && !(renderMode == RenderMode.DISABLED)) {  //without blending
-                    spriteBatch.disableBlending();
-
-                    renderMode = RenderMode.DISABLED;
-                }
-                ((RendererObject) object).render(spriteBatch);
-            }
+            layer.render(spriteBatch, shapeRenderer);
         }
+
         spriteBatch.end();
         Profiler.stop(this, "rendering");
 
@@ -250,14 +224,6 @@ public class Renderer2D implements Disposable {
         spriteBatch.dispose();
         rayHandler.dispose();
 
-        for (Layer layer : renderTargets.values()) {
-            for (Object disposable : layer.getRendererObjects()) {
-                if(disposable instanceof Disposable){
-                    ((Disposable) disposable).dispose();
-                }
-
-            }
-        }
     }
 
 

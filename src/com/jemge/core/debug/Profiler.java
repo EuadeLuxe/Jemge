@@ -1,12 +1,14 @@
 package com.jemge.core.debug;
 
 import com.badlogic.gdx.Gdx;
+
+import java.util.Collections;
 import java.util.HashMap;
 
 public class Profiler {
     private static HashMap<String, ProfilerObject> results = new HashMap<>();
     public static boolean debugOn = true;
-    public static boolean logPerSecond = true;
+    public static boolean logPerSecond = false;
 
     private static long startTime = System.currentTimeMillis();;
 
@@ -51,6 +53,7 @@ public class Profiler {
         for(ProfilerObject object : results.values()){
             Gdx.app.log(object.class_name + " " + object.name, String.valueOf(object.final_time / 100));
         }
+        //todo: not nice output a.t.m. ...
     }
 
 }

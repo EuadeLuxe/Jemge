@@ -16,28 +16,91 @@
 
 package com.jemge.j2d;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.jemge.core.Jemge;
+import com.jemge.j2d.culling.CullingSystem;
+import com.jemge.j2d.culling.ZoneBasedCulling;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Layer {
 
     private final List<Object> rendererObjects;
+    protected CullingSystem cullingSystem;
+
+    private Renderer2D.RenderMode renderMode;
 
     public Layer() {
         rendererObjects = new ArrayList<>();
+        cullingSystem = new ZoneBasedCulling();
     }
 
     public Object addObject(Object rend) {
-        rendererObjects.add(rend);
+        if(rend instanceof Entity){
+            cullingSystem.putObject((Entity) rend);
+        }else{
+            rendererObjects.add(rend);
+        }
 
         return rend;
     }
 
     public void deleteObject(Object rend) {
-        rendererObjects.remove(rend);
+        if(rend instanceof Entity){
+            cullingSystem.removeObject((Entity) rend);
+        }else{
+            rendererObjects.remove(rend);
+        }
     }
 
-    public List<Object> getRendererObjects() {
-        return rendererObjects;
+    public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer){
+        cullingSystem.cull(Jemge.renderer2D.cameraView);
+
+        renderMode = Renderer2D.RenderMode.INACTIVE;
+        for(Entity entity : cullingSystem.getFinalRenderList()){
+            if(entity instanceof Shape){
+                ((Shape) entity).renderShape(shapeRenderer);
+                continue;
+            }
+            if (!(entity instanceof RendererObject)) {
+                continue;
+            }
+
+            if (((RendererObject) entity).hasTransparent() && !(renderMode == Renderer2D.RenderMode.ENABLED)) {    //with blending
+                spriteBatch.enableBlending();
+
+                renderMode = Renderer2D.RenderMode.ENABLED;
+            } else if (!((RendererObject) entity).hasTransparent() && !(renderMode == Renderer2D.RenderMode.DISABLED)) {  //without blending
+                spriteBatch.disableBlending();
+
+                renderMode = Renderer2D.RenderMode.DISABLED;
+            }
+            ((RendererObject) entity).render(spriteBatch);
+
+        }
+
+        for(Object object : rendererObjects){
+            if(object instanceof Shape){
+                ((Shape) object).renderShape(shapeRenderer);
+                continue;
+            }
+            if (!(object instanceof RendererObject)) {
+                continue;
+            }
+
+            if (((RendererObject) object).hasTransparent() && !(renderMode == Renderer2D.RenderMode.ENABLED)) {    //with blending
+                spriteBatch.enableBlending();
+
+                renderMode = Renderer2D.RenderMode.ENABLED;
+            } else if (!((RendererObject) object).hasTransparent() && !(renderMode == Renderer2D.RenderMode.DISABLED)) {  //without blending
+                spriteBatch.disableBlending();
+
+                renderMode = Renderer2D.RenderMode.DISABLED;
+            }
+            ((RendererObject) object).render(spriteBatch);
+        }
+
     }
 }
