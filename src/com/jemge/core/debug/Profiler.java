@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class Profiler {
     private static HashMap<String, ProfilerObject> results = new HashMap<>();
-    public static boolean debugOn = true;
+    public static boolean debugOn = false;
     public static boolean logPerSecond = false;
 
     private static long startTime = System.currentTimeMillis();;

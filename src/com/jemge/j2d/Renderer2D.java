@@ -53,11 +53,9 @@ public class Renderer2D implements Disposable {
     private final Background background;
 
     private final InputManager inputManager;
-    private CullingSystem culling;
 
     public RayHandler rayHandler;
 
-    private RenderMode renderMode;
 
     //Protected
 
@@ -78,7 +76,6 @@ public class Renderer2D implements Disposable {
 
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
-        culling = new ZoneBasedCulling();
         background = new Background();
 
         inputManager = Jemge.engine.getInputManager();
@@ -111,9 +108,6 @@ public class Renderer2D implements Disposable {
         }
         renderTargets.get(layer).addObject(rendererObject);
 
-        if (rendererObject instanceof Entity) {
-            culling.putObject((Entity) rendererObject);
-        }
         if (rendererObject instanceof InputListener) {
             inputManager.addListener((InputListener) rendererObject);
         }
@@ -129,10 +123,6 @@ public class Renderer2D implements Disposable {
     public void remove(int layer, Object rendererObject) {
         renderTargets.get(layer).deleteObject(rendererObject);
 
-        if (rendererObject instanceof Entity) {
-            culling.removeObject((Entity) rendererObject);
-        }
-
         if (rendererObject instanceof InputListener) {
             inputManager.removeListener((InputListener) rendererObject);
         }
@@ -144,10 +134,6 @@ public class Renderer2D implements Disposable {
 
     public Object add(Object rendererObject) {
         renderTargets.get(0).addObject(rendererObject);
-
-        if (rendererObject instanceof Entity) {
-            culling.putObject((Entity) rendererObject);
-        }
 
         if (rendererObject instanceof InputListener) {
             inputManager.addListener((InputListener) rendererObject);
@@ -163,9 +149,6 @@ public class Renderer2D implements Disposable {
 
     public void remove(Object rendererObject) {
         renderTargets.get(0).deleteObject(rendererObject);
-        if (rendererObject instanceof Entity) {
-            culling.removeObject((Entity) rendererObject);
-        }
 
         if (rendererObject instanceof InputListener) {
             inputManager.removeListener((InputListener) rendererObject);
@@ -190,17 +173,13 @@ public class Renderer2D implements Disposable {
 
         spriteBatch.setProjectionMatrix(camera.combined);
         shapeRenderer.setProjectionMatrix(camera.combined);
-        spriteBatch.begin();
 
-        renderMode = RenderMode.INACTIVE;
         background.update(spriteBatch);
 
         Profiler.stop(this, "prepare");
-        Profiler.start(this, "culling");
 
-        culling.cull(cameraView);
-        Profiler.stop(this, "culling");
         Profiler.start(this, "rendering");
+        spriteBatch.begin();
 
         for (Layer layer : renderTargets.values()) {
             layer.render(spriteBatch, shapeRenderer);
@@ -228,7 +207,7 @@ public class Renderer2D implements Disposable {
 
 
     public void setCullingSystem(CullingSystem system){
-        culling = system;
+        //todo
     }
 
     /**
