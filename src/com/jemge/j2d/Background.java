@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.jemge.core.Jemge;
 
 public class Background {
-    private Color color;
+    private final Color color;
     private JSprite texture;
     private MODE mode;
 

@@ -92,13 +92,6 @@ public class JSprite extends Sprite implements RendererObject, Entity{
 
     }
 
-    /**
-     * Dispose the native
-     */
-    @Override
-    public void dispose() {
-    }
-
     @Override
     public boolean needRender() {
         if (isStatic) {

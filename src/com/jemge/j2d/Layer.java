@@ -18,6 +18,7 @@ package com.jemge.j2d;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.jemge.core.Jemge;
 import com.jemge.j2d.culling.CullingSystem;
 import com.jemge.j2d.culling.ZoneBasedCulling;
@@ -30,7 +31,7 @@ public class Layer {
     private final List<Object> rendererObjects;
     protected CullingSystem cullingSystem;
 
-    private Renderer2D.RenderMode renderMode;
+    private static Renderer2D.RenderMode renderMode;
 
     public Layer() {
         rendererObjects = new ArrayList<>();
@@ -50,6 +51,8 @@ public class Layer {
     public void deleteObject(Object rend) {
         if(rend instanceof Entity){
             cullingSystem.removeObject((Entity) rend);
+        }else if(rend instanceof Actor) {
+            ((Actor) rend).remove();
         }else{
             rendererObjects.remove(rend);
         }
@@ -78,6 +81,10 @@ public class Layer {
                 renderMode = Renderer2D.RenderMode.DISABLED;
             }
             ((RendererObject) entity).render(spriteBatch);
+
+            if(entity instanceof Actor){
+                ((Actor) entity).draw(spriteBatch, 1.0f);
+            }
 
         }
 
