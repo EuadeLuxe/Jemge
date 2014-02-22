@@ -31,10 +31,12 @@ public class InputManager extends EngineModule implements InputProcessor {
     private static final Vector2 position_by_cam = new Vector2();
 
     private List<InputListener> listeners;
+    private List<KeyListener> keyListeners;
 
     @Override
     public void init() {
         listeners = new ArrayList<>();
+        keyListeners = new ArrayList<>();
 
         Gdx.input.setInputProcessor(this);
     }
@@ -45,6 +47,14 @@ public class InputManager extends EngineModule implements InputProcessor {
 
     public void removeListener(InputListener listener){
         listeners.remove(listener);
+    }
+
+    public void addKeyListener(KeyListener listener){
+        keyListeners.add(listener);
+    }
+
+    public void removeKeyListener(KeyListener listener){
+        keyListeners.remove(listener);
     }
 
     public static Vector2 getInputPosition(){
@@ -73,41 +83,49 @@ public class InputManager extends EngineModule implements InputProcessor {
 
     @Override
     public boolean keyDown(int i) {
-        return false;
+        for(KeyListener keyListener : keyListeners){
+            keyListener.keyDown(i);
+        }
+
+        return true;
     }
 
     @Override
     public boolean keyUp(int i) {
-        return false;
+        for(KeyListener keyListener : keyListeners){
+            keyListener.keyUp(i);
+        }
+
+        return true;
     }
 
     @Override
     public boolean keyTyped(char c) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean touchDown(int i, int i2, int i3, int i4) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean touchUp(int i, int i2, int i3, int i4) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean touchDragged(int i, int i2, int i3) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean mouseMoved(int i, int i2) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean scrolled(int i) {
-        return false;
+        return true;
     }
 }
