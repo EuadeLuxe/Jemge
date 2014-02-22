@@ -17,6 +17,7 @@
 package com.jemge.input;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.jemge.core.EngineModule;
@@ -25,7 +26,7 @@ import com.jemge.core.Jemge;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InputManager implements EngineModule {
+public class InputManager extends EngineModule implements InputProcessor {
     private static final Vector3 input_position = new Vector3();
     private static final Vector2 position_by_cam = new Vector2();
 
@@ -35,6 +36,7 @@ public class InputManager implements EngineModule {
     public void init() {
         listeners = new ArrayList<>();
 
+        Gdx.input.setInputProcessor(this);
     }
 
     public void addListener(InputListener listener){
@@ -67,5 +69,45 @@ public class InputManager implements EngineModule {
     @Override
     public void dispose(){
 
+    }
+
+    @Override
+    public boolean keyDown(int i) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int i) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char c) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int i, int i2, int i3, int i4) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int i, int i2, int i3, int i4) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int i, int i2, int i3) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int i, int i2) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int i) {
+        return false;
     }
 }

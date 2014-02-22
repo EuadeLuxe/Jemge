@@ -29,7 +29,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 public class JGame extends Game {
     @Override
     public void create() {
-        new Engine(this);
+        new Engine();
     }
 
     @Override

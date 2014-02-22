@@ -8,11 +8,6 @@ public abstract class JScreen implements Screen {
     private Renderer2D renderer2D;
 
     @Override
-    public void render(float v) {
-
-    }
-
-    @Override
     public void resize(int i, int i2) {
 
     }
@@ -23,6 +18,11 @@ public abstract class JScreen implements Screen {
             renderer2D = new Renderer2D();
         }
         Jemge.renderer2D = renderer2D;
+    }
+
+    @Override
+    public void hide(){
+
     }
 
     @Override

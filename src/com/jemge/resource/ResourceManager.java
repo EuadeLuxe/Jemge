@@ -20,7 +20,7 @@ import com.jemge.core.EngineModule;
 
 import java.util.HashMap;
 
-public class ResourceManager implements EngineModule {
+public class ResourceManager extends EngineModule {
 
     private final HashMap<String, Resource> resourceList;
 

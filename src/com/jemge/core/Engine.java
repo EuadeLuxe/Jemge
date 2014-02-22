@@ -24,6 +24,9 @@ import com.jemge.j2d.Renderer2D;
 import com.jemge.resource.AudioManager;
 import com.jemge.resource.ResourceManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The core of the engine. Initializes the components of the engine and dispose them.
  *
@@ -32,12 +35,14 @@ import com.jemge.resource.ResourceManager;
  */
 
 public class Engine {
-    private final EngineModule[] modules;
+    private final List<EngineModule> modules;
 
-    public Engine(JGame game) {
-        modules = new EngineModule[]{
-                new Physics2D(), new InputManager(), new ResourceManager()
-        };
+    public Engine() {
+        modules = new ArrayList<>();
+        modules.add(new Physics2D());
+        modules.add(new InputManager());
+        modules.add(new ResourceManager());
+
         for (EngineModule module : modules) {
             module.init();
         }
@@ -93,6 +98,22 @@ public class Engine {
         }
 
         throw new NullPointerException("Did not found the ResourceManager, where is it?");
+    }
+
+    public EngineModule getModule(String name){
+        for(EngineModule module : modules){
+            if(module.getName().equals(name)){
+                return (EngineModule) module;
+            }
+        }
+
+        throw new NullPointerException("Did not found the module, where is it?");
+    }
+
+    public EngineModule addModule(EngineModule module){
+        modules.add(module);
+
+        return module;
     }
 
 }

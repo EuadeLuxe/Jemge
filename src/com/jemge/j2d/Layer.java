@@ -19,6 +19,7 @@ package com.jemge.j2d;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.jemge.core.EngineConfiguration;
 import com.jemge.core.Jemge;
 import com.jemge.j2d.culling.CullingSystem;
 import com.jemge.j2d.culling.ZoneBasedCulling;
@@ -35,7 +36,13 @@ public class Layer {
 
     public Layer() {
         rendererObjects = new ArrayList<>();
-        cullingSystem = new ZoneBasedCulling();
+        try {
+            cullingSystem = EngineConfiguration.cullingSystem.getClass().newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     public Object addObject(Object rend) {

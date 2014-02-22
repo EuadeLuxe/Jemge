@@ -23,7 +23,7 @@ import com.jemge.core.EngineModule;
 import java.util.HashMap;
 
 
-public class Physics2D implements EngineModule{
+public class Physics2D extends EngineModule{
 
     private static HashMap<String, World> worlds;
 

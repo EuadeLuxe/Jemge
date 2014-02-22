@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.jemge.core.EngineModule;
 import com.jemge.core.Jemge;
 
-public class AudioManager implements EngineModule {
+public class AudioManager extends EngineModule {
     private static final Vector2 temp1 = new Vector2();
 
     @Override

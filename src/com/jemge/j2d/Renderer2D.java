@@ -30,8 +30,6 @@ import com.jemge.core.Jemge;
 import com.jemge.core.debug.Profiler;
 import com.jemge.input.InputListener;
 import com.jemge.input.InputManager;
-import com.jemge.j2d.culling.CullingSystem;
-import com.jemge.j2d.culling.ZoneBasedCulling;
 
 import java.util.HashMap;
 
@@ -203,11 +201,6 @@ public class Renderer2D implements Disposable {
         spriteBatch.dispose();
         rayHandler.dispose();
 
-    }
-
-
-    public void setCullingSystem(CullingSystem system){
-        //todo
     }
 
     /**

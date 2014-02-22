@@ -16,11 +16,15 @@
 
 package com.jemge.core;
 
-public interface EngineModule {
+public abstract class EngineModule {
 
-    public void init();
+    public String getName(){
+        return getClass().getName();
+    }
 
-    public void update();
+    public abstract void init();
 
-    public void dispose();
+    public abstract void update();
+
+    public abstract void dispose();
 }
