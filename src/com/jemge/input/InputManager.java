@@ -23,7 +23,10 @@ import com.badlogic.gdx.math.Vector3;
 import com.jemge.core.EngineModule;
 import com.jemge.core.Jemge;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class InputManager extends EngineModule implements InputProcessor {
@@ -31,12 +34,15 @@ public class InputManager extends EngineModule implements InputProcessor {
     private static final Vector2 position_by_cam = new Vector2();
 
     private List<InputListener> listeners;
-    private List<KeyListener> keyListeners;
+
+    private HashMap<Method, Object> keyDownListener;
+    private HashMap<Method, Object> keyUpListener;
 
     @Override
     public void init() {
         listeners = new ArrayList<>();
-        keyListeners = new ArrayList<>();
+        keyDownListener = new HashMap<>();
+        keyUpListener = new HashMap<>();
 
         Gdx.input.setInputProcessor(this);
     }
@@ -50,11 +56,27 @@ public class InputManager extends EngineModule implements InputProcessor {
     }
 
     public void addKeyListener(KeyListener listener){
-        keyListeners.add(listener);
+
+        for(Method method : listener.getClass().getMethods()){
+            if(method.isAnnotationPresent(ListenKeyDown.class)){
+                keyDownListener.put(method, listener);
+            }
+            if(method.isAnnotationPresent(ListenKeyUp.class)){
+                keyUpListener.put(method, listener);
+            }
+        }
     }
 
     public void removeKeyListener(KeyListener listener){
-        keyListeners.remove(listener);
+
+        for(Method method : listener.getClass().getMethods()){
+            if(method.isAnnotationPresent(ListenKeyDown.class)){
+                keyDownListener.remove(method);
+            }
+            if(method.isAnnotationPresent(ListenKeyUp.class)){
+                keyUpListener.remove(method);
+            }
+        }
     }
 
     public static Vector2 getInputPosition(){
@@ -83,17 +105,28 @@ public class InputManager extends EngineModule implements InputProcessor {
 
     @Override
     public boolean keyDown(int i) {
-        for(KeyListener keyListener : keyListeners){
-            keyListener.keyDown(i);
+        for(Method method : keyDownListener.keySet()){
+            if(method.getAnnotation(ListenKeyDown.class).key() == i){
+                try {
+                    method.invoke(keyDownListener.get(method));
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-
         return true;
     }
 
     @Override
     public boolean keyUp(int i) {
-        for(KeyListener keyListener : keyListeners){
-            keyListener.keyUp(i);
+        for(Method method : keyUpListener.keySet()){
+            if(method.getAnnotation(ListenKeyUp.class).key() == i){
+                try {
+                    method.invoke(keyUpListener.get(method));
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         return true;

@@ -16,6 +16,7 @@
 
 package com.jemge.core;
 
+import com.jemge.input.InputManager;
 import com.jemge.j2d.Renderer2D;
 import com.jemge.resource.AudioManager;
 import com.jemge.resource.ResourceManager;
@@ -32,4 +33,5 @@ public class Jemge {
     public static Renderer2D renderer2D;
     public static ResourceManager manager;
     public static AudioManager audio;
+    public static InputManager inputManager;
 }

@@ -50,6 +50,7 @@ public class Engine {
         Jemge.engine = this;
         Jemge.renderer2D = new Renderer2D();
         Jemge.manager = getResourceManager();
+        Jemge.inputManager = getInputManager();
         Jemge.audio = new AudioManager();
         //game.setScreen(new Splash(game));
     }
