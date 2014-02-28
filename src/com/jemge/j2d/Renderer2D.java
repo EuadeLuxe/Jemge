@@ -172,12 +172,11 @@ public class Renderer2D implements Disposable {
         spriteBatch.setProjectionMatrix(camera.combined);
         shapeRenderer.setProjectionMatrix(camera.combined);
 
-        background.update(spriteBatch);
-
         Profiler.stop(this, "prepare");
 
         Profiler.start(this, "rendering");
         spriteBatch.begin();
+        background.update(spriteBatch);
 
         for (Layer layer : renderTargets.values()) {
             layer.render(spriteBatch, shapeRenderer);

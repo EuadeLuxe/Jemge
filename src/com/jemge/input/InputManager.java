@@ -16,6 +16,7 @@
 
 package com.jemge.input;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
@@ -37,12 +38,14 @@ public class InputManager extends EngineModule implements InputProcessor {
 
     private HashMap<Method, Object> keyDownListener;
     private HashMap<Method, Object> keyUpListener;
+    private HashMap<Method, Object> whileDownListener;
 
     @Override
     public void init() {
         listeners = new ArrayList<>();
         keyDownListener = new HashMap<>();
         keyUpListener = new HashMap<>();
+        whileDownListener = new HashMap<>();
 
         Gdx.input.setInputProcessor(this);
     }
@@ -64,6 +67,9 @@ public class InputManager extends EngineModule implements InputProcessor {
             if(method.isAnnotationPresent(ListenKeyUp.class)){
                 keyUpListener.put(method, listener);
             }
+            if(method.isAnnotationPresent(ListenWhilePressed.class)){
+                whileDownListener.put(method, listener);
+            }
         }
     }
 
@@ -75,6 +81,9 @@ public class InputManager extends EngineModule implements InputProcessor {
             }
             if(method.isAnnotationPresent(ListenKeyUp.class)){
                 keyUpListener.remove(method);
+            }
+            if(method.isAnnotationPresent(ListenWhilePressed.class)){
+                whileDownListener.remove(method);
             }
         }
     }
@@ -89,13 +98,21 @@ public class InputManager extends EngineModule implements InputProcessor {
 
     @Override
     public void update() {
-        if(Gdx.input.isTouched()){
-            for(InputListener listener : listeners){
-                if(listener.getRectangle().contains(getInputPosition())){
-                    listener.clicked();
+        if(Gdx.app.getType() == Application.ApplicationType.Android || Gdx.app.getType() == Application.ApplicationType.iOS){
+            return;
+        }
+
+
+        for(Method method : whileDownListener.keySet()){
+            if(Gdx.input.isKeyPressed(method.getAnnotation(ListenWhilePressed.class).key())){
+                try {
+                    method.invoke(whileDownListener.get(method));
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
                 }
             }
         }
+
     }
 
     @Override
@@ -139,6 +156,12 @@ public class InputManager extends EngineModule implements InputProcessor {
 
     @Override
     public boolean touchDown(int i, int i2, int i3, int i4) {
+        for(InputListener listener : listeners){
+            if(listener.getRectangle().contains(getInputPosition())){
+                listener.clicked();
+            }
+        }
+
         return true;
     }
 

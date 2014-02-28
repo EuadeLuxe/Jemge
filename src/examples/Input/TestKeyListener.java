@@ -6,10 +6,11 @@ import com.jemge.core.Jemge;
 import com.jemge.input.KeyListener;
 import com.jemge.input.ListenKeyDown;
 import com.jemge.input.ListenKeyUp;
+import com.jemge.input.ListenWhilePressed;
 
 public class TestKeyListener implements KeyListener {
 
-    @ListenKeyDown(key = Input.Keys.A)
+    @ListenWhilePressed(key = Input.Keys.A)
     public void clicked(){
         Gdx.app.log("Test App", "Key 'a'!");
     }

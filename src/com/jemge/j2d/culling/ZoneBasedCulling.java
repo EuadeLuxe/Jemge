@@ -93,7 +93,7 @@ public class ZoneBasedCulling implements CullingSystem {
                 zone.getCullingList(this, final_render_list);
             }
         }
-        if(dynamic_objects.size() != 0){
+        if(!dynamic_objects.isEmpty()){
             final_render_list.addAll(dynamic_objects);
         }
 
