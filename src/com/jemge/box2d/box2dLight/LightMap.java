@@ -82,7 +82,6 @@ class LightMap {
                 this.blurShader.begin();
                 //		blurShader.setUniformi("u_texture", 0);
                 this.blurShader.setUniformf("dir", 1f, 0f);
-                this.blurShader.setUniformi("intensive", Light.centerLight ? 1 : 0);
                 this.lightMapMesh.render(this.blurShader, GL20.GL_TRIANGLE_FAN, 0, 4);
                 this.blurShader.end();
             }

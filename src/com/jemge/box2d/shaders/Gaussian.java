@@ -18,7 +18,6 @@ public class Gaussian {
 				+ "varying vec2 v_texCoords2;\n" //
 				+ "varying vec2 v_texCoords3;\n" //
 				+ "varying vec2 v_texCoords4;\n" //
-                + "varying int isIntensive;\n"
 				+ "#define FBO_W "
 				+ FBO_W
 				+ ".0\n"//
@@ -36,7 +35,6 @@ public class Gaussian {
 				+ "v_texCoords2 = a_texCoord;\n" //
 				+ "v_texCoords3 = a_texCoord + c;\n" //
 				+ "v_texCoords4 = a_texCoord + f;\n" //
-                + "isIntensive = intensive;\n"
 				+ "gl_Position = a_position;\n" //
 				+ "}\n";
 		final String fragmentShader = "#ifdef GL_ES\n" //
@@ -51,7 +49,6 @@ public class Gaussian {
 				+ "varying MED vec2 v_texCoords2;\n" //
 				+ "varying MED vec2 v_texCoords3;\n" //
 				+ "varying MED vec2 v_texCoords4;\n" //
-                + "varying MED int isIntensive;\n"
 				+ "const float center = 0.2270270270;\n" //
                 + "const float close  = 0.3162162162;\n" //
                 + "const float far    = 0.0702702703;\n" //
