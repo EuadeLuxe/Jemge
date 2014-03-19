@@ -10,7 +10,6 @@ import com.jemge.box2d.shaders.LightShader;
 import com.badlogic.gdx.Gdx;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Texture;
@@ -219,8 +218,8 @@ public class RayHandler implements Disposable {
         this.lightRenderedLastFrame = 0;
 
         Gdx.gl.glDepthMask(false);
-        Gdx.gl.glEnable(GL10.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
 
         renderWithShaders();
 
@@ -281,11 +280,11 @@ public class RayHandler implements Disposable {
     }
 
     private void alphaChannelClear() {
-        Gdx.gl10.glClearColor(0f, 0f, 0f, this.ambientLight.a);
-        Gdx.gl10.glColorMask(false, false, false, true);
-        Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
-        Gdx.gl10.glColorMask(true, true, true, true);
-        Gdx.gl10.glClearColor(0f, 0f, 0f, 0f);
+        Gdx.gl20.glClearColor(0f, 0f, 0f, this.ambientLight.a);
+        Gdx.gl20.glColorMask(false, false, false, true);
+        Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl20.glColorMask(true, true, true, true);
+        Gdx.gl20.glClearColor(0f, 0f, 0f, 0f);
 
     }
 

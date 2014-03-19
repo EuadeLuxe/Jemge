@@ -9,7 +9,6 @@ public class JConfig extends LwjglApplicationConfiguration {
 
     public JConfig() {
 		this.title = "JEMGEngine";
-        this.useGL20 = true;
 	}
 	
 	public void setTitle(String name) {
