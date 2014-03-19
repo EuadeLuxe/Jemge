@@ -56,23 +56,23 @@ public class JAnimatedSprite extends JSprite {
 
     /** updates the JAnimatedSprite with the given delta time */
     public void update(float delta) {
-        if(playing) {
-            setRegion(animation.getKeyFrame(time += delta));
-            if(!keepSize)
+        if(this.playing) {
+            setRegion(this.animation.getKeyFrame(this.time += delta));
+            if(!this.keepSize)
                 setSize(getRegionWidth(), getRegionHeight());
         }
     }
 
     @Override
     public void render(SpriteBatch spriteBatch) {
-        if(listener != null){
-            listener.update(this);
+        if(this.listener != null){
+            this.listener.update(this);
         }
 
-        if(centerFrames && !keepSize) {
+        if(this.centerFrames && !this.keepSize) {
             float x = getX(), y = getY(), width = getWidth(), height = getHeight(), originX = getOriginX(), originY = getOriginY();
 
-            if(autoUpdate)
+            if(this.autoUpdate)
                 update();
 
             float differenceX = width - getRegionWidth(), differenceY = height - getRegionHeight();
@@ -86,7 +86,7 @@ public class JAnimatedSprite extends JSprite {
             return;
         }
 
-        if(autoUpdate)
+        if(this.autoUpdate)
             update();
 
         draw(spriteBatch);
@@ -94,18 +94,18 @@ public class JAnimatedSprite extends JSprite {
 
     /** sets {@link #playing} to true */
     public void play() {
-        playing = true;
+        this.playing = true;
     }
 
     /** sets {@link #playing} to false */
     public void pause() {
-        playing = false;
+        this.playing = false;
     }
 
     /** pauses and sets the {@link #time} to 0 */
     public void reset() {
-        playing = false;
-        time = 0;
+        this.playing = false;
+        this.time = 0;
     }
 
     /** @param time the {@link #time} to go to */
@@ -115,12 +115,12 @@ public class JAnimatedSprite extends JSprite {
 
     /** @return the current {@link #time} */
     public float getTime() {
-        return time;
+        return this.time;
     }
 
     /** @return the {@link #animation} */
     public Animation getAnimation() {
-        return animation;
+        return this.animation;
     }
 
     /** @param animation the {@link #animation} to set */
@@ -130,7 +130,7 @@ public class JAnimatedSprite extends JSprite {
 
     /** @return if this JAnimatedSprite is playing */
     public boolean isPlaying() {
-        return playing;
+        return this.playing;
     }
 
     /** @param playing if the JAnimatedSprite should be playing */
@@ -140,12 +140,12 @@ public class JAnimatedSprite extends JSprite {
 
     /** @return if the {@link #animation} has finished playing */
     public boolean isAnimationFinished() {
-        return animation.isAnimationFinished(time);
+        return this.animation.isAnimationFinished(this.time);
     }
 
     /** @return the {@link #autoUpdate} */
     public boolean isAutoUpdate() {
-        return autoUpdate;
+        return this.autoUpdate;
     }
 
     /** @param autoUpdate the {@link #autoUpdate} to set */
@@ -155,7 +155,7 @@ public class JAnimatedSprite extends JSprite {
 
     /** @return the {{@link #keepSize} */
     public boolean isKeepSize() {
-        return keepSize;
+        return this.keepSize;
     }
 
     /** @param keepSize the {@link #keepSize} to set */
@@ -165,7 +165,7 @@ public class JAnimatedSprite extends JSprite {
 
     /** @return the {@link #centerFrames} */
     public boolean isCenterFrames() {
-        return centerFrames;
+        return this.centerFrames;
     }
 
     /** @param centerFrames the {@link #centerFrames} to set */

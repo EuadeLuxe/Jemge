@@ -18,7 +18,7 @@ public class TextureResource extends Texture implements Resource{
 
     @Override
     public String getName() {
-        return name;
+        return this.name;
     }
 
 }

@@ -19,10 +19,10 @@ public class AudioResource implements Resource{
 
     @Override
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public Sound getSound(){
-        return sound;
+        return this.sound;
     }
 }

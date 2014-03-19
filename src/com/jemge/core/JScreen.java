@@ -14,10 +14,10 @@ public abstract class JScreen implements Screen {
 
     @Override
     public void show() {
-        if(renderer2D == null){
-            renderer2D = new Renderer2D();
+        if(this.renderer2D == null){
+            this.renderer2D = new Renderer2D();
         }
-        Jemge.renderer2D = renderer2D;
+        Jemge.renderer2D = this.renderer2D;
     }
 
     @Override
@@ -45,6 +45,6 @@ public abstract class JScreen implements Screen {
     }
 
     public Renderer2D getRenderer2D(){
-        return renderer2D;
+        return this.renderer2D;
     }
 }

@@ -22,7 +22,7 @@ public class CullingTest extends JGame {
 
         Jemge.manager.addResource("tile", new TextureResource("erdeundgras.jpg"));
 
-        logger = new FPSLogger();
+        this.logger = new FPSLogger();
 
         for (int x = 0; x < 250; x++) {
             for (int y = 0; y < 250; y++) {
@@ -40,7 +40,7 @@ public class CullingTest extends JGame {
 
         getCamera().position.add(5f, 0f, 0);
 
-        logger.log();
+        this.logger.log();
     }
 
     public static void main(String[] args) {

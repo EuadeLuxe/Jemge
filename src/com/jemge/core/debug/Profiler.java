@@ -2,7 +2,6 @@ package com.jemge.core.debug;
 
 import com.badlogic.gdx.Gdx;
 
-import java.util.Collections;
 import java.util.HashMap;
 
 public class Profiler {

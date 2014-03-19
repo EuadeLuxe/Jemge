@@ -2,6 +2,7 @@ package com.jemge.box2d.shaders;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.jemge.box2d.box2dLight.Light;
 import com.jemge.box2d.box2dLight.RayHandler;
 
 public class Gaussian {
@@ -9,7 +10,6 @@ public class Gaussian {
 	public static ShaderProgram createBlurShader(int width, int heigth) {
 		final String FBO_W = Integer.toString(width);
 		final String FBO_H = Integer.toString(heigth);
-		final String rgb = RayHandler.isDiffuse  ? ".rgb" : "";
 		final String vertexShader = "attribute vec4 a_position;\n" //
 				+ "uniform vec2  dir;\n" //
 				+ "attribute vec2 a_texCoord;\n" //
@@ -18,6 +18,7 @@ public class Gaussian {
 				+ "varying vec2 v_texCoords2;\n" //
 				+ "varying vec2 v_texCoords3;\n" //
 				+ "varying vec2 v_texCoords4;\n" //
+                + "varying int isIntensive;\n"
 				+ "#define FBO_W "
 				+ FBO_W
 				+ ".0\n"//
@@ -35,6 +36,7 @@ public class Gaussian {
 				+ "v_texCoords2 = a_texCoord;\n" //
 				+ "v_texCoords3 = a_texCoord + c;\n" //
 				+ "v_texCoords4 = a_texCoord + f;\n" //
+                + "isIntensive = intensive;\n"
 				+ "gl_Position = a_position;\n" //
 				+ "}\n";
 		final String fragmentShader = "#ifdef GL_ES\n" //
@@ -49,16 +51,13 @@ public class Gaussian {
 				+ "varying MED vec2 v_texCoords2;\n" //
 				+ "varying MED vec2 v_texCoords3;\n" //
 				+ "varying MED vec2 v_texCoords4;\n" //
+                + "varying MED int isIntensive;\n"
 				+ "const float center = 0.2270270270;\n" //
-				+ "const float close  = 0.3162162162;\n" //
-				+ "const float far    = 0.0702702703;\n" //
+                + "const float close  = 0.3162162162;\n" //
+                + "const float far    = 0.0702702703;\n" //
 				+ "void main()\n" //
 				+ "{	 \n" //
-				+ "gl_FragColor"+rgb+" = far    * texture2D(u_texture, v_texCoords0)"+rgb+"\n" //
-				+ "	      		+ close  * texture2D(u_texture, v_texCoords1)"+rgb+"\n" //
-				+ "				+ center * texture2D(u_texture, v_texCoords2)"+rgb+"\n" //
-				+ "				+ close  * texture2D(u_texture, v_texCoords3)"+rgb+"\n" //
-				+ "				+ far    * texture2D(u_texture, v_texCoords4)"+rgb+";\n"//
+				+ useCenterLight()
 				+ "}\n";
 		ShaderProgram.pedantic = false;
 		ShaderProgram blurShader = new ShaderProgram(vertexShader,
@@ -69,4 +68,20 @@ public class Gaussian {
 
 		return blurShader;
 	}
+
+    public static String useCenterLight(){
+        final String rgb = RayHandler.isDiffuse  ? ".rgb" : "";
+        if(Light.centerLight){
+            return "gl_FragColor"+rgb+" = far    * texture2D(u_texture, v_texCoords0)"+rgb+"\n" //
+                    + "	      		+ close  * texture2D(u_texture, v_texCoords1)"+rgb+"\n" //
+                    + "				+ center * texture2D(u_texture, v_texCoords2)"+rgb+"\n" //
+                    + "				+ close  * texture2D(u_texture, v_texCoords3)"+rgb+"\n" //
+                    + "				+ far    * texture2D(u_texture, v_texCoords4)"+rgb+";\n";
+        }else{
+            return "gl_FragColor"+rgb+" = far    * texture2D(u_texture, v_texCoords0)"+rgb+"\n" //
+                    + "				+ close  * texture2D(u_texture, v_texCoords3)"+rgb+"\n" //
+                    + "				+ far    * texture2D(u_texture, v_texCoords4)"+rgb+";\n";
+
+        }
+    }
 }

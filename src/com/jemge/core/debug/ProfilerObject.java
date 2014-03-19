@@ -8,6 +8,6 @@ class ProfilerObject{
     protected String class_name;
 
     public ProfilerObject(){
-        start_time = System.nanoTime();
+        this.start_time = System.nanoTime();
     }
 }

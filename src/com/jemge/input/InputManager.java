@@ -42,33 +42,33 @@ public class InputManager extends EngineModule implements InputProcessor {
 
     @Override
     public void init() {
-        listeners = new ArrayList<>();
-        keyDownListener = new HashMap<>();
-        keyUpListener = new HashMap<>();
-        whileDownListener = new HashMap<>();
+        this.listeners = new ArrayList<>();
+        this.keyDownListener = new HashMap<>();
+        this.keyUpListener = new HashMap<>();
+        this.whileDownListener = new HashMap<>();
 
         Gdx.input.setInputProcessor(this);
     }
 
     public void addListener(InputListener listener){
-        listeners.add(listener);
+        this.listeners.add(listener);
     }
 
     public void removeListener(InputListener listener){
-        listeners.remove(listener);
+        this.listeners.remove(listener);
     }
 
     public void addKeyListener(KeyListener listener){
 
         for(Method method : listener.getClass().getMethods()){
             if(method.isAnnotationPresent(ListenKeyDown.class)){
-                keyDownListener.put(method, listener);
+                this.keyDownListener.put(method, listener);
             }
             if(method.isAnnotationPresent(ListenKeyUp.class)){
-                keyUpListener.put(method, listener);
+                this.keyUpListener.put(method, listener);
             }
             if(method.isAnnotationPresent(ListenWhilePressed.class)){
-                whileDownListener.put(method, listener);
+                this.whileDownListener.put(method, listener);
             }
         }
     }
@@ -77,13 +77,13 @@ public class InputManager extends EngineModule implements InputProcessor {
 
         for(Method method : listener.getClass().getMethods()){
             if(method.isAnnotationPresent(ListenKeyDown.class)){
-                keyDownListener.remove(method);
+                this.keyDownListener.remove(method);
             }
             if(method.isAnnotationPresent(ListenKeyUp.class)){
-                keyUpListener.remove(method);
+                this.keyUpListener.remove(method);
             }
             if(method.isAnnotationPresent(ListenWhilePressed.class)){
-                whileDownListener.remove(method);
+                this.whileDownListener.remove(method);
             }
         }
     }
@@ -103,10 +103,10 @@ public class InputManager extends EngineModule implements InputProcessor {
         }
 
 
-        for(Method method : whileDownListener.keySet()){
+        for(Method method : this.whileDownListener.keySet()){
             if(Gdx.input.isKeyPressed(method.getAnnotation(ListenWhilePressed.class).key())){
                 try {
-                    method.invoke(whileDownListener.get(method));
+                    method.invoke(this.whileDownListener.get(method));
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
@@ -122,10 +122,10 @@ public class InputManager extends EngineModule implements InputProcessor {
 
     @Override
     public boolean keyDown(int i) {
-        for(Method method : keyDownListener.keySet()){
+        for(Method method : this.keyDownListener.keySet()){
             if(method.getAnnotation(ListenKeyDown.class).key() == i){
                 try {
-                    method.invoke(keyDownListener.get(method));
+                    method.invoke(this.keyDownListener.get(method));
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
@@ -136,10 +136,10 @@ public class InputManager extends EngineModule implements InputProcessor {
 
     @Override
     public boolean keyUp(int i) {
-        for(Method method : keyUpListener.keySet()){
+        for(Method method : this.keyUpListener.keySet()){
             if(method.getAnnotation(ListenKeyUp.class).key() == i){
                 try {
-                    method.invoke(keyUpListener.get(method));
+                    method.invoke(this.keyUpListener.get(method));
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
@@ -156,9 +156,9 @@ public class InputManager extends EngineModule implements InputProcessor {
 
     @Override
     public boolean touchDown(int i, int i2, int i3, int i4) {
-        for(InputListener listener : listeners){
-            if(listener.getRectangle().contains(getInputPosition())){
-                listener.clicked();
+        for(int a = 0; a < this.listeners.size(); a++){
+            if(this.listeners.get(a).getRectangle().contains(getInputPosition())){
+                this.listeners.get(a).clicked();
             }
         }
 

@@ -25,28 +25,28 @@ public class ResourceManager extends EngineModule {
     private final HashMap<String, Resource> resourceList;
 
     public ResourceManager(){
-        resourceList = new HashMap<>();
+        this.resourceList = new HashMap<>();
     }
 
     public void addResource(String name, Resource resource){
-        resourceList.put(name, resource);
+        this.resourceList.put(name, resource);
     }
 
     public Resource getResource(String name){
-        return resourceList.get(name);
+        return this.resourceList.get(name);
     }
 
     public TextureResource getTexture(String name){
-        if(resourceList.get(name) instanceof TextureResource){
-            return (TextureResource) resourceList.get(name);
+        if(this.resourceList.get(name) instanceof TextureResource){
+            return (TextureResource) this.resourceList.get(name);
         }
 
         throw new NullPointerException("This texture doesn't exist.");
     }
 
     public AudioResource getSound(String name){
-        if(resourceList.get(name) instanceof AudioResource){
-            return (AudioResource) resourceList.get(name);
+        if(this.resourceList.get(name) instanceof AudioResource){
+            return (AudioResource) this.resourceList.get(name);
         }
 
         throw new NullPointerException("This sound doesn't exist.");
@@ -60,7 +60,7 @@ public class ResourceManager extends EngineModule {
 
     @Override
     public void dispose() {
-        for(Resource resource : resourceList.values()){
+        for(Resource resource : this.resourceList.values()){
             if(resource instanceof TextureResource){
                 ((TextureResource) resource).dispose();
             }

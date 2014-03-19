@@ -31,22 +31,22 @@ class LightMap {
 
     public void render() {
 
-        boolean needed = rayHandler.lightRenderedLastFrame > 0;
+        boolean needed = this.rayHandler.lightRenderedLastFrame > 0;
         // this way lot less binding
-        if (needed && rayHandler.blur)
+        if (needed && this.rayHandler.blur)
             gaussianBlur();
 
-        if (lightMapDrawingDisabled)
+        if (this.lightMapDrawingDisabled)
             return;
-        frameBuffer.getColorBufferTexture().bind(0);
+        this.frameBuffer.getColorBufferTexture().bind(0);
 
         // at last lights are rendered over scene
-        if (rayHandler.shadows) {
+        if (this.rayHandler.shadows) {
 
-            final Color c = rayHandler.ambientLight;
-            ShaderProgram shader = shadowShader;
+            final Color c = this.rayHandler.ambientLight;
+            ShaderProgram shader = this.shadowShader;
             if (RayHandler.isDiffuse) {
-                shader = diffuseShader;
+                shader = this.diffuseShader;
                 shader.begin();
                 Gdx.gl20.glBlendFunc(GL20.GL_DST_COLOR, GL20.GL_SRC_COLOR);
                 shader.setUniformf("ambient", c.r, c.g, c.b, c.a);
@@ -57,15 +57,15 @@ class LightMap {
                         c.b * c.a, 1f - c.a);
             }
             //	shader.setUniformi("u_texture", 0);
-            lightMapMesh.render(shader, GL20.GL_TRIANGLE_FAN);
+            this.lightMapMesh.render(shader, GL20.GL_TRIANGLE_FAN);
             shader.end();
         } else if (needed) {
 
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
-            withoutShadowShader.begin();
+            this.withoutShadowShader.begin();
             //	withoutShadowShader.setUniformi("u_texture", 0);
-            lightMapMesh.render(withoutShadowShader, GL20.GL_TRIANGLE_FAN);
-            withoutShadowShader.end();
+            this.lightMapMesh.render(this.withoutShadowShader, GL20.GL_TRIANGLE_FAN);
+            this.withoutShadowShader.end();
         }
 
         Gdx.gl20.glDisable(GL20.GL_BLEND);
@@ -74,31 +74,33 @@ class LightMap {
     public void gaussianBlur() {
 
         Gdx.gl20.glDisable(GL20.GL_BLEND);
-        for (int i = 0; i < rayHandler.blurNum; i++) {
-            frameBuffer.getColorBufferTexture().bind(0);
+        for (int i = 0; i < this.rayHandler.blurNum; i++) {
+            this.frameBuffer.getColorBufferTexture().bind(0);
             // horizontal
-            pingPongBuffer.begin();
+            this.pingPongBuffer.begin();
             {
-                blurShader.begin();
+                this.blurShader.begin();
                 //		blurShader.setUniformi("u_texture", 0);
-                blurShader.setUniformf("dir", 1f, 0f);
-                lightMapMesh.render(blurShader, GL20.GL_TRIANGLE_FAN, 0, 4);
-                blurShader.end();
+                this.blurShader.setUniformf("dir", 1f, 0f);
+                this.blurShader.setUniformi("intensive", Light.centerLight ? 1 : 0);
+                this.lightMapMesh.render(this.blurShader, GL20.GL_TRIANGLE_FAN, 0, 4);
+                this.blurShader.end();
             }
-            pingPongBuffer.end();
+            this.pingPongBuffer.end();
 
-            pingPongBuffer.getColorBufferTexture().bind(0);
+            this.pingPongBuffer.getColorBufferTexture().bind(0);
             // vertical
-            frameBuffer.begin();
+            this.frameBuffer.begin();
             {
-                blurShader.begin();
+                this.blurShader.begin();
                 //	blurShader.setUniformi("u_texture", 0);
-                blurShader.setUniformf("dir", 0f, 1f);
-                lightMapMesh.render(blurShader, GL20.GL_TRIANGLE_FAN, 0, 4);
-                blurShader.end();
+                this.blurShader.setUniformf("dir", 0f, 1f);
+                this.blurShader.setUniformi("intensive", Light.centerLight ? 1 : 0);
+                this.lightMapMesh.render(this.blurShader, GL20.GL_TRIANGLE_FAN, 0, 4);
+                this.blurShader.end();
 
             }
-            frameBuffer.end();
+            this.frameBuffer.end();
         }
 
         Gdx.gl20.glEnable(GL20.GL_BLEND);
@@ -112,28 +114,28 @@ class LightMap {
             fboWidth = 1;
         if (fboHeight <= 0)
             fboHeight = 1;
-        frameBuffer = new FrameBuffer(Format.RGBA8888, fboWidth,
+        this.frameBuffer = new FrameBuffer(Format.RGBA8888, fboWidth,
                 fboHeight, false);
-        pingPongBuffer = new FrameBuffer(Format.RGBA8888, fboWidth,
+        this.pingPongBuffer = new FrameBuffer(Format.RGBA8888, fboWidth,
                 fboHeight, false);
 
-        lightMapMesh = createLightMapMesh();
+        this.lightMapMesh = createLightMapMesh();
 
-        shadowShader = ShadowShader.createShadowShader();
-        diffuseShader = DiffuseShader.createShadowShader();
+        this.shadowShader = ShadowShader.createShadowShader();
+        this.diffuseShader = DiffuseShader.createShadowShader();
 
-        withoutShadowShader = WithoutShadowShader.createShadowShader();
+        this.withoutShadowShader = WithoutShadowShader.createShadowShader();
 
-        blurShader = Gaussian.createBlurShader(fboWidth, fboHeight);
+        this.blurShader = Gaussian.createBlurShader(fboWidth, fboHeight);
 
     }
 
     void dispose() {
-        shadowShader.dispose();
-        blurShader.dispose();
-        lightMapMesh.dispose();
-        frameBuffer.dispose();
-        pingPongBuffer.dispose();
+        this.shadowShader.dispose();
+        this.blurShader.dispose();
+        this.lightMapMesh.dispose();
+        this.frameBuffer.dispose();
+        this.pingPongBuffer.dispose();
 
     }
 

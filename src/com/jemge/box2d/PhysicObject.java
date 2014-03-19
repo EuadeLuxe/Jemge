@@ -10,9 +10,9 @@ public class PhysicObject {
     protected Fixture fixture;
 
     public PhysicObject setPhysicData(float density, float friction, float restitution) {
-        fixture.setDensity(density);
-        fixture.setFriction(friction);
-        fixture.setRestitution(restitution);
+        this.fixture.setDensity(density);
+        this.fixture.setFriction(friction);
+        this.fixture.setRestitution(restitution);
 
         return this;
     }

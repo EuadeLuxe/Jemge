@@ -27,7 +27,7 @@ public class Box2dTest extends JGame {
     @Override
     public void create() {
         super.create(); //important call, don't forget it!
-        debugRenderer = new Box2DDebugRenderer();
+        this.debugRenderer = new Box2DDebugRenderer();
 
         new PolygonObject(0, 0, getCamera().viewportWidth, 30, BodyDef.BodyType.StaticBody); // ground platform
 
@@ -43,7 +43,7 @@ public class Box2dTest extends JGame {
     public void render() {
         super.render();  //never forget to call "super.render"!
 
-        debugRenderer.render(Physics2D.getMainWorld(), getCamera().combined);  //Render the box2d world
+        this.debugRenderer.render(Physics2D.getMainWorld(), getCamera().combined);  //Render the box2d world
 
         if (Gdx.input.justTouched()) { //left click / touch screen?
             new PolygonObject(InputManager.getInputPosition().x, InputManager.getInputPosition().y, 30, 30, BodyDef.BodyType.DynamicBody); // and create a new box

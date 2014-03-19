@@ -1,7 +1,6 @@
 package com.jemge.box2d.box2dLight;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
@@ -16,8 +15,8 @@ public class DirectionalLight extends Light {
 
     float sin;
     float cos;
-    final Vector2 start[];
-    final Vector2 end[];
+    final Vector2[] start;
+    final Vector2[] end;
 
     /**
      * Directional lights simulate light source that locations is at infinite
@@ -33,21 +32,21 @@ public class DirectionalLight extends Light {
 
         super(rays, color, directionDegree, Float.POSITIVE_INFINITY);
 
-        vertexNum = (vertexNum - 1) * 2;
+        this.vertexNum = (this.vertexNum - 1) * 2;
 
-        start = new Vector2[rayNum];
-        end = new Vector2[rayNum];
-        for (int i = 0; i < rayNum; i++) {
-            start[i] = new Vector2();
-            end[i] = new Vector2();
+        this.start = new Vector2[this.rayNum];
+        this.end = new Vector2[this.rayNum];
+        for (int i = 0; i < this.rayNum; i++) {
+            this.start[i] = new Vector2();
+            this.end[i] = new Vector2();
         }
-        setDirection(direction);
+        setDirection(this.direction);
 
-        lightMesh = new Mesh(VertexDataType.VertexArray, staticLight, vertexNum, 0, new VertexAttribute(
+        this.lightMesh = new Mesh(VertexDataType.VertexArray, this.staticLight, this.vertexNum, 0, new VertexAttribute(
                 Usage.Position, 2, "vertex_positions"), new VertexAttribute(
                 Usage.ColorPacked, 4, "quad_colors"), new VertexAttribute(
                 Usage.Generic, 1, "s"));
-        softShadowMesh = new Mesh(VertexDataType.VertexArray, staticLight, vertexNum, 0,
+        this.softShadowMesh = new Mesh(VertexDataType.VertexArray, this.staticLight, this.vertexNum, 0,
                 new VertexAttribute(Usage.Position, 2, "vertex_positions"),
                 new VertexAttribute(Usage.ColorPacked, 4, "quad_colors"),
                 new VertexAttribute(Usage.Generic, 1, "s"));
@@ -57,9 +56,9 @@ public class DirectionalLight extends Light {
     @Override
     public void setDirection(float direction) {
         super.direction = direction;
-        sin = MathUtils.sinDeg(direction);
-        cos = MathUtils.cosDeg(direction);
-        if (staticLight)
+        this.sin = MathUtils.sinDeg(direction);
+        this.cos = MathUtils.cosDeg(direction);
+        if (this.staticLight)
             staticUpdate();
     }
 
@@ -67,16 +66,16 @@ public class DirectionalLight extends Light {
 
     @Override
     void update() {
-        if (staticLight)
+        if (this.staticLight)
             return;
 
-        final float width = (rayHandler.x2 - rayHandler.x1);
-        final float height = (rayHandler.y2 - rayHandler.y1);
+        final float width = (this.rayHandler.x2 - this.rayHandler.x1);
+        final float height = (this.rayHandler.y2 - this.rayHandler.y1);
 
         final float sizeOfScreen = width > height ? width : height;
 
-        float xAxelOffSet = sizeOfScreen * cos;
-        float yAxelOffSet = sizeOfScreen * sin;
+        float xAxelOffSet = sizeOfScreen * this.cos;
+        float yAxelOffSet = sizeOfScreen * this.sin;
 
         // preventing length <0 assertion error on box2d.
         if ((xAxelOffSet * xAxelOffSet < 0.1f)
@@ -85,78 +84,78 @@ public class DirectionalLight extends Light {
             yAxelOffSet = 1;
         }
 
-        final float widthOffSet = sizeOfScreen * -sin;
-        final float heightOffSet = sizeOfScreen * cos;
+        final float widthOffSet = sizeOfScreen * -this.sin;
+        final float heightOffSet = sizeOfScreen * this.cos;
 
-        float x = (rayHandler.x1 + rayHandler.x2) * 0.5f - widthOffSet;
-        float y = (rayHandler.y1 + rayHandler.y2) * 0.5f - heightOffSet;
+        float x = (this.rayHandler.x1 + this.rayHandler.x2) * 0.5f - widthOffSet;
+        float y = (this.rayHandler.y1 + this.rayHandler.y2) * 0.5f - heightOffSet;
 
-        final float portionX = 2f * widthOffSet / (rayNum - 1);
+        final float portionX = 2f * widthOffSet / (this.rayNum - 1);
         x = (MathUtils.floor(x / (portionX * 2))) * portionX * 2;
-        final float portionY = 2f * heightOffSet / (rayNum - 1);
+        final float portionY = 2f * heightOffSet / (this.rayNum - 1);
         y = (MathUtils.ceil(y / (portionY * 2))) * portionY * 2;
-        for (int i = 0; i < rayNum; i++) {
+        for (int i = 0; i < this.rayNum; i++) {
 
             final float steppedX = i * portionX + x;
             final float steppedY = i * portionY + y;
-            m_index = i;
-            start[i].x = steppedX - xAxelOffSet;
-            start[i].y = steppedY - yAxelOffSet;
+            this.m_index = i;
+            this.start[i].x = steppedX - xAxelOffSet;
+            this.start[i].y = steppedY - yAxelOffSet;
 
-            mx[i] = end[i].x = steppedX + xAxelOffSet;
-            my[i] = end[i].y = steppedY + yAxelOffSet;
+            this.mx[i] = this.end[i].x = steppedX + xAxelOffSet;
+            this.my[i] = this.end[i].y = steppedY + yAxelOffSet;
 
-            if (rayHandler.world != null && !xray) {
-                rayHandler.world.rayCast(ray, start[i], end[i]);
+            if (this.rayHandler.world != null && !this.xray) {
+                this.rayHandler.world.rayCast(this.ray, this.start[i], this.end[i]);
             }
         }
 
         // update light mesh
         // ray starting point
         int size = 0;
-        final int arraySize = rayNum;
+        final int arraySize = this.rayNum;
 
         for (int i = 0; i < arraySize; i++) {
-            segments[size++] = start[i].x;
-            segments[size++] = start[i].y;
-            segments[size++] = colorF;
-            segments[size++] = 1f;
-            segments[size++] = mx[i];
-            segments[size++] = my[i];
-            segments[size++] = colorF;
-            segments[size++] = 1f;
+            this.segments[size++] = this.start[i].x;
+            this.segments[size++] = this.start[i].y;
+            this.segments[size++] = this.colorF;
+            this.segments[size++] = 1f;
+            this.segments[size++] = this.mx[i];
+            this.segments[size++] = this.my[i];
+            this.segments[size++] = this.colorF;
+            this.segments[size++] = 1f;
         }
 
-        lightMesh.setVertices(segments, 0, size);
+        this.lightMesh.setVertices(this.segments, 0, size);
 
-        if (!soft || xray)
+        if (!this.soft || this.xray)
             return;
 
         size = 0;
         for (int i = 0; i < arraySize; i++) {
-            segments[size++] = mx[i];
-            segments[size++] = my[i];
-            segments[size++] = colorF;
-            segments[size++] = 1f;
+            this.segments[size++] = this.mx[i];
+            this.segments[size++] = this.my[i];
+            this.segments[size++] = this.colorF;
+            this.segments[size++] = 1f;
 
-            segments[size++] = mx[i] + softShadowLenght * cos;
-            segments[size++] = my[i] + softShadowLenght * sin;
-            segments[size++] = zero;
-            segments[size++] = 1f;
+            this.segments[size++] = this.mx[i] + this.softShadowLenght * this.cos;
+            this.segments[size++] = this.my[i] + this.softShadowLenght * this.sin;
+            this.segments[size++] = zero;
+            this.segments[size++] = 1f;
         }
-        softShadowMesh.setVertices(segments, 0, size);
+        this.softShadowMesh.setVertices(this.segments, 0, size);
 
     }
 
     @Override
     void render() {
-        rayHandler.lightRenderedLastFrame++;
+        this.rayHandler.lightRenderedLastFrame++;
 
-        lightMesh.render(rayHandler.lightShader, GL20.GL_TRIANGLE_STRIP, 0,
-                vertexNum);
-        if (soft && !xray) {
-            softShadowMesh.render(rayHandler.lightShader,
-                    GL20.GL_TRIANGLE_STRIP, 0, vertexNum);
+        this.lightMesh.render(this.rayHandler.lightShader, GL20.GL_TRIANGLE_STRIP, 0,
+                this.vertexNum);
+        if (this.soft && !this.xray) {
+            this.softShadowMesh.render(this.rayHandler.lightShader,
+                    GL20.GL_TRIANGLE_STRIP, 0, this.vertexNum);
         }
 
     }
@@ -197,12 +196,12 @@ public class DirectionalLight extends Light {
     public boolean contains(float x, float y) {
 
         boolean oddNodes = false;
-        float x2 = mx[rayNum] = start[0].x;
-        float y2 = my[rayNum] = start[0].y;
+        float x2 = this.mx[this.rayNum] = this.start[0].x;
+        float y2 = this.my[this.rayNum] = this.start[0].y;
         float x1, y1;
-        for (int i = 0; i <= rayNum; x2 = x1, y2 = y1, ++i) {
-            x1 = mx[i];
-            y1 = my[i];
+        for (int i = 0; i <= this.rayNum; x2 = x1, y2 = y1, ++i) {
+            x1 = this.mx[i];
+            y1 = this.my[i];
             if (((y1 < y) && (y2 >= y))
                     || (y1 >= y) && (y2 < y)) {
                 if ((y - y1) / (y2 - y1)
@@ -210,9 +209,9 @@ public class DirectionalLight extends Light {
                     oddNodes = !oddNodes;
             }
         }
-        for (int i = 0; i < rayNum; x2 = x1, y2 = y1, ++i) {
-            x1 = start[i].x;
-            y1 = start[i].y;
+        for (int i = 0; i < this.rayNum; x2 = x1, y2 = y1, ++i) {
+            x1 = this.start[i].x;
+            y1 = this.start[i].y;
             if (((y1 < y) && (y2 >= y))
                     || (y1 >= y) && (y2 < y)) {
                 if ((y - y1) / (y2 - y1)

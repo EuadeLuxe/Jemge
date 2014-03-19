@@ -17,7 +17,6 @@
 package com.jemge.j2d;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -52,7 +51,7 @@ public class Renderer2D implements Disposable {
 
     private final InputManager inputManager;
 
-    public RayHandler rayHandler;
+    private RayHandler rayHandler;
 
 
     //Protected
@@ -66,34 +65,32 @@ public class Renderer2D implements Disposable {
 
 
     public Renderer2D() {
-        renderTargets = new HashMap<>();
+        this.renderTargets = new HashMap<>();
 
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cameraView = new Rectangle(0, 0, camera.viewportWidth, camera.viewportHeight);
+        this.camera = new OrthographicCamera();
+        this.camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        this.cameraView = new Rectangle(0, 0, this.camera.viewportWidth, this.camera.viewportHeight);
 
-        spriteBatch = new SpriteBatch();
-        shapeRenderer = new ShapeRenderer();
-        background = new Background();
+        this.spriteBatch = new SpriteBatch();
+        this.shapeRenderer = new ShapeRenderer();
+        this.background = new Background();
 
-        inputManager = Jemge.engine.getInputManager();
-        rayHandler = new RayHandler(Physics2D.getMainWorld());
+        this.inputManager = Jemge.engine.getInputManager();
 
-        renderTargets.put(0, new Layer());
-        rayHandler.setAmbientLight(1.0f);
+        this.renderTargets.put(0, new Layer());
 
     }
 
     //Public
 
     public Layer addLayer(Layer layer, int num) {
-        renderTargets.put(num, layer);
+        this.renderTargets.put(num, layer);
 
         return layer;
     }
 
     public void deleteLayer(int num) {
-        renderTargets.remove(num);
+        this.renderTargets.remove(num);
     }
 
     /**
@@ -101,13 +98,13 @@ public class Renderer2D implements Disposable {
      */
 
     public Object add(int layer, Object rendererObject) {
-        if (!renderTargets.keySet().contains(layer)) {
-            renderTargets.put(layer, new Layer());
+        if (!this.renderTargets.keySet().contains(layer)) {
+            this.renderTargets.put(layer, new Layer());
         }
-        renderTargets.get(layer).addObject(rendererObject);
+        this.renderTargets.get(layer).addObject(rendererObject);
 
         if (rendererObject instanceof InputListener) {
-            inputManager.addListener((InputListener) rendererObject);
+            this.inputManager.addListener((InputListener) rendererObject);
         }
 
         return rendererObject;
@@ -119,10 +116,10 @@ public class Renderer2D implements Disposable {
 
 
     public void remove(int layer, Object rendererObject) {
-        renderTargets.get(layer).deleteObject(rendererObject);
+        this.renderTargets.get(layer).deleteObject(rendererObject);
 
         if (rendererObject instanceof InputListener) {
-            inputManager.removeListener((InputListener) rendererObject);
+            this.inputManager.removeListener((InputListener) rendererObject);
         }
     }
 
@@ -131,10 +128,10 @@ public class Renderer2D implements Disposable {
      */
 
     public Object add(Object rendererObject) {
-        renderTargets.get(0).addObject(rendererObject);
+        this.renderTargets.get(0).addObject(rendererObject);
 
         if (rendererObject instanceof InputListener) {
-            inputManager.addListener((InputListener) rendererObject);
+            this.inputManager.addListener((InputListener) rendererObject);
         }
 
         return rendererObject;
@@ -146,10 +143,10 @@ public class Renderer2D implements Disposable {
 
 
     public void remove(Object rendererObject) {
-        renderTargets.get(0).deleteObject(rendererObject);
+        this.renderTargets.get(0).deleteObject(rendererObject);
 
         if (rendererObject instanceof InputListener) {
-            inputManager.removeListener((InputListener) rendererObject);
+            this.inputManager.removeListener((InputListener) rendererObject);
         }
     }
 
@@ -161,34 +158,49 @@ public class Renderer2D implements Disposable {
         Profiler.start(this, "");
 
         Profiler.start(this, "prepare");
-        Gdx.gl20.glClearColor(background.getColor().r, background.getColor().g, background.getColor().b, 0);
+        Gdx.gl20.glClearColor(this.background.getColor().r, this.background.getColor().g, this.background.getColor().b, 0);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        camera.update();
-        cameraView.setSize(camera.viewportWidth, camera.viewportHeight);
-        cameraView.setCenter(camera.position.x,
-                camera.position.y);
+        this.camera.update();
+        this.cameraView.setSize(this.camera.viewportWidth, this.camera.viewportHeight);
+        this.cameraView.setCenter(this.camera.position.x,
+                this.camera.position.y);
 
-        spriteBatch.setProjectionMatrix(camera.combined);
-        shapeRenderer.setProjectionMatrix(camera.combined);
+        this.spriteBatch.setProjectionMatrix(this.camera.combined);
+        this.shapeRenderer.setProjectionMatrix(this.camera.combined);
 
         Profiler.stop(this, "prepare");
 
         Profiler.start(this, "rendering");
-        spriteBatch.begin();
-        background.update(spriteBatch);
+        this.spriteBatch.begin();
+        this.background.update(this.spriteBatch);
 
-        for (Layer layer : renderTargets.values()) {
-            layer.render(spriteBatch, shapeRenderer);
+        for (Layer layer : this.renderTargets.values()) {
+            layer.render(this.spriteBatch, this.shapeRenderer);
         }
 
-        spriteBatch.end();
+        this.spriteBatch.end();
         Profiler.stop(this, "rendering");
 
-        rayHandler.setCombinedMatrix(camera.combined);
-        rayHandler.updateAndRender();
+        if(this.rayHandler != null){
+            this.rayHandler.setCombinedMatrix(this.camera.combined);
+            this.rayHandler.updateAndRender();
+        }
 
         Profiler.stop(this, "");
+    }
+
+    public void initLightSystem(){
+        this.rayHandler = new RayHandler(Physics2D.getMainWorld());
+
+    }
+
+    public RayHandler getRayHandler(){
+        if(this.rayHandler == null){
+            initLightSystem();
+        }
+
+        return this.rayHandler;
     }
 
     /**
@@ -197,8 +209,10 @@ public class Renderer2D implements Disposable {
 
     @Override
     public void dispose() {
-        spriteBatch.dispose();
-        rayHandler.dispose();
+        this.spriteBatch.dispose();
+        if(this.rayHandler != null){
+            this.rayHandler.dispose();
+        }
 
     }
 
@@ -207,11 +221,11 @@ public class Renderer2D implements Disposable {
      */
 
     public OrthographicCamera getCamera() {
-        return camera;
+        return this.camera;
     }
 
     public Background getBackground() {
-        return background;
+        return this.background;
     }
 
 

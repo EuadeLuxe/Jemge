@@ -18,18 +18,18 @@ public class ScreenTest extends JGame {
     @Override
     public void create() {
         super.create();
-        setScreen(screenA);
+        setScreen(this.screenA);
     }
 
     @Override
     public void render() {
         super.render();
-        if (Gdx.input.justTouched() && mode == MODE.SCREEN_A) {
-            setScreen(screenB);
-            mode = MODE.SCREEN_B;
-        } else if (Gdx.input.justTouched() && mode == MODE.SCREEN_B) {
-            setScreen(screenA);
-            mode = MODE.SCREEN_A;
+        if (Gdx.input.justTouched() && this.mode == MODE.SCREEN_A) {
+            setScreen(this.screenB);
+            this.mode = MODE.SCREEN_B;
+        } else if (Gdx.input.justTouched() && this.mode == MODE.SCREEN_B) {
+            setScreen(this.screenA);
+            this.mode = MODE.SCREEN_A;
         }
     }
 

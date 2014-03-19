@@ -34,12 +34,12 @@ public class CircleShape implements Shape, Entity{
 
     @Override
     public float getX() {
-        return rectangle.x;
+        return this.rectangle.x;
     }
 
     @Override
     public float getY() {
-        return rectangle.y;
+        return this.rectangle.y;
     }
 
     @Override
@@ -49,18 +49,18 @@ public class CircleShape implements Shape, Entity{
 
     @Override
     public float getHeight() {
-        return radius;
+        return this.radius;
     }
 
     @Override
     public float getWidth() {
-        return radius;
+        return this.radius;
     }
 
     @Override
     public boolean needRender() {
         //Inside the camera view?
-        return Jemge.renderer2D.cameraView.overlaps(rectangle);
+        return Jemge.renderer2D.cameraView.overlaps(this.rectangle);
     }
 
     @Override
@@ -70,17 +70,17 @@ public class CircleShape implements Shape, Entity{
 
     @Override
     public Rectangle getRectangle() {
-        return rectangle;
+        return this.rectangle;
     }
 
     @Override
     public void renderShape(ShapeRenderer renderer) {
-        if(listener != null){
-            listener.update(this);
+        if(this.listener != null){
+            this.listener.update(this);
         }
 
-        renderer.begin(shapeType);
-        renderer.circle(rectangle.x, rectangle.y, radius);
+        renderer.begin(this.shapeType);
+        renderer.circle(this.rectangle.x, this.rectangle.y, this.radius);
         renderer.end();
     }
 }

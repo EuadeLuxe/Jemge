@@ -14,8 +14,6 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.VertexAttribute;
-import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
@@ -107,8 +105,8 @@ public class RayHandler implements Disposable {
     public RayHandler(World world, int fboWidth, int fboHeigth) {
         this.world = world;
 
-        lightMap = new LightMap(this, fboWidth, fboHeigth);
-        lightShader = LightShader.createLightShader();
+        this.lightMap = new LightMap(this, fboWidth, fboHeigth);
+        this.lightShader = LightShader.createLightShader();
     }
 
     /**
@@ -134,15 +132,15 @@ public class RayHandler implements Disposable {
 
         final float halfViewPortWidth = 1f / invWidth;
         final float x = -halfViewPortWidth * combined.val[Matrix4.M03];
-        x1 = x - halfViewPortWidth;
-        x2 = x + halfViewPortWidth;
+        this.x1 = x - halfViewPortWidth;
+        this.x2 = x + halfViewPortWidth;
 
         float invHeight = combined.val[Matrix4.M11];
 
         final float halfViewPortHeight = 1f / invHeight;
         final float y = -halfViewPortHeight * combined.val[Matrix4.M13];
-        y1 = y - halfViewPortHeight;
-        y2 = y + halfViewPortHeight;
+        this.y1 = y - halfViewPortHeight;
+        this.y2 = y + halfViewPortHeight;
 
     }
 
@@ -166,17 +164,17 @@ public class RayHandler implements Disposable {
         System.arraycopy(combined.val, 0, this.combined.val, 0, 16);
         // updateCameraCorners
         final float halfViewPortWidth = viewPortWidth * 0.5f;
-        x1 = x - halfViewPortWidth;
-        x2 = x + halfViewPortWidth;
+        this.x1 = x - halfViewPortWidth;
+        this.x2 = x + halfViewPortWidth;
 
         final float halfViewPortHeight = viewPortHeight * 0.5f;
-        y1 = y - halfViewPortHeight;
-        y2 = y + halfViewPortHeight;
+        this.y1 = y - halfViewPortHeight;
+        this.y2 = y + halfViewPortHeight;
 
     }
 
     boolean intersect(float x, float y, float side) {
-        return (x1 < (x + side) && x2 > (x - side) && y1 < (y + side) && y2 > (y - side));
+        return (this.x1 < (x + side) && this.x2 > (x - side) && this.y1 < (y + side) && this.y2 > (y - side));
     }
 
     /**
@@ -197,9 +195,9 @@ public class RayHandler implements Disposable {
      * steps than rendering steps.
      */
     public final void update() {
-        final int size = lightList.size;
+        final int size = this.lightList.size;
         for (int j = 0; j < size; j++) {
-            lightList.get(j).update();
+            this.lightList.get(j).update();
         }
 
     }
@@ -218,7 +216,7 @@ public class RayHandler implements Disposable {
      */
     public void render() {
 
-        lightRenderedLastFrame = 0;
+        this.lightRenderedLastFrame = 0;
 
         Gdx.gl.glDepthMask(false);
         Gdx.gl.glEnable(GL10.GL_BLEND);
@@ -230,24 +228,24 @@ public class RayHandler implements Disposable {
 
     void renderWithShaders() {
 
-        if (shadows || blur) {
-            lightMap.frameBuffer.begin();
+        if (this.shadows || this.blur) {
+            this.lightMap.frameBuffer.begin();
             Gdx.gl20.glClearColor(0f, 0f, 0f, 0f);
             Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
         }
 
-        lightShader.begin();
+        this.lightShader.begin();
         {
-            lightShader.setUniformMatrix("u_projTrans", combined);
-            for (int i = 0, size = lightList.size; i < size; i++) {
-                lightList.get(i).render();
+            this.lightShader.setUniformMatrix("u_projTrans", this.combined);
+            for (int i = 0, size = this.lightList.size; i < size; i++) {
+                this.lightList.get(i).render();
             }
         }
-        lightShader.end();
+        this.lightShader.end();
 
-        if (shadows || blur) {
-            lightMap.frameBuffer.end();
-            lightMap.render();
+        if (this.shadows || this.blur) {
+            this.lightMap.frameBuffer.end();
+            this.lightMap.render();
         }
 
     }
@@ -260,8 +258,8 @@ public class RayHandler implements Disposable {
      * @return true if point intersect any light volume
      */
     public boolean pointAtLight(float x, float y) {
-        for (int i = 0, size = lightList.size; i < size; i++) {
-            if (lightList.get(i).contains(x, y))
+        for (int i = 0, size = this.lightList.size; i < size; i++) {
+            if (this.lightList.get(i).contains(x, y))
                 return true;
         }
         return false;
@@ -275,15 +273,15 @@ public class RayHandler implements Disposable {
      * @return true if point intersect any light volume
      */
     public boolean pointAtShadow(float x, float y) {
-        for (int i = 0, size = lightList.size; i < size; i++) {
-            if (lightList.get(i).contains(x, y))
+        for (int i = 0, size = this.lightList.size; i < size; i++) {
+            if (this.lightList.get(i).contains(x, y))
                 return false;
         }
         return true;
     }
 
     private void alphaChannelClear() {
-        Gdx.gl10.glClearColor(0f, 0f, 0f, ambientLight.a);
+        Gdx.gl10.glClearColor(0f, 0f, 0f, this.ambientLight.a);
         Gdx.gl10.glColorMask(false, false, false, true);
         Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
         Gdx.gl10.glColorMask(true, true, true, true);
@@ -293,31 +291,31 @@ public class RayHandler implements Disposable {
 
     public void dispose() {
 
-        for (int i = 0; i < lightList.size; i++) {
-            lightList.get(i).lightMesh.dispose();
-            lightList.get(i).softShadowMesh.dispose();
+        for (int i = 0; i < this.lightList.size; i++) {
+            this.lightList.get(i).lightMesh.dispose();
+            this.lightList.get(i).softShadowMesh.dispose();
         }
-        lightList.clear();
+        this.lightList.clear();
 
-        for (int i = 0; i < disabledLights.size; i++) {
-            disabledLights.get(i).lightMesh.dispose();
-            disabledLights.get(i).softShadowMesh.dispose();
+        for (int i = 0; i < this.disabledLights.size; i++) {
+            this.disabledLights.get(i).lightMesh.dispose();
+            this.disabledLights.get(i).softShadowMesh.dispose();
         }
-        disabledLights.clear();
+        this.disabledLights.clear();
 
-        if (lightMap != null)
-            lightMap.dispose();
-        if (lightShader != null)
-            lightShader.dispose();
+        if (this.lightMap != null)
+            this.lightMap.dispose();
+        if (this.lightShader != null)
+            this.lightShader.dispose();
     }
 
     public void removeAll() {
 
-        while (lightList.size > 0)
-            lightList.pop().remove();
+        while (this.lightList.size > 0)
+            this.lightList.pop().remove();
 
-        while (disabledLights.size > 0)
-            disabledLights.pop().remove();
+        while (this.disabledLights.size > 0)
+            this.disabledLights.pop().remove();
 
     }
 
@@ -325,7 +323,7 @@ public class RayHandler implements Disposable {
         int i = 0;
         // This need some work, maybe camera matrix would needed
         float c = Color.toFloatBits(0, 0, 0, 1);
-        float m_segments[] = new float[12];
+        float[] m_segments = new float[12];
         m_segments[i++] = -1000000f;
         m_segments[i++] = -1000000f;
         m_segments[i++] = c;
@@ -338,7 +336,7 @@ public class RayHandler implements Disposable {
         m_segments[i++] = 1000000f;
         m_segments[i++] = -1000000;
         m_segments[i++] = c;
-        box.setVertices(m_segments, 0, i);
+        this.box.setVertices(m_segments, 0, i);
     }
 
     /**
@@ -487,7 +485,7 @@ public class RayHandler implements Disposable {
      * @param isAutomatic
      */
     public void setLightMapRendering(boolean isAutomatic) {
-        lightMap.lightMapDrawingDisabled = !isAutomatic;
+        this.lightMap.lightMapDrawingDisabled = !isAutomatic;
     }
 
     /**
@@ -497,7 +495,7 @@ public class RayHandler implements Disposable {
      * texture in your shaders
      */
     public Texture getLightMapTexture() {
-        return lightMap.frameBuffer.getColorBufferTexture();
+        return this.lightMap.frameBuffer.getColorBufferTexture();
     }
 
     /**
@@ -506,7 +504,7 @@ public class RayHandler implements Disposable {
      * @return FrameBuffer that contains lightMap
      */
     public FrameBuffer getLightMapBuffer() {
-        return lightMap.frameBuffer;
+        return this.lightMap.frameBuffer;
     }
 
 }

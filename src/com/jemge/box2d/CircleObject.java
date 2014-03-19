@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 
 public class CircleObject extends PhysicObject {
     private final static BodyDef bodyDef = new BodyDef();
@@ -17,7 +16,7 @@ public class CircleObject extends PhysicObject {
         bodyDef.type = type;
         bodyDef.position.set(x, y).add(radius / 2, radius / 2);
 
-        body = Physics2D.getMainWorld().createBody(bodyDef);
+        this.body = Physics2D.getMainWorld().createBody(bodyDef);
 
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(radius);
@@ -28,23 +27,23 @@ public class CircleObject extends PhysicObject {
         fixtureDef.friction = 0.4f;
         fixtureDef.restitution = 0.1f;
 
-        fixture = body.createFixture(fixtureDef);
+        this.fixture = this.body.createFixture(fixtureDef);
 
         circleShape.dispose();
     }
 
     public Vector2 getPosition() {
-        position = body.getPosition();
-        position.sub(radius / 2, radius / 2);
+        this.position = this.body.getPosition();
+        this.position.sub(this.radius / 2, this.radius / 2);
 
-        return position;
+        return this.position;
     }
 
     public void setRadius(float new_radius) {
-        radius = new_radius;
+        this.radius = new_radius;
     }
 
     public float getRadius() {
-        return radius;
+        return this.radius;
     }
 }

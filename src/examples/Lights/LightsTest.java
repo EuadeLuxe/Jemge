@@ -29,11 +29,11 @@ public class LightsTest extends JGame {
     @Override
     public void create() {
         super.create(); //important call, don't forget it!
-        debugRenderer = new Box2DDebugRenderer();
+        this.debugRenderer = new Box2DDebugRenderer();
 
         new PolygonObject(0, 0, getCamera().viewportWidth, 30, BodyDef.BodyType.StaticBody); // ground platform
 
-        mouse_light = new PointLight(Light.Quality.NICE, Color.WHITE, 500, 20, 20);
+        this.mouse_light = new PointLight(Light.Quality.NICE, Color.WHITE, 500, 20, 20);
     }
 
     /**
@@ -44,7 +44,7 @@ public class LightsTest extends JGame {
     public void render() {
         super.render();  //never forget to call "super.render"!
 
-        debugRenderer.render(Physics2D.getMainWorld(), getCamera().combined);  //Render the box2d world
+        this.debugRenderer.render(Physics2D.getMainWorld(), getCamera().combined);  //Render the box2d world
 
         if (Gdx.input.justTouched()) { //left click / touch screen?
 
@@ -52,7 +52,7 @@ public class LightsTest extends JGame {
                     .y, 30, 30, BodyDef.BodyType.DynamicBody); // and create a new box
         }
 
-        mouse_light.setPosition(InputManager.getInputPosition());
+        this.mouse_light.setPosition(InputManager.getInputPosition());
     }
 
     public static void main(String[] args) {

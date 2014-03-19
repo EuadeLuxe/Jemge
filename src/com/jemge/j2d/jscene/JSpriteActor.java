@@ -15,62 +15,62 @@ public class JSpriteActor extends Actor implements Entity, RendererObject {
     private final JSprite jSprite;
 
     public JSpriteActor(Texture texture) {
-        jSprite = new JSprite(texture);
+        this.jSprite = new JSprite(texture);
     }
 
     public JSpriteActor(Texture texture, float x, float y) {
-        jSprite = new JSprite(texture);
+        this.jSprite = new JSprite(texture);
         setPosition(x, y);
     }
 
     public JSpriteActor(Texture texture, float x, float y, float width, float height) {
-        jSprite = new JSprite(texture);
+        this.jSprite = new JSprite(texture);
         setBounds(x, y, width, height);
 
     }
 
     public JSpriteActor(TextureRegion region) {
-        jSprite = new JSprite(region);
+        this.jSprite = new JSprite(region);
     }
 
     public JSpriteActor(JSprite sprite) {
-        jSprite = new JSprite(sprite);
+        this.jSprite = new JSprite(sprite);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha){
-        jSprite.setBounds(getX(), getY(), getWidth(), getHeight());
-        jSprite.draw(batch);
+        this.jSprite.setBounds(getX(), getY(), getWidth(), getHeight());
+        this.jSprite.draw(batch);
     }
 
     @Override
     public boolean needRender() {
-        return jSprite.needRender();
+        return this.jSprite.needRender();
     }
 
     @Override
     public boolean getData(String name) {
-        return jSprite.getData(name);
+        return this.jSprite.getData(name);
     }
 
     @Override
     public Rectangle getRectangle() {
-        return jSprite.getRectangle();
+        return this.jSprite.getRectangle();
     }
 
     public void setTexture(Texture texture){
-        jSprite.setTexture(texture);
+        this.jSprite.setTexture(texture);
     }
 
     public JSpriteActor setStatic(boolean value){
-        jSprite.setStatic(value);
+        this.jSprite.setStatic(value);
 
         return this;
     }
 
     @Override
     public boolean hasTransparent() {
-        return jSprite.hasTransparent();
+        return this.jSprite.hasTransparent();
     }
 
     @Override

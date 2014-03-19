@@ -22,7 +22,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.jemge.core.EngineConfiguration;
 import com.jemge.core.Jemge;
 import com.jemge.j2d.culling.CullingSystem;
-import com.jemge.j2d.culling.ZoneBasedCulling;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +34,9 @@ public class Layer {
     private static Renderer2D.RenderMode renderMode;
 
     public Layer() {
-        rendererObjects = new ArrayList<>();
+        this.rendererObjects = new ArrayList<>();
         try {
-            cullingSystem = EngineConfiguration.cullingSystem.getClass().newInstance();
+            this.cullingSystem = EngineConfiguration.cullingSystem.getClass().newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -47,9 +46,9 @@ public class Layer {
 
     public Object addObject(Object rend) {
         if(rend instanceof Entity){
-            cullingSystem.putObject((Entity) rend);
+            this.cullingSystem.putObject((Entity) rend);
         }else{
-            rendererObjects.add(rend);
+            this.rendererObjects.add(rend);
         }
 
         return rend;
@@ -57,19 +56,19 @@ public class Layer {
 
     public void deleteObject(Object rend) {
         if(rend instanceof Entity){
-            cullingSystem.removeObject((Entity) rend);
+            this.cullingSystem.removeObject((Entity) rend);
         }else if(rend instanceof Actor) {
             ((Actor) rend).remove();
         }else{
-            rendererObjects.remove(rend);
+            this.rendererObjects.remove(rend);
         }
     }
 
     public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer){
-        cullingSystem.cull(Jemge.renderer2D.cameraView);
+        this.cullingSystem.cull(Jemge.renderer2D.cameraView);
 
         renderMode = Renderer2D.RenderMode.INACTIVE;
-        for(Entity entity : cullingSystem.getFinalRenderList()){
+        for(Entity entity : this.cullingSystem.getFinalRenderList()){
             if(entity instanceof Shape){
                 ((Shape) entity).renderShape(shapeRenderer);
                 continue;
@@ -95,7 +94,7 @@ public class Layer {
 
         }
 
-        for(Object object : rendererObjects){
+        for(Object object : this.rendererObjects){
             if(object instanceof Shape){
                 ((Shape) object).renderShape(shapeRenderer);
                 continue;

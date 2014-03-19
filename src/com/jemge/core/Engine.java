@@ -38,12 +38,12 @@ public class Engine {
     private final List<EngineModule> modules;
 
     public Engine() {
-        modules = new ArrayList<>();
-        modules.add(new Physics2D());
-        modules.add(new InputManager());
-        modules.add(new ResourceManager());
+        this.modules = new ArrayList<>();
+        this.modules.add(new Physics2D());
+        this.modules.add(new InputManager());
+        this.modules.add(new ResourceManager());
 
-        for (EngineModule module : modules) {
+        for (EngineModule module : this.modules) {
             module.init();
         }
 
@@ -56,7 +56,7 @@ public class Engine {
     }
 
     public void update() {
-        for (EngineModule module : modules) {
+        for (EngineModule module : this.modules) {
             module.update();
         }
 
@@ -65,7 +65,7 @@ public class Engine {
     public void dispose() {
         Jemge.renderer2D.dispose();
 
-        for (EngineModule module : modules) {
+        for (EngineModule module : this.modules) {
             module.dispose();
         }
 
@@ -73,7 +73,7 @@ public class Engine {
     }
 
     public Physics2D getPhysics2D(){
-        for(EngineModule module : modules){
+        for(EngineModule module : this.modules){
             if(module instanceof Physics2D){
                 return (Physics2D) module;
             }
@@ -83,7 +83,7 @@ public class Engine {
     }
 
     public InputManager getInputManager(){
-        for(EngineModule module : modules){
+        for(EngineModule module : this.modules){
             if(module instanceof InputManager){
                 return (InputManager) module;
             }
@@ -92,7 +92,7 @@ public class Engine {
         throw new NullPointerException("Did not found the InputManager, where is it?");
     }
     public ResourceManager getResourceManager(){
-        for(EngineModule module : modules){
+        for(EngineModule module : this.modules){
             if(module instanceof ResourceManager){
                 return (ResourceManager) module;
             }
@@ -102,9 +102,9 @@ public class Engine {
     }
 
     public EngineModule getModule(String name){
-        for(EngineModule module : modules){
+        for(EngineModule module : this.modules){
             if(module.getName().equals(name)){
-                return (EngineModule) module;
+                return module;
             }
         }
 
@@ -112,7 +112,7 @@ public class Engine {
     }
 
     public EngineModule addModule(EngineModule module){
-        modules.add(module);
+        this.modules.add(module);
 
         return module;
     }

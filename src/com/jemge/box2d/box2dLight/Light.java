@@ -23,6 +23,7 @@ public abstract class Light {
     }
 
     static final Color DefaultColor = new Color(0.75f, 0.75f, 0.5f, 0.75f);
+    static public boolean centerLight = false;
     private boolean active = true;
     protected boolean soft = true;
     protected boolean xray = false;
@@ -44,7 +45,7 @@ public abstract class Light {
 
     final static int MIN_RAYS = 3;
 
-    float segments[];
+    float[] segments;
     float[] mx;
     float[] my;
     float[] f;
@@ -53,8 +54,8 @@ public abstract class Light {
     public Light(int rays, Color color, float directionDegree,
                  float distance) {
 
-        Jemge.renderer2D.rayHandler.lightList.add(this);
-        this.rayHandler = Jemge.renderer2D.rayHandler;
+        Jemge.renderer2D.getRayHandler().lightList.add(this);
+        this.rayHandler = Jemge.renderer2D.getRayHandler();
         setRayNum(rays);
         this.direction = directionDegree;
         distance *= RayHandler.gammaCorrectionParameter;
@@ -70,13 +71,13 @@ public abstract class Light {
      */
     public void setColor(Color newColor) {
         if (newColor != null) {
-            color.set(newColor);
-            colorF = color.toFloatBits();
+            this.color.set(newColor);
+            this.colorF = this.color.toFloatBits();
         } else {
-            color = DefaultColor;
-            colorF = DefaultColor.toFloatBits();
+            this.color = DefaultColor;
+            this.colorF = DefaultColor.toFloatBits();
         }
-        if (staticLight)
+        if (this.staticLight)
             staticUpdate();
     }
 
@@ -91,12 +92,12 @@ public abstract class Light {
      * @param a intesity
      */
     public void setColor(float r, float g, float b, float a) {
-        color.r = r;
-        color.g = g;
-        color.b = b;
-        color.a = a;
-        colorF = color.toFloatBits();
-        if (staticLight)
+        this.color.r = r;
+        this.color.g = g;
+        this.color.b = b;
+        this.color.a = a;
+        this.colorF = this.color.toFloatBits();
+        if (this.staticLight)
             staticUpdate();
     }
 
@@ -115,9 +116,9 @@ public abstract class Light {
     public abstract void setDirection(float directionDegree);
 
     public void remove() {
-        rayHandler.lightList.removeValue(this, false);
-        lightMesh.dispose();
-        softShadowMesh.dispose();
+        this.rayHandler.lightList.removeValue(this, false);
+        this.lightMesh.dispose();
+        this.softShadowMesh.dispose();
     }
 
     /**
@@ -168,7 +169,7 @@ public abstract class Light {
      * @return posX
      */
     public Vector2 getPosition() {
-        return tmpPosition;
+        return this.tmpPosition;
     }
 
     /**
@@ -190,16 +191,16 @@ public abstract class Light {
     public abstract float getY();
 
     void staticUpdate() {
-        boolean tmp = rayHandler.culling;
-        staticLight = !staticLight;
-        rayHandler.culling = false;
+        boolean tmp = this.rayHandler.culling;
+        this.staticLight = !this.staticLight;
+        this.rayHandler.culling = false;
         update();
-        rayHandler.culling = tmp;
-        staticLight = !staticLight;
+        this.rayHandler.culling = tmp;
+        this.staticLight = !this.staticLight;
     }
 
     public final boolean isActive() {
-        return active;
+        return this.active;
     }
 
     /**
@@ -212,11 +213,11 @@ public abstract class Light {
             return;
 
         if (active) {
-            rayHandler.lightList.add(this);
-            rayHandler.disabledLights.removeValue(this, true);
+            this.rayHandler.lightList.add(this);
+            this.rayHandler.disabledLights.removeValue(this, true);
         } else {
-            rayHandler.disabledLights.add(this);
-            rayHandler.lightList.removeValue(this, true);
+            this.rayHandler.disabledLights.add(this);
+            this.rayHandler.lightList.removeValue(this, true);
 
         }
 
@@ -230,7 +231,7 @@ public abstract class Light {
      * @return
      */
     public final boolean isXray() {
-        return xray;
+        return this.xray;
     }
 
     /**
@@ -242,7 +243,7 @@ public abstract class Light {
      */
     public final void setXray(boolean xray) {
         this.xray = xray;
-        if (staticLight)
+        if (this.staticLight)
             staticUpdate();
     }
 
@@ -255,7 +256,7 @@ public abstract class Light {
      * @return
      */
     public final boolean isStaticLight() {
-        return staticLight;
+        return this.staticLight;
     }
 
     /**
@@ -279,7 +280,7 @@ public abstract class Light {
      * @return
      */
     public final boolean isSoft() {
-        return soft;
+        return this.soft;
     }
 
     /**
@@ -289,7 +290,7 @@ public abstract class Light {
      */
     public final void setSoft(boolean soft) {
         this.soft = soft;
-        if (staticLight)
+        if (this.staticLight)
             staticUpdate();
     }
 
@@ -299,7 +300,7 @@ public abstract class Light {
      * @return
      */
     public final float getSoftShadowLenght() {
-        return softShadowLenght;
+        return this.softShadowLenght;
     }
 
     /**
@@ -309,7 +310,7 @@ public abstract class Light {
      */
     public final void setSoftnessLenght(float softShadowLenght) {
         this.softShadowLenght = softShadowLenght;
-        if (staticLight)
+        if (this.staticLight)
             staticUpdate();
     }
 
@@ -318,13 +319,13 @@ public abstract class Light {
         if (rays < MIN_RAYS)
             rays = MIN_RAYS;
 
-        rayNum = rays;
-        vertexNum = rays + 1;
+        this.rayNum = rays;
+        this.vertexNum = rays + 1;
 
-        segments = new float[vertexNum * 8];
-        mx = new float[vertexNum];
-        my = new float[vertexNum];
-        f = new float[vertexNum];
+        this.segments = new float[this.vertexNum * 8];
+        this.mx = new float[this.vertexNum];
+        this.my = new float[this.vertexNum];
+        this.f = new float[this.vertexNum];
 
     }
 
@@ -336,7 +337,7 @@ public abstract class Light {
      * @return current lights color
      */
     public Color getColor() {
-        return color;
+        return this.color;
     }
 
     /**
@@ -345,7 +346,7 @@ public abstract class Light {
      * @return light rays distance.
      */
     public float getDistance() {
-        float dist = distance / RayHandler.gammaCorrectionParameter;
+        float dist = this.distance / RayHandler.gammaCorrectionParameter;
         return dist;
     }
 
@@ -365,9 +366,9 @@ public abstract class Light {
                 return -1;
             // if (fixture.isSensor())
             // return -1;
-            mx[m_index] = point.x;
-            my[m_index] = point.y;
-            f[m_index] = fraction;
+            Light.this.mx[Light.this.m_index] = point.x;
+            Light.this.my[Light.this.m_index] = point.y;
+            Light.this.f[Light.this.m_index] = fraction;
             return fraction;
         }
     };

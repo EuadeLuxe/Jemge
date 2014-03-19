@@ -1,6 +1,5 @@
 package com.jemge.j2d;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,29 +16,29 @@ public class Background {
     }
 
     public Background() {
-        color = new Color();
-        color.set(Color.BLACK);
+        this.color = new Color();
+        this.color.set(Color.BLACK);
     }
 
     public void update(SpriteBatch spriteBatch) {
-        if (mode == MODE.TEXTURE) {
+        if (this.mode == MODE.TEXTURE) {
             final OrthographicCamera camera = Jemge.renderer2D.getCamera();
 
-            texture.setBounds(camera.position.x - camera.viewportWidth, camera.position.y - camera.viewportHeight
+            this.texture.setBounds(camera.position.x - camera.viewportWidth, camera.position.y - camera.viewportHeight
                     , camera.viewportWidth * 2, camera.viewportHeight * 2);
 
-            texture.render(spriteBatch);
+            this.texture.render(spriteBatch);
         }
     }
 
     public Color getColor() {
-        return color;
+        return this.color;
     }
 
     public void setColor(Color color) {
         this.color.set(color);
 
-        mode = MODE.COLOR;
+        this.mode = MODE.COLOR;
     }
 
     public void setTexture(Texture texture) {
@@ -50,6 +49,6 @@ public class Background {
         }
 
         Jemge.renderer2D.addLayer(new Layer(), -1);
-        mode = MODE.TEXTURE;
+        this.mode = MODE.TEXTURE;
     }
 }

@@ -68,11 +68,11 @@ public class JSprite extends Sprite implements RendererObject, Entity{
 
     @Override
     public boolean hasTransparent() {
-        return hasTransparent;
+        return this.hasTransparent;
     }
 
     public JSprite setOpaque(boolean is){
-        hasTransparent = is;
+        this.hasTransparent = is;
 
         return this;
     }
@@ -86,16 +86,16 @@ public class JSprite extends Sprite implements RendererObject, Entity{
     public void render(SpriteBatch spriteBatch) {
         draw(spriteBatch);
 
-        if(listener != null){
-            listener.update(this);
+        if(this.listener != null){
+            this.listener.update(this);
         }
 
     }
 
     @Override
     public boolean needRender() {
-        if (isStatic) {
-            return Jemge.renderer2D.cameraView.overlaps(cachedBound);
+        if (this.isStatic) {
+            return Jemge.renderer2D.cameraView.overlaps(this.cachedBound);
         }
 
         //Inside the camera view?
@@ -104,13 +104,13 @@ public class JSprite extends Sprite implements RendererObject, Entity{
 
     @Override
     public boolean getData(String name) {
-        return StringHelper.equals(name, "static") && isStatic;
+        return StringHelper.equals(name, "static") && this.isStatic;
     }
 
     @Override
     public Rectangle getRectangle() {
-        if (isStatic) {
-            return cachedBound;
+        if (this.isStatic) {
+            return this.cachedBound;
         }
 
         return getBoundingRectangle();
@@ -123,10 +123,10 @@ public class JSprite extends Sprite implements RendererObject, Entity{
      */
 
     public JSprite setStatic(boolean set) {
-        isStatic = set;
+        this.isStatic = set;
 
-        if (set && cachedBound == null) {
-            cachedBound = getBoundingRectangle();
+        if (set && this.cachedBound == null) {
+            this.cachedBound = getBoundingRectangle();
         }
 
         return this;
