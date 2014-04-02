@@ -50,6 +50,7 @@ public class Renderer2D implements Disposable {
     private final Background background;
 
     private final InputManager inputManager;
+    private final JUIManager juiManager;
 
     private RayHandler rayHandler;
 
@@ -76,6 +77,7 @@ public class Renderer2D implements Disposable {
         this.background = new Background();
 
         this.inputManager = Jemge.engine.getInputManager();
+        this.juiManager = Jemge.engine.getJUIManager();
 
         this.renderTargets.put(0, new Layer());
 
@@ -186,6 +188,7 @@ public class Renderer2D implements Disposable {
             this.rayHandler.setCombinedMatrix(this.camera.combined);
             this.rayHandler.updateAndRender();
         }
+        juiManager.render();
 
         Profiler.stop(this, "");
     }
@@ -226,6 +229,10 @@ public class Renderer2D implements Disposable {
 
     public Background getBackground() {
         return this.background;
+    }
+
+    public ShapeRenderer getShapeRenderer(){
+        return shapeRenderer;
     }
 
 

@@ -47,4 +47,9 @@ public class JGame extends Game {
     public OrthographicCamera getCamera() {
         return Jemge.renderer2D.getCamera();
     }
+
+    @Override
+    public void resize (int width, int height) {
+        Jemge.engine.getJUIManager().getStage().getViewport().update(width, height, true);
+    }
 }

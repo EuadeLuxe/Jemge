@@ -20,6 +20,7 @@ package com.jemge.core;
 import com.jemge.box2d.Physics2D;
 import com.jemge.core.debug.Profiler;
 import com.jemge.input.InputManager;
+import com.jemge.j2d.JUIManager;
 import com.jemge.j2d.Renderer2D;
 import com.jemge.resource.AudioManager;
 import com.jemge.resource.ResourceManager;
@@ -42,6 +43,7 @@ public class Engine {
         this.modules.add(new Physics2D());
         this.modules.add(new InputManager());
         this.modules.add(new ResourceManager());
+        this.modules.add(new JUIManager());
 
         for (EngineModule module : this.modules) {
             module.init();
@@ -86,6 +88,16 @@ public class Engine {
         for(EngineModule module : this.modules){
             if(module instanceof InputManager){
                 return (InputManager) module;
+            }
+        }
+
+        throw new NullPointerException("Did not found the InputManager, where is it?");
+    }
+
+    public JUIManager getJUIManager(){
+        for(EngineModule module : this.modules){
+            if(module instanceof JUIManager){
+                return (JUIManager) module;
             }
         }
 

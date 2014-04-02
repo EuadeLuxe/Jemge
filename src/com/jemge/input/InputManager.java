@@ -19,6 +19,7 @@ package com.jemge.input;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.jemge.core.EngineModule;
@@ -90,7 +91,7 @@ public class InputManager extends EngineModule implements InputProcessor {
 
     public static Vector2 getInputPosition(){
         input_position.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-        Jemge.renderer2D.getCamera().unproject(input_position);
+        ((Camera)Jemge.renderer2D.getCamera()).unproject(input_position);
         position_by_cam.set(input_position.x, input_position.y);
 
         return position_by_cam;
@@ -122,6 +123,7 @@ public class InputManager extends EngineModule implements InputProcessor {
 
     @Override
     public boolean keyDown(int i) {
+        Jemge.engine.getJUIManager().getStage().keyDown(i);
         for(Method method : this.keyDownListener.keySet()){
             if(method.getAnnotation(ListenKeyDown.class).key() == i){
                 try {
@@ -136,6 +138,7 @@ public class InputManager extends EngineModule implements InputProcessor {
 
     @Override
     public boolean keyUp(int i) {
+        Jemge.engine.getJUIManager().getStage().keyUp(i);
         for(Method method : this.keyUpListener.keySet()){
             if(method.getAnnotation(ListenKeyUp.class).key() == i){
                 try {
@@ -151,11 +154,13 @@ public class InputManager extends EngineModule implements InputProcessor {
 
     @Override
     public boolean keyTyped(char c) {
+        Jemge.engine.getJUIManager().getStage().keyTyped(c);
         return true;
     }
 
     @Override
     public boolean touchDown(int i, int i2, int i3, int i4) {
+        Jemge.engine.getJUIManager().getStage().touchDown(i, i2, i3, i4);
         for(int a = 0; a < this.listeners.size(); a++){
             if(this.listeners.get(a).getRectangle().contains(getInputPosition())){
                 this.listeners.get(a).clicked();
@@ -167,21 +172,25 @@ public class InputManager extends EngineModule implements InputProcessor {
 
     @Override
     public boolean touchUp(int i, int i2, int i3, int i4) {
+        Jemge.engine.getJUIManager().getStage().touchUp(i, i2, i3, i4);
         return true;
     }
 
     @Override
     public boolean touchDragged(int i, int i2, int i3) {
+        Jemge.engine.getJUIManager().getStage().touchDragged(i, i2, i3);
         return true;
     }
 
     @Override
     public boolean mouseMoved(int i, int i2) {
+        Jemge.engine.getJUIManager().getStage().mouseMoved(i, i2);
         return true;
     }
 
     @Override
     public boolean scrolled(int i) {
+        Jemge.engine.getJUIManager().getStage().scrolled(i);
         return true;
     }
 }
