@@ -99,12 +99,12 @@ public class RayHandler implements Disposable {
      *
      * @param world
      * @param fboWidth
-     * @param fboHeigth
+     * @param fboHeight
      */
-    public RayHandler(World world, int fboWidth, int fboHeigth) {
+    public RayHandler(World world, int fboWidth, int fboHeight) {
         this.world = world;
 
-        this.lightMap = new LightMap(this, fboWidth, fboHeigth);
+        this.lightMap = new LightMap(this, fboWidth, fboHeight);
         this.lightShader = LightShader.createLightShader();
     }
 
@@ -258,8 +258,9 @@ public class RayHandler implements Disposable {
      */
     public boolean pointAtLight(float x, float y) {
         for (int i = 0, size = this.lightList.size; i < size; i++) {
-            if (this.lightList.get(i).contains(x, y))
+            if (this.lightList.get(i).contains(x, y)) {
                 return true;
+            }
         }
         return false;
     }
@@ -273,8 +274,9 @@ public class RayHandler implements Disposable {
      */
     public boolean pointAtShadow(float x, float y) {
         for (int i = 0, size = this.lightList.size; i < size; i++) {
-            if (this.lightList.get(i).contains(x, y))
+            if (this.lightList.get(i).contains(x, y)) {
                 return false;
+            }
         }
         return true;
     }
@@ -302,19 +304,23 @@ public class RayHandler implements Disposable {
         }
         this.disabledLights.clear();
 
-        if (this.lightMap != null)
+        if (this.lightMap != null) {
             this.lightMap.dispose();
-        if (this.lightShader != null)
+        }
+        if (this.lightShader != null) {
             this.lightShader.dispose();
+        }
     }
 
     public void removeAll() {
 
-        while (this.lightList.size > 0)
+        while (this.lightList.size > 0) {
             this.lightList.pop().remove();
+        }
 
-        while (this.disabledLights.size > 0)
+        while (this.disabledLights.size > 0) {
             this.disabledLights.pop().remove();
+        }
 
     }
 
@@ -394,10 +400,12 @@ public class RayHandler implements Disposable {
      * @param ambientLight the ambientLight to set
      */
     public final void setAmbientLight(float ambientLight) {
-        if (ambientLight < 0)
+        if (ambientLight < 0) {
             ambientLight = 0;
-        if (ambientLight > 1)
+        }
+        if (ambientLight > 1) {
             ambientLight = 1;
+        }
         this.ambientLight.a = ambientLight;
     }
 
@@ -456,15 +464,16 @@ public class RayHandler implements Disposable {
      */
     public static void setGammaCorrection(boolean gammeCorrectionWanted) {
         gammaCorrection = gammeCorrectionWanted;
-        if (gammaCorrection)
+        if (gammaCorrection) {
             gammaCorrectionParameter = GAMMA_COR;
-        else
+        } else {
             gammaCorrectionParameter = 1f;
+        }
     }
 
     /**
      * If this is set to true and shadow are on lights are blended with diffuse
-     * algoritm. this preserve colors but might look bit darker. This is more
+     * algorithm. this preserve colors but might look bit darker. This is more
      * realistic model than normally used This might improve performance
      * slightly
      *

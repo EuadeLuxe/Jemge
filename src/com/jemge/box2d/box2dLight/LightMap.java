@@ -33,11 +33,13 @@ class LightMap {
 
         boolean needed = this.rayHandler.lightRenderedLastFrame > 0;
         // this way lot less binding
-        if (needed && this.rayHandler.blur)
+        if (needed && this.rayHandler.blur) {
             gaussianBlur();
+        }
 
-        if (this.lightMapDrawingDisabled)
+        if (this.lightMapDrawingDisabled) {
             return;
+        }
         this.frameBuffer.getColorBufferTexture().bind(0);
 
         // at last lights are rendered over scene
@@ -109,10 +111,12 @@ class LightMap {
     public LightMap(RayHandler rayHandler, int fboWidth, int fboHeight) {
         this.rayHandler = rayHandler;
 
-        if (fboWidth <= 0)
+        if (fboWidth <= 0) {
             fboWidth = 1;
-        if (fboHeight <= 0)
+        }
+        if (fboHeight <= 0) {
             fboHeight = 1;
+        }
         this.frameBuffer = new FrameBuffer(Format.RGBA8888, fboWidth,
                 fboHeight, false);
         this.pingPongBuffer = new FrameBuffer(Format.RGBA8888, fboWidth,

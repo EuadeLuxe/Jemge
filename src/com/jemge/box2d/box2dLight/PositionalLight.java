@@ -33,8 +33,9 @@ public abstract class PositionalLight extends Light {
         this.body = body;
         this.bodyOffsetX = offsetX;
         this.bodyOffsetY = offSetY;
-        if (this.staticLight)
+        if (this.staticLight) {
             staticUpdate();
+        }
     }
 
     @Override
@@ -42,8 +43,9 @@ public abstract class PositionalLight extends Light {
         this.entity = entity;
         this.bodyOffsetX = offsetX;
         this.bodyOffsetY = offSetY;
-        if (this.staticLight)
+        if (this.staticLight) {
             staticUpdate();
+        }
     }
 
     @Override
@@ -79,16 +81,18 @@ public abstract class PositionalLight extends Light {
     public void setPosition(float x, float y) {
         this.start.x = x;
         this.start.y = y;
-        if (this.staticLight)
+        if (this.staticLight) {
             staticUpdate();
+        }
     }
 
     @Override
     public void setPosition(Vector2 position) {
         this.start.x = position.x;
         this.start.y = position.y;
-        if (this.staticLight)
+        if (this.staticLight) {
             staticUpdate();
+        }
     }
 
     @Override
@@ -118,12 +122,14 @@ public abstract class PositionalLight extends Light {
         if (this.rayHandler.culling) {
             this.culled = ((!this.rayHandler.intersect(this.start.x, this.start.y, this.distance
                     + this.softShadowLenght)));
-            if (this.culled)
+            if (this.culled) {
                 return;
+            }
         }
 
-        if (this.staticLight)
+        if (this.staticLight) {
             return;
+        }
 
         for (int i = 0; i < this.rayNum; i++) {
             this.m_index = i;
@@ -156,8 +162,9 @@ public abstract class PositionalLight extends Light {
         }
         this.lightMesh.setVertices(this.segments, 0, size);
 
-        if (!this.soft || this.xray)
+        if (!this.soft || this.xray) {
             return;
+        }
 
         size = 0;
         // rays ending points.
@@ -178,8 +185,9 @@ public abstract class PositionalLight extends Light {
 
     @Override
     void render() {
-        if (this.rayHandler.culling && this.culled)
+        if (this.rayHandler.culling && this.culled) {
             return;
+        }
 
         this.rayHandler.lightRenderedLastFrame++;
 
@@ -222,8 +230,9 @@ public abstract class PositionalLight extends Light {
         final float x_d = this.start.x - x;
         final float y_d = this.start.y - y;
         final float dst2 = x_d * x_d + y_d * y_d;
-        if (this.distance * this.distance <= dst2)
+        if (this.distance * this.distance <= dst2) {
             return false;
+        }
 
         // actual check
 
@@ -237,8 +246,9 @@ public abstract class PositionalLight extends Light {
             if (((y1 < y) && (y2 >= y))
                     || (y1 >= y) && (y2 < y)) {
                 if ((y - y1) / (y2 - y1)
-                        * (x2 - x1) < (x - x1))
+                        * (x2 - x1) < (x - x1)) {
                     oddNodes = !oddNodes;
+                }
             }
         }
         return oddNodes;

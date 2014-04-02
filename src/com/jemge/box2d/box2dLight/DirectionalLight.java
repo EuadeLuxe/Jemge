@@ -58,16 +58,18 @@ public class DirectionalLight extends Light {
         super.direction = direction;
         this.sin = MathUtils.sinDeg(direction);
         this.cos = MathUtils.cosDeg(direction);
-        if (this.staticLight)
+        if (this.staticLight) {
             staticUpdate();
+        }
     }
 
     float lastX;
 
     @Override
     void update() {
-        if (this.staticLight)
+        if (this.staticLight) {
             return;
+        }
 
         final float width = (this.rayHandler.x2 - this.rayHandler.x1);
         final float height = (this.rayHandler.y2 - this.rayHandler.y1);
@@ -128,8 +130,9 @@ public class DirectionalLight extends Light {
 
         this.lightMesh.setVertices(this.segments, 0, size);
 
-        if (!this.soft || this.xray)
+        if (!this.soft || this.xray) {
             return;
+        }
 
         size = 0;
         for (int i = 0; i < arraySize; i++) {
@@ -205,8 +208,9 @@ public class DirectionalLight extends Light {
             if (((y1 < y) && (y2 >= y))
                     || (y1 >= y) && (y2 < y)) {
                 if ((y - y1) / (y2 - y1)
-                        * (x2 - x1) < (x - x1))
+                        * (x2 - x1) < (x - x1)) {
                     oddNodes = !oddNodes;
+                }
             }
         }
         for (int i = 0; i < this.rayNum; x2 = x1, y2 = y1, ++i) {
@@ -215,8 +219,9 @@ public class DirectionalLight extends Light {
             if (((y1 < y) && (y2 >= y))
                     || (y1 >= y) && (y2 < y)) {
                 if ((y - y1) / (y2 - y1)
-                        * (x2 - x1) < (x - x1))
+                        * (x2 - x1) < (x - x1)) {
                     oddNodes = !oddNodes;
+                }
             }
         }
         return oddNodes;

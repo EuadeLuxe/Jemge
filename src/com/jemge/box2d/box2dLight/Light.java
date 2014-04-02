@@ -77,8 +77,9 @@ public abstract class Light {
             this.color = DefaultColor;
             this.colorF = DefaultColor.toFloatBits();
         }
-        if (this.staticLight)
+        if (this.staticLight) {
             staticUpdate();
+        }
     }
 
     /**
@@ -97,8 +98,9 @@ public abstract class Light {
         this.color.b = b;
         this.color.a = a;
         this.colorF = this.color.toFloatBits();
-        if (this.staticLight)
+        if (this.staticLight) {
             staticUpdate();
+        }
     }
 
     /**
@@ -209,8 +211,9 @@ public abstract class Light {
      * @param active
      */
     public final void setActive(boolean active) {
-        if (active == this.active)
+        if (active == this.active) {
             return;
+        }
 
         if (active) {
             this.rayHandler.lightList.add(this);
@@ -243,8 +246,9 @@ public abstract class Light {
      */
     public final void setXray(boolean xray) {
         this.xray = xray;
-        if (this.staticLight)
+        if (this.staticLight) {
             staticUpdate();
+        }
     }
 
     /**
@@ -270,8 +274,9 @@ public abstract class Light {
      */
     public final void setStaticLight(boolean staticLight) {
         this.staticLight = staticLight;
-        if (staticLight)
+        if (staticLight) {
             staticUpdate();
+        }
     }
 
     /**
@@ -290,8 +295,9 @@ public abstract class Light {
      */
     public final void setSoft(boolean soft) {
         this.soft = soft;
-        if (this.staticLight)
+        if (this.staticLight) {
             staticUpdate();
+        }
     }
 
     /**
@@ -310,14 +316,16 @@ public abstract class Light {
      */
     public final void setSoftnessLenght(float softShadowLenght) {
         this.softShadowLenght = softShadowLenght;
-        if (this.staticLight)
+        if (this.staticLight) {
             staticUpdate();
+        }
     }
 
     private final void setRayNum(int rays) {
 
-        if (rays < MIN_RAYS)
+        if (rays < MIN_RAYS) {
             rays = MIN_RAYS;
+        }
 
         this.rayNum = rays;
         this.vertexNum = rays + 1;
@@ -346,8 +354,7 @@ public abstract class Light {
      * @return light rays distance.
      */
     public float getDistance() {
-        float dist = this.distance / RayHandler.gammaCorrectionParameter;
-        return dist;
+        return this.distance / RayHandler.gammaCorrectionParameter;
     }
 
     /**
@@ -362,8 +369,9 @@ public abstract class Light {
         final public float reportRayFixture(Fixture fixture, Vector2 point,
                                             Vector2 normal, float fraction) {
 
-            if ((filterA != null) && !contactFilter(fixture))
+            if ((filterA != null) && !contactFilter(fixture)) {
                 return -1;
+            }
             // if (fixture.isSensor())
             // return -1;
             Light.this.mx[Light.this.m_index] = point.x;
@@ -376,8 +384,9 @@ public abstract class Light {
     final boolean contactFilter(Fixture fixtureB) {
         Filter filterB = fixtureB.getFilterData();
 
-        if (filterA.groupIndex == filterB.groupIndex && filterA.groupIndex != 0)
+        if (filterA.groupIndex == filterB.groupIndex && filterA.groupIndex != 0) {
             return filterA.groupIndex > 0;
+        }
 
         return (filterA.maskBits & filterB.categoryBits) != 0
                 && (filterA.categoryBits & filterB.maskBits) != 0;

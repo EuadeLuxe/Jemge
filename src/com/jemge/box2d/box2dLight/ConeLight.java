@@ -41,8 +41,9 @@ public class ConeLight extends PositionalLight {
             this.endX[i] = this.distance * c;
             this.endY[i] = this.distance * s;
         }
-        if (this.staticLight)
+        if (this.staticLight) {
             staticUpdate();
+        }
     }
 
     /**
@@ -59,10 +60,12 @@ public class ConeLight extends PositionalLight {
      * @param coneDegree the coneDegree to set
      */
     public final void setConeDegree(float coneDegree) {
-        if (coneDegree < 0)
+        if (coneDegree < 0) {
             coneDegree = 0;
-        if (coneDegree > 180)
+        }
+        if (coneDegree > 180) {
             coneDegree = 180;
+        }
         this.coneDegree = coneDegree;
         setDirection(this.direction);
     }

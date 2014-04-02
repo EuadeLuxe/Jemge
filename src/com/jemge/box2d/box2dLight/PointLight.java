@@ -53,8 +53,9 @@ public class PointLight extends PositionalLight {
         dist *= RayHandler.gammaCorrectionParameter;
         this.distance = dist < 0.01f ? 0.01f : dist;
         setEndPoints();
-        if (this.staticLight)
+        if (this.staticLight) {
             staticUpdate();
+        }
     }
 
 }
