@@ -30,6 +30,7 @@ public class Physics2D extends EngineModule{
     public static int positionInteractions = 2;
     public static int velocityInteractions = 2;
     public static float timeStep = 1 / 30f;
+    private static String main_world = "main";
 
     @Override
     public void init() {
@@ -55,7 +56,11 @@ public class Physics2D extends EngineModule{
     }
 
     public static World getMainWorld(){
-        return worlds.get("main");
+        return worlds.get(main_world);
+    }
+
+    public static void setMainWorld(String name){
+        main_world = name;
     }
 
     @Override
