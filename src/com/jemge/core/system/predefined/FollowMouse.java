@@ -7,8 +7,8 @@ import com.jemge.j2d.JSprite;
 public class FollowMouse implements UpdateListener<JSprite> {
     @Override
     public void update(JSprite object) {
-        object.setPosition(InputManager.getInputPosition().x - object.getWidth() / 2,
-                0);
+        object.setPosition(InputManager.getInputPosition().x - (object.getWidth() / 2),
+                InputManager.getInputPosition().y - (object.getHeight() / 2));
     }
 
 }

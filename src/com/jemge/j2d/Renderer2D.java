@@ -235,5 +235,7 @@ public class Renderer2D implements Disposable {
         return shapeRenderer;
     }
 
+    public SpriteBatch getSpriteBatch() { return spriteBatch; }
+
 
 }

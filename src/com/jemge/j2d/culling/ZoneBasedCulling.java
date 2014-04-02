@@ -104,4 +104,10 @@ public class ZoneBasedCulling implements CullingSystem {
         return this.final_render_list;
     }
 
+    @Override
+    public void postRender(){
+
+    }
+
+
 }

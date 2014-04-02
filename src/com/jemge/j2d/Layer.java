@@ -115,5 +115,6 @@ public class Layer {
             ((RendererObject) object).render(spriteBatch);
         }
 
+        this.cullingSystem.postRender();
     }
 }

@@ -40,7 +40,7 @@ public class JSpriteActor extends Actor implements Entity, RendererObject {
     @Override
     public void draw(Batch batch, float parentAlpha){
         this.jSprite.setBounds(getX(), getY(), getWidth(), getHeight());
-        this.jSprite.draw(batch);
+        this.jSprite.render((SpriteBatch) batch);
     }
 
     @Override

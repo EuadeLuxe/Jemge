@@ -29,4 +29,6 @@ public interface CullingSystem {
     public void cull(Rectangle camera_view);
 
     public List<Entity> getFinalRenderList();
+
+    public void postRender();
 }

@@ -22,7 +22,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.jemge.core.Jemge;
 import com.jemge.core.system.UpdateListener;
-import com.jemge.utils.StringHelper;
 
 /**
  * Default object for drawing textures.
@@ -104,7 +103,7 @@ public class JSprite extends Sprite implements RendererObject, Entity{
 
     @Override
     public boolean getData(String name) {
-        return StringHelper.equals(name, "static") && this.isStatic;
+        return name.equals("static") && this.isStatic;
     }
 
     @Override
