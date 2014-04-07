@@ -31,7 +31,7 @@ public class Box2dTest extends JGame {
 
         new PolygonObject(0, 0, getCamera().viewportWidth, 30, BodyDef.BodyType.StaticBody); // ground platform
 
-        Jemge.manager.addResource("background", new TextureResource("erdeundgras.jpg")); //Just an example texture
+        Jemge.manager.addResource("background", new TextureResource("assets/erdeundgras.jpg")); //Just an example texture
         Jemge.renderer2D.getBackground().setTexture(Jemge.manager.getTexture("background"));
     }
 

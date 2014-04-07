@@ -20,7 +20,7 @@ public class CullingTest extends JGame {
     public void create() {
         super.create(); //important call, don't forget it!
 
-        Jemge.manager.addResource("tile", new TextureResource("erdeundgras.jpg"));
+        Jemge.manager.addResource("tile", new TextureResource("assets/erdeundgras.jpg"));
 
         this.logger = new FPSLogger();
 
