@@ -23,7 +23,7 @@ public abstract class Light {
     }
 
     static final Color DefaultColor = new Color(0.75f, 0.75f, 0.5f, 0.75f);
-    static public boolean centerLight = false;
+    public static boolean centerLight = true;
     private boolean active = true;
     protected boolean soft = true;
     protected boolean xray = false;
