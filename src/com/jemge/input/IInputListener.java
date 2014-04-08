@@ -14,20 +14,13 @@
  *  limitations under the License.
  */
 
-package com.jemge.j2d;
+package com.jemge.input;
 
-/**
- * The interface for everything the renderer can render.
- *
- * @author MrBarsack
- * @see JSprite
- */
+import com.badlogic.gdx.math.Rectangle;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+public interface IInputListener {
 
-public interface RendererObject {
+	public void clicked();
 
-    public boolean hasTransparent();
-
-    public void render(SpriteBatch spriteBatch);
+	public Rectangle getRectangle();
 }

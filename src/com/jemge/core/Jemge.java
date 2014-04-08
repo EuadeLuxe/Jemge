@@ -23,15 +23,15 @@ import com.jemge.resource.ResourceManager;
 
 /**
  * Static references to the {@link Engine} and {@link Renderer2D} instances.
- *
+ * 
  * @author MrBarsack
  */
 
 public class Jemge {
 
-    public static Engine engine;
-    public static Renderer2D renderer2D;
-    public static ResourceManager manager;
-    public static AudioManager audio;
-    public static InputManager inputManager;
+	public static Engine engine;
+	public static Renderer2D renderer2D;
+	public static ResourceManager manager;
+	public static AudioManager audio;
+	public static InputManager inputManager;
 }

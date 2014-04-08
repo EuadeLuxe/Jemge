@@ -20,21 +20,22 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglGraphics;
 
-
 public class JAppLWJGL extends LwjglApplication {
 	public JAppLWJGL(ApplicationListener listener) {
 		super(listener);
 	}
-	
+
 	public JAppLWJGL(ApplicationListener listener, JConfig config) {
 		super(listener, config);
 	}
 
-	public JAppLWJGL(ApplicationListener listener, JConfig config, LwjglGraphics graphics) {
+	public JAppLWJGL(ApplicationListener listener, JConfig config,
+			LwjglGraphics graphics) {
 		super(listener, config, graphics);
 	}
-	
-	public JAppLWJGL(ApplicationListener listener, String title, int width, int height) {
+
+	public JAppLWJGL(ApplicationListener listener, String title, int width,
+			int height) {
 		super(listener, title, width, height);
 	}
 }

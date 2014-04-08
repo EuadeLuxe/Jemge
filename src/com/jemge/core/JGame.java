@@ -16,40 +16,40 @@
 
 package com.jemge.core;
 
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 /**
  * Use this instead of {@link Game}. Calls the required functions of the engine.
- *
+ * 
  * @author MrBarsack
  */
 
 public class JGame extends Game {
-    @Override
-    public void create() {
-        new Engine();
-    }
+	@Override
+	public void create() {
+		new Engine();
+	}
 
-    @Override
-    public void render() {
-    	super.render();
-        Jemge.engine.update();
-        Jemge.renderer2D.render();
-    }
+	@Override
+	public void render() {
+		super.render();
+		Jemge.engine.update();
+		Jemge.renderer2D.render();
+	}
 
-    @Override
-    public void dispose() {
-        Jemge.engine.dispose();
-    }
+	@Override
+	public void dispose() {
+		Jemge.engine.dispose();
+	}
 
-    public OrthographicCamera getCamera() {
-        return Jemge.renderer2D.getCamera();
-    }
+	public OrthographicCamera getCamera() {
+		return Jemge.renderer2D.getCamera();
+	}
 
-    @Override
-    public void resize (int width, int height) {
-        Jemge.engine.getJUIManager().getStage().getViewport().update(width, height, true);
-    }
+	@Override
+	public void resize(int width, int height) {
+		Jemge.engine.getJUIManager().getStage().getViewport()
+				.update(width, height, true);
+	}
 }

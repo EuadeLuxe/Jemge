@@ -18,13 +18,13 @@ package com.jemge.core;
 
 public abstract class EngineModule {
 
-    public String getName(){
-        return getClass().getName();
-    }
+	public String getName() {
+		return getClass().getName();
+	}
 
-    public abstract void init();
+	public abstract void init();
 
-    public abstract void update();
+	public abstract void update();
 
-    public abstract void dispose();
+	public abstract void dispose();
 }

@@ -27,215 +27,213 @@ import com.jemge.box2d.Physics2D;
 import com.jemge.box2d.box2dLight.RayHandler;
 import com.jemge.core.Jemge;
 import com.jemge.core.debug.Profiler;
-import com.jemge.input.InputListener;
+import com.jemge.input.IInputListener;
 import com.jemge.input.InputManager;
 
 import java.util.HashMap;
 
 /**
- * The renderer class. The rendering is done automatically, you just have to add the objects.
- *
+ * The renderer class. The rendering is done automatically, you just have to add
+ * the objects.
+ * 
  * @author MrBarsack
  * @see RendererObject
  */
 
 public class Renderer2D implements Disposable {
 
-    //Private
+	// Private
 
-    public final HashMap<Integer, Layer> renderTargets;
-    private final SpriteBatch spriteBatch;
-    private final ShapeRenderer shapeRenderer;
-    private final OrthographicCamera camera;
-    private final Background background;
+	public final HashMap<Integer, Layer> renderTargets;
+	private final SpriteBatch spriteBatch;
+	private final ShapeRenderer shapeRenderer;
+	private final OrthographicCamera camera;
+	private final Background background;
 
-    private final InputManager inputManager;
-    private final JUIManager juiManager;
+	private final InputManager inputManager;
+	private final JUIManager juiManager;
 
-    private RayHandler rayHandler;
+	private RayHandler rayHandler;
 
+	// Protected
 
-    //Protected
+	public final Rectangle cameraView;
 
-    public final Rectangle cameraView;
+	public enum RenderMode {
+		INACTIVE, ENABLED, DISABLED
+	}
 
+	public Renderer2D() {
+		this.renderTargets = new HashMap<>();
 
-    public enum RenderMode {
-        INACTIVE, ENABLED, DISABLED
-    }
+		this.camera = new OrthographicCamera();
+		this.camera.setToOrtho(false, Gdx.graphics.getWidth(),
+				Gdx.graphics.getHeight());
+		this.cameraView = new Rectangle(0, 0, this.camera.viewportWidth,
+				this.camera.viewportHeight);
 
+		this.spriteBatch = new SpriteBatch();
+		this.shapeRenderer = new ShapeRenderer();
+		this.background = new Background();
 
-    public Renderer2D() {
-        this.renderTargets = new HashMap<>();
+		this.inputManager = Jemge.engine.getInputManager();
+		this.juiManager = Jemge.engine.getJUIManager();
 
-        this.camera = new OrthographicCamera();
-        this.camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        this.cameraView = new Rectangle(0, 0, this.camera.viewportWidth, this.camera.viewportHeight);
+		this.renderTargets.put(0, new Layer());
+	}
 
-        this.spriteBatch = new SpriteBatch();
-        this.shapeRenderer = new ShapeRenderer();
-        this.background = new Background();
+	// Public
 
-        this.inputManager = Jemge.engine.getInputManager();
-        this.juiManager = Jemge.engine.getJUIManager();
+	public Layer addLayer(Layer layer, int num) {
+		this.renderTargets.put(num, layer);
 
-        this.renderTargets.put(0, new Layer());
+		return layer;
+	}
 
-    }
+	public void deleteLayer(int num) {
+		this.renderTargets.remove(num);
+	}
 
-    //Public
+	/**
+	 * Adds a new object to the renderer.
+	 */
 
-    public Layer addLayer(Layer layer, int num) {
-        this.renderTargets.put(num, layer);
+	public Object add(int layer, Object rendererObject) {
+		if (!this.renderTargets.keySet().contains(layer)) {
+			this.renderTargets.put(layer, new Layer());
+		}
+		this.renderTargets.get(layer).addObject(rendererObject);
 
-        return layer;
-    }
+		if (rendererObject instanceof IInputListener) {
+			this.inputManager.addListener((IInputListener) rendererObject);
+		}
 
-    public void deleteLayer(int num) {
-        this.renderTargets.remove(num);
-    }
+		return rendererObject;
+	}
 
-    /**
-     * Adds a new object to the renderer.
-     */
+	/**
+	 * Deletes an object from the renderer.
+	 */
 
-    public Object add(int layer, Object rendererObject) {
-        if (!this.renderTargets.keySet().contains(layer)) {
-            this.renderTargets.put(layer, new Layer());
-        }
-        this.renderTargets.get(layer).addObject(rendererObject);
+	public void remove(int layer, Object rendererObject) {
+		this.renderTargets.get(layer).deleteObject(rendererObject);
 
-        if (rendererObject instanceof InputListener) {
-            this.inputManager.addListener((InputListener) rendererObject);
-        }
+		if (rendererObject instanceof IInputListener) {
+			this.inputManager.removeListener((IInputListener) rendererObject);
+		}
+	}
 
-        return rendererObject;
-    }
+	/**
+	 * Adds a new object to the renderer.
+	 */
 
-    /**
-     * Deletes an object from the renderer.
-     */
+	public Object add(Object rendererObject) {
+		this.renderTargets.get(0).addObject(rendererObject);
 
+		if (rendererObject instanceof IInputListener) {
+			this.inputManager.addListener((IInputListener) rendererObject);
+		}
 
-    public void remove(int layer, Object rendererObject) {
-        this.renderTargets.get(layer).deleteObject(rendererObject);
+		return rendererObject;
+	}
 
-        if (rendererObject instanceof InputListener) {
-            this.inputManager.removeListener((InputListener) rendererObject);
-        }
-    }
+	/**
+	 * Deletes an object from the renderer.
+	 */
 
-    /**
-     * Adds a new object to the renderer.
-     */
+	public void remove(Object rendererObject) {
+		this.renderTargets.get(0).deleteObject(rendererObject);
 
-    public Object add(Object rendererObject) {
-        this.renderTargets.get(0).addObject(rendererObject);
+		if (rendererObject instanceof IInputListener) {
+			this.inputManager.removeListener((IInputListener) rendererObject);
+		}
+	}
 
-        if (rendererObject instanceof InputListener) {
-            this.inputManager.addListener((InputListener) rendererObject);
-        }
+	/**
+	 * Draws all objects from the render list.
+	 */
 
-        return rendererObject;
-    }
+	public void render() {
+		Profiler.start(this, "");
 
-    /**
-     * Deletes an object from the renderer.
-     */
+		Profiler.start(this, "prepare");
+		Gdx.gl20.glClearColor(this.background.getColor().r,
+				this.background.getColor().g, this.background.getColor().b, 0);
+		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		this.camera.update();
+		this.cameraView.setSize(this.camera.viewportWidth,
+				this.camera.viewportHeight);
+		this.cameraView.setCenter(this.camera.position.x,
+				this.camera.position.y);
 
-    public void remove(Object rendererObject) {
-        this.renderTargets.get(0).deleteObject(rendererObject);
+		this.spriteBatch.setProjectionMatrix(this.camera.combined);
+		this.shapeRenderer.setProjectionMatrix(this.camera.combined);
 
-        if (rendererObject instanceof InputListener) {
-            this.inputManager.removeListener((InputListener) rendererObject);
-        }
-    }
+		Profiler.stop(this, "prepare");
 
-    /**
-     * Draws all objects from the render list.
-     */
+		Profiler.start(this, "rendering");
+		this.spriteBatch.begin();
+		this.background.update(this.spriteBatch);
 
-    public void render() {
-        Profiler.start(this, "");
+		for (Layer layer : this.renderTargets.values()) {
+			layer.render(this.spriteBatch, this.shapeRenderer);
+		}
 
-        Profiler.start(this, "prepare");
-        Gdx.gl20.glClearColor(this.background.getColor().r, this.background.getColor().g, this.background.getColor().b, 0);
-        Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		this.spriteBatch.end();
+		Profiler.stop(this, "rendering");
 
-        this.camera.update();
-        this.cameraView.setSize(this.camera.viewportWidth, this.camera.viewportHeight);
-        this.cameraView.setCenter(this.camera.position.x,
-                this.camera.position.y);
+		if (this.rayHandler != null) {
+			this.rayHandler.setCombinedMatrix(this.camera.combined);
+			this.rayHandler.updateAndRender();
+		}
+		juiManager.render();
 
-        this.spriteBatch.setProjectionMatrix(this.camera.combined);
-        this.shapeRenderer.setProjectionMatrix(this.camera.combined);
+		Profiler.stop(this, "");
+	}
 
-        Profiler.stop(this, "prepare");
+	public void initLightSystem() {
+		this.rayHandler = new RayHandler(Physics2D.getMainWorld());
+	}
 
-        Profiler.start(this, "rendering");
-        this.spriteBatch.begin();
-        this.background.update(this.spriteBatch);
+	public RayHandler getRayHandler() {
+		if (this.rayHandler == null) {
+			initLightSystem();
+		}
 
-        for (Layer layer : this.renderTargets.values()) {
-            layer.render(this.spriteBatch, this.shapeRenderer);
-        }
+		return this.rayHandler;
+	}
 
-        this.spriteBatch.end();
-        Profiler.stop(this, "rendering");
+	/**
+	 * Must be called before exiting.
+	 */
 
-        if(this.rayHandler != null){
-            this.rayHandler.setCombinedMatrix(this.camera.combined);
-            this.rayHandler.updateAndRender();
-        }
-        juiManager.render();
+	@Override
+	public void dispose() {
+		this.spriteBatch.dispose();
+		if (this.rayHandler != null) {
+			this.rayHandler.dispose();
+		}
+	}
 
-        Profiler.stop(this, "");
-    }
+	/**
+	 * @return Returns an instance of the camera.
+	 */
 
-    public void initLightSystem(){
-        this.rayHandler = new RayHandler(Physics2D.getMainWorld());
+	public OrthographicCamera getCamera() {
+		return this.camera;
+	}
 
-    }
+	public Background getBackground() {
+		return this.background;
+	}
 
-    public RayHandler getRayHandler(){
-        if(this.rayHandler == null){
-            initLightSystem();
-        }
+	public ShapeRenderer getShapeRenderer() {
+		return shapeRenderer;
+	}
 
-        return this.rayHandler;
-    }
-
-    /**
-     * Must be called before exiting.
-     */
-
-    @Override
-    public void dispose() {
-        this.spriteBatch.dispose();
-        if(this.rayHandler != null){
-            this.rayHandler.dispose();
-        }
-
-    }
-
-    /**
-     * @return Returns an instance of the camera.
-     */
-
-    public OrthographicCamera getCamera() {
-        return this.camera;
-    }
-
-    public Background getBackground() {
-        return this.background;
-    }
-
-    public ShapeRenderer getShapeRenderer(){
-        return shapeRenderer;
-    }
-
-    public SpriteBatch getSpriteBatch() { return spriteBatch; }
-
+	public SpriteBatch getSpriteBatch() {
+		return spriteBatch;
+	}
 
 }
