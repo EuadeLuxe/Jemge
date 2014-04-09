@@ -18,18 +18,22 @@ package com.jemge.j2d;
 
 import com.badlogic.gdx.math.Rectangle;
 
-public interface Entity {
+public interface IEntity {
 
-    public float getX();
-    public float getY();
+	public float getX();
 
-    public float getRotation();
+	public float getY();
 
-    public float getHeight();
-    public float getWidth();
+	public float getRotation();
 
-    public boolean needRender();
-    public boolean getData(String name);
-    public Rectangle getRectangle();
+	public float getHeight();
+
+	public float getWidth();
+
+	public boolean needRender();
+
+	public boolean getData(String name);
+
+	public Rectangle getRectangle();
 
 }

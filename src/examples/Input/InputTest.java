@@ -7,17 +7,17 @@ import com.jemge.core.Jemge;
 
 public class InputTest extends JGame {
 
-    @Override
-    public void create(){
-        super.create();
+	@Override
+	public void create() {
+		super.create();
 
-        Jemge.inputManager.addKeyListener(new TestKeyListener());
-    }
+		Jemge.inputManager.addKeyListener(new TestKeyListener());
+	}
 
-    public static void main(String[] args) {
-        JConfig config = new JConfig();
-        config.setTitle("InputTest");
+	public static void main(String[] args) {
+		JConfig config = new JConfig();
+		config.setTitle("InputTest");
 
-        new JAppLWJGL(new InputTest(), config);
-    }
+		new JAppLWJGL(new InputTest(), config);
+	}
 }

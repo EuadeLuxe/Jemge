@@ -16,7 +16,6 @@
 
 package com.jemge.core;
 
-
 import com.jemge.box2d.Physics2D;
 import com.jemge.core.debug.Profiler;
 import com.jemge.input.InputManager;
@@ -29,104 +28,110 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The core of the engine. Initializes the components of the engine and dispose them.
- *
+ * The core of the engine. Initializes the components of the engine and dispose
+ * them.
+ * 
  * @author MrBarsack
  * @see Jemge
  */
 
 public class Engine {
-    private final List<EngineModule> modules;
+	private final List<EngineModule> modules;
 
-    public Engine() {
-        this.modules = new ArrayList<>();
-        this.modules.add(new Physics2D());
-        this.modules.add(new InputManager());
-        this.modules.add(new ResourceManager());
-        this.modules.add(new JUIManager());
+	public Engine() {
+		this.modules = new ArrayList<>();
+		this.modules.add(new Physics2D());
+		this.modules.add(new InputManager());
+		this.modules.add(new ResourceManager());
+		this.modules.add(new JUIManager());
 
-        for (EngineModule module : this.modules) {
-            module.init();
-        }
+		for (EngineModule module : this.modules) {
+			module.init();
+		}
 
-        Jemge.engine = this;
-        Jemge.renderer2D = new Renderer2D();
-        Jemge.manager = getResourceManager();
-        Jemge.inputManager = getInputManager();
-        Jemge.audio = new AudioManager();
-        //game.setScreen(new Splash(game));
-    }
+		Jemge.engine = this;
+		Jemge.renderer2D = new Renderer2D();
+		Jemge.manager = getResourceManager();
+		Jemge.inputManager = getInputManager();
+		Jemge.audio = new AudioManager();
+		// game.setScreen(new Splash(game));
+	}
 
-    public void update() {
-        for (EngineModule module : this.modules) {
-            module.update();
-        }
+	public void update() {
+		for (EngineModule module : this.modules) {
+			module.update();
+		}
 
-    }
+	}
 
-    public void dispose() {
-        Jemge.renderer2D.dispose();
+	public void dispose() {
+		Jemge.renderer2D.dispose();
 
-        for (EngineModule module : this.modules) {
-            module.dispose();
-        }
+		for (EngineModule module : this.modules) {
+			module.dispose();
+		}
 
-        Profiler.getResults();
-    }
+		Profiler.getResults();
+	}
 
-    public Physics2D getPhysics2D(){
-        for(EngineModule module : this.modules){
-            if(module instanceof Physics2D){
-                return (Physics2D) module;
-            }
-        }
+	public Physics2D getPhysics2D() {
+		for (EngineModule module : this.modules) {
+			if (module instanceof Physics2D) {
+				return (Physics2D) module;
+			}
+		}
 
-        throw new NullPointerException("Did not found the Physics2d Module, where is it?");
-    }
+		throw new NullPointerException(
+				"Did not found the Physics2d Module, where is it?");
+	}
 
-    public InputManager getInputManager(){
-        for(EngineModule module : this.modules){
-            if(module instanceof InputManager){
-                return (InputManager) module;
-            }
-        }
+	public InputManager getInputManager() {
+		for (EngineModule module : this.modules) {
+			if (module instanceof InputManager) {
+				return (InputManager) module;
+			}
+		}
 
-        throw new NullPointerException("Did not found the InputManager, where is it?");
-    }
+		throw new NullPointerException(
+				"Did not found the InputManager, where is it?");
+	}
 
-    public JUIManager getJUIManager(){
-        for(EngineModule module : this.modules){
-            if(module instanceof JUIManager){
-                return (JUIManager) module;
-            }
-        }
+	public JUIManager getJUIManager() {
+		for (EngineModule module : this.modules) {
+			if (module instanceof JUIManager) {
+				return (JUIManager) module;
+			}
+		}
 
-        throw new NullPointerException("Did not found the InputManager, where is it?");
-    }
-    public ResourceManager getResourceManager(){
-        for(EngineModule module : this.modules){
-            if(module instanceof ResourceManager){
-                return (ResourceManager) module;
-            }
-        }
+		throw new NullPointerException(
+				"Did not found the InputManager, where is it?");
+	}
 
-        throw new NullPointerException("Did not found the ResourceManager, where is it?");
-    }
+	public ResourceManager getResourceManager() {
+		for (EngineModule module : this.modules) {
+			if (module instanceof ResourceManager) {
+				return (ResourceManager) module;
+			}
+		}
 
-    public EngineModule getModule(String name){
-        for(EngineModule module : this.modules){
-            if(module.getName().equals(name)){
-                return module;
-            }
-        }
+		throw new NullPointerException(
+				"Did not found the ResourceManager, where is it?");
+	}
 
-        throw new NullPointerException("Did not found the module, where is it?");
-    }
+	public EngineModule getModule(String name) {
+		for (EngineModule module : this.modules) {
+			if (module.getName().equals(name)) {
+				return module;
+			}
+		}
 
-    public EngineModule addModule(EngineModule module){
-        this.modules.add(module);
+		throw new NullPointerException("Did not found the module, where is it?");
+	}
 
-        return module;
-    }
+	public EngineModule addModule(EngineModule module) {
+		this.modules.add(module);
+
+		return module;
+	}
 
 }

@@ -22,51 +22,53 @@ import java.util.HashMap;
 
 public class ResourceManager extends EngineModule {
 
-    private final HashMap<String, Resource> resourceList;
+	private final HashMap<String, IResource> resourceList;
 
-    public ResourceManager(){
-        this.resourceList = new HashMap<>();
-    }
+	public ResourceManager() {
+		this.resourceList = new HashMap<>();
+	}
 
-    public void addResource(String name, Resource resource){
-        this.resourceList.put(name, resource);
-    }
+	public void addResource(String name, IResource resource) {
+		this.resourceList.put(name, resource);
+	}
 
-    public Resource getResource(String name){
-        return this.resourceList.get(name);
-    }
+	public IResource getResource(String name) {
+		return this.resourceList.get(name);
+	}
 
-    public TextureResource getTexture(String name){
-        if(this.resourceList.get(name) instanceof TextureResource){
-            return (TextureResource) this.resourceList.get(name);
-        }
+	public TextureResource getTexture(String name) {
+		if (this.resourceList.get(name) instanceof TextureResource) {
+			return (TextureResource) this.resourceList.get(name);
+		}
 
-        throw new NullPointerException("This texture doesn't exist.");
-    }
+		throw new NullPointerException("This texture doesn't exist.");
+	}
 
-    public AudioResource getSound(String name){
-        if(this.resourceList.get(name) instanceof AudioResource){
-            return (AudioResource) this.resourceList.get(name);
-        }
+	public AudioResource getSound(String name) {
+		if (this.resourceList.get(name) instanceof AudioResource) {
+			return (AudioResource) this.resourceList.get(name);
+		}
 
-        throw new NullPointerException("This sound doesn't exist.");
-    }
+		throw new NullPointerException("This sound doesn't exist.");
+	}
 
-    @Override
-    public void init() {}
+	@Override
+	public void init() {
+	}
 
-    @Override
-    public void update() {}
+	@Override
+	public void update() {
+	}
 
-    @Override
-    public void dispose() {
-        for(Resource resource : this.resourceList.values()){
-            if(resource instanceof TextureResource){
-                ((TextureResource) resource).dispose();
-            }
-            if(resource instanceof AudioResource){
-                ((AudioResource) resource).getSound().dispose();
-            }
-        }
-    }
+	@Override
+	public void dispose() {
+		for (IResource resource : this.resourceList.values()) {
+			if (resource instanceof TextureResource) {
+				((TextureResource) resource).dispose();
+			}
+			if (resource instanceof AudioResource) {
+				((AudioResource) resource).getSound().dispose();
+			}
+		}
+	}
 }

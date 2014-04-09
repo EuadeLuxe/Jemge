@@ -1,11 +1,11 @@
 package com.jemge.core;
 
-import com.jemge.j2d.culling.CullingSystem;
+import com.jemge.j2d.culling.ICullingSystem;
 import com.jemge.j2d.culling.ZoneBasedCulling;
 
 public class EngineConfiguration {
 
-    public static CullingSystem cullingSystem = new ZoneBasedCulling();
+	public static ICullingSystem cullingSystem = new ZoneBasedCulling();
 
-    public static boolean debugMode = false;
+	public static boolean debugMode = false;
 }

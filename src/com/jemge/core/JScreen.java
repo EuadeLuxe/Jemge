@@ -5,46 +5,46 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.jemge.j2d.Renderer2D;
 
 public abstract class JScreen implements Screen {
-    private Renderer2D renderer2D;
+	private Renderer2D renderer2D;
 
-    @Override
-    public void resize(int i, int i2) {
+	@Override
+	public void resize(int i, int i2) {
 
-    }
+	}
 
-    @Override
-    public void show() {
-        if(this.renderer2D == null){
-            this.renderer2D = new Renderer2D();
-        }
-        Jemge.renderer2D = this.renderer2D;
-    }
+	@Override
+	public void show() {
+		if (this.renderer2D == null) {
+			this.renderer2D = new Renderer2D();
+		}
+		Jemge.renderer2D = this.renderer2D;
+	}
 
-    @Override
-    public void hide(){
+	@Override
+	public void hide() {
 
-    }
+	}
 
-    @Override
-    public void pause() {
+	@Override
+	public void pause() {
 
-    }
+	}
 
-    @Override
-    public void resume() {
+	@Override
+	public void resume() {
 
-    }
+	}
 
-    @Override
-    public final void dispose() {
-        Jemge.engine.dispose();
-    }
+	@Override
+	public final void dispose() {
+		Jemge.engine.dispose();
+	}
 
-    public OrthographicCamera getCamera() {
-        return Jemge.renderer2D.getCamera();
-    }
+	public OrthographicCamera getCamera() {
+		return Jemge.renderer2D.getCamera();
+	}
 
-    public Renderer2D getRenderer2D(){
-        return this.renderer2D;
-    }
+	public Renderer2D getRenderer2D() {
+		return this.renderer2D;
+	}
 }

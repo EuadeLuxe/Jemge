@@ -4,28 +4,28 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.jemge.core.EngineModule;
 
-public class JUIManager extends EngineModule{
-    private Stage stage;
+public class JUIManager extends EngineModule {
+	private Stage stage;
 
-    public void init(){
-        stage = new Stage();
-    }
+	public void init() {
+		stage = new Stage();
+	}
 
-    @Override
-    public void update() {
-    }
+	@Override
+	public void update() {
+	}
 
-    public void render(){
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        stage.draw();
-    }
+	public void render() {
+		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+		stage.draw();
+	}
 
-    @Override
-    public void dispose() {
-        stage.dispose();
-    }
+	@Override
+	public void dispose() {
+		stage.dispose();
+	}
 
-    public Stage getStage(){
-        return stage;
-    }
+	public Stage getStage() {
+		return stage;
+	}
 }

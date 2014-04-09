@@ -39,8 +39,7 @@ public class Gaussian {
 				+ "}\n";
 		final String fragmentShader = "#ifdef GL_ES\n" //
 				+ "precision lowp float;\n" //
-				+ "#define MED mediump\n"
-				+ "#else\n"
+				+ "#define MED mediump\n" + "#else\n"
 				+ "#define MED \n"
 				+ "#endif\n" //
 				+ "uniform sampler2D u_texture;\n" //
@@ -50,12 +49,11 @@ public class Gaussian {
 				+ "varying MED vec2 v_texCoords3;\n" //
 				+ "varying MED vec2 v_texCoords4;\n" //
 				+ "const float center = 0.2270270270;\n" //
-                + "const float close  = 0.3162162162;\n" //
-                + "const float far    = 0.0702702703;\n" //
+				+ "const float close  = 0.3162162162;\n" //
+				+ "const float far    = 0.0702702703;\n" //
 				+ "void main()\n" //
 				+ "{	 \n" //
-				+ useCenterLight()
-				+ "}\n";
+				+ useCenterLight() + "}\n";
 		ShaderProgram.pedantic = false;
 		ShaderProgram blurShader = new ShaderProgram(vertexShader,
 				fragmentShader);
@@ -66,19 +64,37 @@ public class Gaussian {
 		return blurShader;
 	}
 
-    public static String useCenterLight(){
-        final String rgb = RayHandler.isDiffuse  ? ".rgb" : "";
-        if(Light.centerLight){
-            return "gl_FragColor"+rgb+" = far    * texture2D(u_texture, v_texCoords0)"+rgb+"\n" //
-                    + "	      		+ close  * texture2D(u_texture, v_texCoords1)"+rgb+"\n" //
-                    + "				+ center * texture2D(u_texture, v_texCoords2)"+rgb+"\n" //
-                    + "				+ close  * texture2D(u_texture, v_texCoords3)"+rgb+"\n" //
-                    + "				+ far    * texture2D(u_texture, v_texCoords4)"+rgb+";\n";
-        }else{
-            return "gl_FragColor"+rgb+" = far    * texture2D(u_texture, v_texCoords0)"+rgb+"\n" //
-                    + "				+ close  * texture2D(u_texture, v_texCoords3)"+rgb+"\n" //
-                    + "				+ far    * texture2D(u_texture, v_texCoords4)"+rgb+";\n";
+	public static String useCenterLight() {
+		final String rgb = RayHandler.isDiffuse ? ".rgb" : "";
+		if (Light.CENTERLIGHT) {
+			return "gl_FragColor"
+					+ rgb
+					+ " = far    * texture2D(u_texture, v_texCoords0)"
+					+ rgb
+					+ "\n" //
+					+ "	      		+ close  * texture2D(u_texture, v_texCoords1)"
+					+ rgb
+					+ "\n" //
+					+ "				+ center * texture2D(u_texture, v_texCoords2)"
+					+ rgb
+					+ "\n" //
+					+ "				+ close  * texture2D(u_texture, v_texCoords3)"
+					+ rgb
+					+ "\n" //
+					+ "				+ far    * texture2D(u_texture, v_texCoords4)" + rgb
+					+ ";\n";
+		} else {
+			return "gl_FragColor"
+					+ rgb
+					+ " = far    * texture2D(u_texture, v_texCoords0)"
+					+ rgb
+					+ "\n" //
+					+ "				+ close  * texture2D(u_texture, v_texCoords3)"
+					+ rgb
+					+ "\n" //
+					+ "				+ far    * texture2D(u_texture, v_texCoords4)" + rgb
+					+ ";\n";
 
-        }
-    }
+		}
+	}
 }

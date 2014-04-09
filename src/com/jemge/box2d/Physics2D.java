@@ -22,51 +22,50 @@ import com.jemge.core.EngineModule;
 
 import java.util.HashMap;
 
+public class Physics2D extends EngineModule {
 
-public class Physics2D extends EngineModule{
+	private static HashMap<String, World> worlds;
 
-    private static HashMap<String, World> worlds;
+	public static int positionInteractions = 2;
+	public static int velocityInteractions = 2;
+	public static float timeStep = 1f / 30f;
+	private static String main_world = "main";
 
-    public static int positionInteractions = 2;
-    public static int velocityInteractions = 2;
-    public static float timeStep = 1 / 30f;
-    private static String main_world = "main";
+	@Override
+	public void init() {
+		worlds = new HashMap<String, World>(1);
+		worlds.put("main", new World(new Vector2(0, -20f), true));
+	}
 
-    @Override
-    public void init() {
-        worlds = new HashMap(1);
-        worlds.put("main", new World(new Vector2(0, -20f), true));
-    }
+	@Override
+	public void update() {
+		for (World world : worlds.values()) {
+			world.step(timeStep, velocityInteractions, positionInteractions);
+		}
+	}
 
-    @Override
-    public void update() {
-        for(World world : worlds.values()){
-            world.step(timeStep, velocityInteractions, positionInteractions);
-        }
-    }
+	public static World newWorld(String name, World world) {
+		worlds.put(name, world);
 
-    public static World newWorld(String name, World world){
-        worlds.put(name, world);
+		return world;
+	}
 
-        return world;
-    }
+	public static World getWorld(String name) {
+		return worlds.get(name);
+	}
 
-    public static World getWorld(String name){
-        return worlds.get(name);
-    }
+	public static World getMainWorld() {
+		return worlds.get(main_world);
+	}
 
-    public static World getMainWorld(){
-        return worlds.get(main_world);
-    }
+	public static void setMainWorld(String name) {
+		main_world = name;
+	}
 
-    public static void setMainWorld(String name){
-        main_world = name;
-    }
-
-    @Override
-    public void dispose(){
-        for(World world : worlds.values()){
-            world.dispose();
-        }
-    }
+	@Override
+	public void dispose() {
+		for (World world : worlds.values()) {
+			world.dispose();
+		}
+	}
 }

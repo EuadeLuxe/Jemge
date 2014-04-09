@@ -17,18 +17,18 @@
 package com.jemge.j2d.culling;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.jemge.j2d.Entity;
+import com.jemge.j2d.IEntity;
 
 import java.util.List;
 
-public interface CullingSystem {
-    public void putObject(Entity entity);
+public interface ICullingSystem {
+	public void putObject(IEntity entity);
 
-    public void removeObject(Entity entity);
+	public void removeObject(IEntity entity);
 
-    public void cull(Rectangle camera_view);
+	public void cull(Rectangle camera_view);
 
-    public List<Entity> getFinalRenderList();
+	public List<IEntity> getFinalRenderList();
 
-    public void postRender();
+	public void postRender();
 }

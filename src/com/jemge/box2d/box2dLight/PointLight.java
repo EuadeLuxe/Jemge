@@ -5,57 +5,54 @@ import com.badlogic.gdx.math.MathUtils;
 
 public class PointLight extends PositionalLight {
 
-    /**
-     * @param rays
-     * @param color
-     * @param distance
-     * @param x
-     * @param y
-     */
-    public PointLight(int rays, Color color,
-                      float distance, float x, float y) {
-        super(rays, color, distance, x, y, 0f);
-        setEndPoints();
-        update();
-    }
+	/**
+	 * @param rays
+	 * @param color
+	 * @param distance
+	 * @param x
+	 * @param y
+	 */
+	public PointLight(int rays, Color color, float distance, float x, float y) {
+		super(rays, color, distance, x, y, 0f);
+		setEndPoints();
+		update();
+	}
 
-    /**
-     * @param rays Note default values:
-     *             Color:WHITE
-     *             Distance:15
-     *             Position:origo
-     */
-    public PointLight(int rays) {
-        this(rays, Light.DefaultColor, 15f, 0f, 0f);
-    }
+	/**
+	 * @param rays
+	 *            Note default values: Color:WHITE Distance:15 Position:origo
+	 */
+	public PointLight(int rays) {
+		this(rays, Light.DEFAULTCOLOR, 15f, 0f, 0f);
+	}
 
-    final void setEndPoints() {
-        float angleNum = 360f / (this.rayNum - 1);
-        for (int i = 0; i < this.rayNum; i++) {
-            final float angle = angleNum * i;
-            this.sin[i] = MathUtils.sinDeg(angle);
-            this.cos[i] = MathUtils.cosDeg(angle);
-            this.endX[i] = this.distance * this.cos[i];
-            this.endY[i] = this.distance * this.sin[i];
-        }
-    }
+	final void setEndPoints() {
+		float angleNum = 360f / (this.rayNum - 1);
+		for (int i = 0; i < this.rayNum; i++) {
+			final float angle = angleNum * i;
+			this.sin[i] = MathUtils.sinDeg(angle);
+			this.cos[i] = MathUtils.cosDeg(angle);
+			this.endX[i] = this.distance * this.cos[i];
+			this.endY[i] = this.distance * this.sin[i];
+		}
+	}
 
-    @Override
-    public void setDirection(float directionDegree) {
-    }
+	@Override
+	public void setDirection(float directionDegree) {
+	}
 
-    /**
-     * setDistance(float dist) MIN capped to 1cm
-     *
-     * @param dist
-     */
-    public void setDistance(float dist) {
-        dist *= RayHandler.gammaCorrectionParameter;
-        this.distance = dist < 0.01f ? 0.01f : dist;
-        setEndPoints();
-        if (this.staticLight) {
-            staticUpdate();
-        }
-    }
+	/**
+	 * setDistance(float dist) MIN capped to 1cm
+	 * 
+	 * @param dist
+	 */
+	public void setDistance(float dist) {
+		dist *= RayHandler.gammaCorrectionParameter;
+		this.distance = dist < 0.01f ? 0.01f : dist;
+		setEndPoints();
+		if (this.staticLight) {
+			staticUpdate();
+		}
+	}
 
 }

@@ -18,96 +18,94 @@ package com.jemge.j2d.culling;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.jemge.core.debug.Profiler;
-import com.jemge.j2d.Entity;
+import com.jemge.j2d.IEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ZoneBasedCulling implements CullingSystem {
-    public static float ZONE_SIZE = 1024;
-    private final HashMap<CullingZone, ArrayList<Entity>> zone_map;
-    private final ArrayList<Entity> dynamic_objects;
-    private final ArrayList<Entity> final_render_list;
+public class ZoneBasedCulling implements ICullingSystem {
+	public static float ZONE_SIZE = 1024;
+	private final HashMap<CullingZone, ArrayList<IEntity>> zone_map;
+	private final ArrayList<IEntity> dynamic_objects;
+	private final ArrayList<IEntity> final_render_list;
 
-    public ZoneBasedCulling() {
-        this.zone_map = new HashMap<>();
-        this.final_render_list = new ArrayList<>(256);
-        this.dynamic_objects = new ArrayList<>(32);
+	public ZoneBasedCulling() {
+		this.zone_map = new HashMap<>();
+		this.final_render_list = new ArrayList<>(256);
+		this.dynamic_objects = new ArrayList<>(32);
+	}
 
-    }
+	public void putObject(IEntity object) {
+		Profiler.start(this, "new object");
 
-    public void putObject(Entity object) {
-        Profiler.start(this, "new object");
+		if (!object.getData("static")) {
+			this.dynamic_objects.add(object);
+			return;
+		}
 
-        if (!object.getData("static")) {
-            this.dynamic_objects.add(object);
-            return;
-        }
+		if (existZone(object) == null) {
+			CullingZone zone = createZone(object);
+			this.zone_map.put(zone, new ArrayList<IEntity>());
+			this.zone_map.get(zone).add(object);
+		} else {
+			this.zone_map.get(existZone(object)).add(object);
+		}
 
-        if(existZone(object) == null){
-            CullingZone zone = createZone(object);
-            this.zone_map.put(zone, new ArrayList<Entity>());
-            this.zone_map.get(zone).add(object);
-        }else{
-            this.zone_map.get(existZone(object)).add(object);
-        }
+		Profiler.stop(this, "new object");
+	}
 
-        Profiler.stop(this, "new object");
-    }
+	public void removeObject(IEntity object) {
+		if (!object.getData("static")) {
+			this.dynamic_objects.remove(object);
+		} else {
+			this.zone_map.get(existZone(object)).remove(object);
+		}
+	}
 
-    public void removeObject(Entity object){
-        if (!object.getData("static")) {
-            this.dynamic_objects.remove(object);
-        }else{
-            this.zone_map.get(existZone(object)).remove(object);
-        }
-    }
+	private CullingZone existZone(IEntity object) {
+		for (CullingZone zone : this.zone_map.keySet()) {
+			if (zone.overlaps(object.getRectangle())) {
+				return zone;
+			}
+		}
 
-    private CullingZone existZone(Entity object) {
-        for(CullingZone zone : this.zone_map.keySet()){
-            if(zone.overlaps(object.getRectangle())){
-                return zone;
-            }
-        }
+		return null;
+	}
 
-        return null;
-    }
+	private CullingZone createZone(IEntity object) {
+		final CullingZone zone = new CullingZone(ZONE_SIZE, ZONE_SIZE,
+				ZONE_SIZE, ZONE_SIZE);
+		zone.setCenter(object.getX(), object.getY());
 
-    private CullingZone createZone(Entity object){
-        final CullingZone zone = new CullingZone(ZONE_SIZE, ZONE_SIZE, ZONE_SIZE, ZONE_SIZE);
-        zone.setCenter(object.getX(), object.getY());
+		return zone;
+	}
 
-        return zone;
-    }
+	protected ArrayList<IEntity> getMyList(CullingZone zone) {
+		return this.zone_map.get(zone);
+	}
 
-    protected ArrayList<Entity> getMyList(CullingZone zone){
-        return this.zone_map.get(zone);
-    }
+	public void cull(Rectangle camera_view) {
+		Profiler.start(this, "cull");
 
-    public void cull(Rectangle camera_view){
-        Profiler.start(this, "cull");
+		this.final_render_list.clear();
+		for (CullingZone zone : this.zone_map.keySet()) {
+			if (zone.overlaps(camera_view)) {
+				zone.getCullingList(this, this.final_render_list);
+			}
+		}
+		if (!this.dynamic_objects.isEmpty()) {
+			this.final_render_list.addAll(this.dynamic_objects);
+		}
 
-        this.final_render_list.clear();
-        for(CullingZone zone : this.zone_map.keySet()){
-            if(zone.overlaps(camera_view)){
-                zone.getCullingList(this, this.final_render_list);
-            }
-        }
-        if(!this.dynamic_objects.isEmpty()){
-            this.final_render_list.addAll(this.dynamic_objects);
-        }
+		Profiler.stop(this, "cull");
+	}
 
-        Profiler.stop(this, "cull");
-    }
+	public ArrayList<IEntity> getFinalRenderList() {
+		return this.final_render_list;
+	}
 
-    public ArrayList<Entity> getFinalRenderList(){
-        return this.final_render_list;
-    }
-
-    @Override
-    public void postRender(){
-
-    }
-
+	@Override
+	public void postRender() {
+	}
 
 }

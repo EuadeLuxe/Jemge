@@ -21,114 +21,112 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.jemge.core.Jemge;
-import com.jemge.core.system.UpdateListener;
+import com.jemge.core.system.IUpdateListener;
 
 /**
  * Default object for drawing textures.
- *
+ * 
  * @author MrBarsack
  * @see RendererObject
  */
 
-public class JSprite extends Sprite implements RendererObject, Entity{
+public class JSprite extends Sprite implements IRendererObject, IEntity {
 
-    //for static jsprites
-    private boolean isStatic = false;
-    private boolean hasTransparent = false;
-    private Rectangle cachedBound;
-    public UpdateListener listener;
+	// for static jsprites
+	private boolean isStatic = false;
+	private boolean hasTransparent = false;
+	private Rectangle cachedBound;
+	public IUpdateListener listener;
 
-    public JSprite(Texture texture) {
-        super(texture);
-    }
+	public JSprite(Texture texture) {
+		super(texture);
+	}
 
-    public JSprite(Texture texture, float x, float y) {
-        super(texture);
-        setPosition(x, y);
-    }
+	public JSprite(Texture texture, float x, float y) {
+		super(texture);
+		setPosition(x, y);
+	}
 
-    public JSprite(Texture texture, float x, float y, float width, float height) {
-        super(texture);
-        setBounds(x, y, width, height);
+	public JSprite(Texture texture, float x, float y, float width, float height) {
+		super(texture);
+		setBounds(x, y, width, height);
+	}
 
-    }
+	public JSprite(TextureRegion region) {
+		super(region);
+	}
 
-    public JSprite(TextureRegion region) {
-        super(region);
-    }
+	public JSprite(JSprite sprite) {
+		super(sprite);
+	}
 
-    public JSprite(JSprite sprite) {
-        super(sprite);
-    }
+	/**
+	 * @return Is this jsprite transparent? Override.
+	 */
 
-    /**
-     * @return Is this jsprite transparent? Override.
-     */
+	@Override
+	public boolean hasTransparent() {
+		return this.hasTransparent;
+	}
 
-    @Override
-    public boolean hasTransparent() {
-        return this.hasTransparent;
-    }
+	public JSprite setOpaque(boolean is) {
+		this.hasTransparent = is;
 
-    public JSprite setOpaque(boolean is){
-        this.hasTransparent = is;
+		return this;
+	}
 
-        return this;
-    }
+	/**
+	 * Render this jsprite
+	 */
 
+	@Override
+	public void render(SpriteBatch spriteBatch) {
+		draw(spriteBatch);
 
-    /**
-     * Render this jsprite
-     */
+		if (this.listener != null) {
+			this.listener.update(this);
+		}
+	}
 
-    @Override
-    public void render(SpriteBatch spriteBatch) {
-        draw(spriteBatch);
+	@Override
+	public boolean needRender() {
+		if (this.isStatic) {
+			return Jemge.renderer2D.cameraView.overlaps(this.cachedBound);
+		}
 
-        if(this.listener != null){
-            this.listener.update(this);
-        }
+		// Inside the camera view?
+		return Jemge.renderer2D.cameraView.overlaps(getBoundingRectangle());
+	}
 
-    }
+	@Override
+	public boolean getData(String name) {
+		return name.equals("static") && this.isStatic;
+	}
 
-    @Override
-    public boolean needRender() {
-        if (this.isStatic) {
-            return Jemge.renderer2D.cameraView.overlaps(this.cachedBound);
-        }
+	@Override
+	public Rectangle getRectangle() {
+		if (this.isStatic) {
+			return this.cachedBound;
+		}
 
-        //Inside the camera view?
-        return Jemge.renderer2D.cameraView.overlaps(getBoundingRectangle());
-    }
+		return getBoundingRectangle();
+	}
 
-    @Override
-    public boolean getData(String name) {
-        return name.equals("static") && this.isStatic;
-    }
+	/**
+	 * Static items do *not* update bounding rectangle.
+	 * 
+	 * @param set
+	 * @return
+	 */
 
-    @Override
-    public Rectangle getRectangle() {
-        if (this.isStatic) {
-            return this.cachedBound;
-        }
+	public JSprite setStatic(boolean set) {
+		this.isStatic = set;
 
-        return getBoundingRectangle();
-    }
+		if (set && this.cachedBound == null) {
+			this.cachedBound = getBoundingRectangle();
+		}
 
-    /**
-     * Static items do *not* update bounding rectangle.
-     * @param set
-     * @return
-     */
-
-    public JSprite setStatic(boolean set) {
-        this.isStatic = set;
-
-        if (set && this.cachedBound == null) {
-            this.cachedBound = getBoundingRectangle();
-        }
-
-        return this;
-    }
+		return this;
+	}
 
 }
