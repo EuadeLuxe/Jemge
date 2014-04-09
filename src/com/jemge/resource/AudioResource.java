@@ -4,12 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 
 public class AudioResource implements IResource {
-	private final String name;
-	private final Sound sound;
+	private final String NAME;
+	private final Sound SOUND;
 
 	public AudioResource(String name) {
-		this.name = name;
-		this.sound = Gdx.audio.newSound(Gdx.files.internal(name));
+		this.NAME = name;
+		this.SOUND = Gdx.audio.newSound(Gdx.files.internal(name));
 	}
 
 	@Override
@@ -19,10 +19,10 @@ public class AudioResource implements IResource {
 
 	@Override
 	public String getName() {
-		return this.name;
+		return this.NAME;
 	}
 
 	public Sound getSound() {
-		return this.sound;
+		return this.SOUND;
 	}
 }

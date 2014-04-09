@@ -32,8 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class InputManager extends EngineModule implements InputProcessor {
-	private static final Vector3 input_position = new Vector3();
-	private static final Vector2 position_by_cam = new Vector2();
+	private static final Vector3 INPUT_POSITION = new Vector3();
+	private static final Vector2 POSITION_BY_CAM = new Vector2();
 
 	private List<IInputListener> listeners;
 
@@ -43,10 +43,10 @@ public class InputManager extends EngineModule implements InputProcessor {
 
 	@Override
 	public void init() {
-		this.listeners = new ArrayList<>();
-		this.keyDownListener = new HashMap<>();
-		this.keyUpListener = new HashMap<>();
-		this.whileDownListener = new HashMap<>();
+		this.listeners = new ArrayList<IInputListener>();
+		this.keyDownListener = new HashMap<Method, Object>();
+		this.keyUpListener = new HashMap<Method, Object>();
+		this.whileDownListener = new HashMap<Method, Object>();
 
 		Gdx.input.setInputProcessor(this);
 	}
@@ -90,11 +90,11 @@ public class InputManager extends EngineModule implements InputProcessor {
 	}
 
 	public static Vector2 getInputPosition() {
-		input_position.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-		((Camera) Jemge.renderer2D.getCamera()).unproject(input_position);
-		position_by_cam.set(input_position.x, input_position.y);
+		INPUT_POSITION.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+		((Camera) Jemge.renderer2D.getCamera()).unproject(INPUT_POSITION);
+		POSITION_BY_CAM.set(INPUT_POSITION.x, INPUT_POSITION.y);
 
-		return position_by_cam;
+		return POSITION_BY_CAM;
 	}
 
 	@Override
@@ -114,12 +114,10 @@ public class InputManager extends EngineModule implements InputProcessor {
 				}
 			}
 		}
-
 	}
 
 	@Override
 	public void dispose() {
-
 	}
 
 	@Override

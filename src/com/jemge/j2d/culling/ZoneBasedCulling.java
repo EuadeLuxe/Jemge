@@ -24,31 +24,31 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ZoneBasedCulling implements ICullingSystem {
-	public static float ZONE_SIZE = 1024;
-	private final HashMap<CullingZone, ArrayList<IEntity>> zone_map;
-	private final ArrayList<IEntity> dynamic_objects;
-	private final ArrayList<IEntity> final_render_list;
+	public static final float ZONE_SIZE = 1024;
+	private final HashMap<CullingZone, ArrayList<IEntity>> ZONE_MAP;
+	private final ArrayList<IEntity> DYNAMIC_OBJECTS;
+	private final ArrayList<IEntity> FINAL_RENDER_LIST;
 
 	public ZoneBasedCulling() {
-		this.zone_map = new HashMap<>();
-		this.final_render_list = new ArrayList<>(256);
-		this.dynamic_objects = new ArrayList<>(32);
+		this.ZONE_MAP = new HashMap<CullingZone, ArrayList<IEntity>>();
+		this.DYNAMIC_OBJECTS = new ArrayList<IEntity>(32);
+		this.FINAL_RENDER_LIST = new ArrayList<IEntity>(256);
 	}
 
 	public void putObject(IEntity object) {
 		Profiler.start(this, "new object");
 
 		if (!object.getData("static")) {
-			this.dynamic_objects.add(object);
+			this.DYNAMIC_OBJECTS.add(object);
 			return;
 		}
 
 		if (existZone(object) == null) {
 			CullingZone zone = createZone(object);
-			this.zone_map.put(zone, new ArrayList<IEntity>());
-			this.zone_map.get(zone).add(object);
+			this.ZONE_MAP.put(zone, new ArrayList<IEntity>());
+			this.ZONE_MAP.get(zone).add(object);
 		} else {
-			this.zone_map.get(existZone(object)).add(object);
+			this.ZONE_MAP.get(existZone(object)).add(object);
 		}
 
 		Profiler.stop(this, "new object");
@@ -56,14 +56,14 @@ public class ZoneBasedCulling implements ICullingSystem {
 
 	public void removeObject(IEntity object) {
 		if (!object.getData("static")) {
-			this.dynamic_objects.remove(object);
+			this.DYNAMIC_OBJECTS.remove(object);
 		} else {
-			this.zone_map.get(existZone(object)).remove(object);
+			this.ZONE_MAP.get(existZone(object)).remove(object);
 		}
 	}
 
 	private CullingZone existZone(IEntity object) {
-		for (CullingZone zone : this.zone_map.keySet()) {
+		for (CullingZone zone : this.ZONE_MAP.keySet()) {
 			if (zone.overlaps(object.getRectangle())) {
 				return zone;
 			}
@@ -73,35 +73,35 @@ public class ZoneBasedCulling implements ICullingSystem {
 	}
 
 	private CullingZone createZone(IEntity object) {
-		final CullingZone zone = new CullingZone(ZONE_SIZE, ZONE_SIZE,
+		final CullingZone ZONE = new CullingZone(ZONE_SIZE, ZONE_SIZE,
 				ZONE_SIZE, ZONE_SIZE);
-		zone.setCenter(object.getX(), object.getY());
+		ZONE.setCenter(object.getX(), object.getY());
 
-		return zone;
+		return ZONE;
 	}
 
 	protected ArrayList<IEntity> getMyList(CullingZone zone) {
-		return this.zone_map.get(zone);
+		return this.ZONE_MAP.get(zone);
 	}
 
 	public void cull(Rectangle camera_view) {
 		Profiler.start(this, "cull");
 
-		this.final_render_list.clear();
-		for (CullingZone zone : this.zone_map.keySet()) {
+		this.FINAL_RENDER_LIST.clear();
+		for (CullingZone zone : this.ZONE_MAP.keySet()) {
 			if (zone.overlaps(camera_view)) {
-				zone.getCullingList(this, this.final_render_list);
+				zone.getCullingList(this, this.FINAL_RENDER_LIST);
 			}
 		}
-		if (!this.dynamic_objects.isEmpty()) {
-			this.final_render_list.addAll(this.dynamic_objects);
+		if (!this.DYNAMIC_OBJECTS.isEmpty()) {
+			this.FINAL_RENDER_LIST.addAll(this.DYNAMIC_OBJECTS);
 		}
 
 		Profiler.stop(this, "cull");
 	}
 
 	public ArrayList<IEntity> getFinalRenderList() {
-		return this.final_render_list;
+		return this.FINAL_RENDER_LIST;
 	}
 
 	@Override

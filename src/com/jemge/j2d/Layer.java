@@ -28,13 +28,13 @@ import java.util.List;
 
 public class Layer {
 
-	private final List<Object> rendererObjects;
+	private final List<Object> RENDEREROBJECTS;
 	protected ICullingSystem cullingSystem;
 
 	private static Renderer2D.RenderMode renderMode;
 
 	public Layer() {
-		this.rendererObjects = new ArrayList<>();
+		this.RENDEREROBJECTS = new ArrayList<Object>();
 		try {
 			this.cullingSystem = EngineConfiguration.cullingSystem.getClass()
 					.newInstance();
@@ -49,7 +49,7 @@ public class Layer {
 		if (rend instanceof IEntity) {
 			this.cullingSystem.putObject((IEntity) rend);
 		} else {
-			this.rendererObjects.add(rend);
+			this.RENDEREROBJECTS.add(rend);
 		}
 
 		return rend;
@@ -61,12 +61,12 @@ public class Layer {
 		} else if (rend instanceof Actor) {
 			((Actor) rend).remove();
 		} else {
-			this.rendererObjects.remove(rend);
+			this.RENDEREROBJECTS.remove(rend);
 		}
 	}
 
 	public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer) {
-		this.cullingSystem.cull(Jemge.renderer2D.cameraView);
+		this.cullingSystem.cull(Jemge.renderer2D.CAMERAVIEW);
 
 		renderMode = Renderer2D.RenderMode.INACTIVE;
 		for (IEntity entity : this.cullingSystem.getFinalRenderList()) {
@@ -98,7 +98,7 @@ public class Layer {
 			}
 		}
 
-		for (Object object : this.rendererObjects) {
+		for (Object object : this.RENDEREROBJECTS) {
 			if (object instanceof IShape) {
 				((IShape) object).renderShape(shapeRenderer);
 				continue;

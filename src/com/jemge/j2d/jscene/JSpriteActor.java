@@ -12,65 +12,65 @@ import com.jemge.j2d.IRendererObject;
 
 public class JSpriteActor extends Actor implements IEntity, IRendererObject {
 
-	private final JSprite jSprite;
+	private final JSprite JSPRITE;
 
 	public JSpriteActor(Texture texture) {
-		this.jSprite = new JSprite(texture);
+		this.JSPRITE = new JSprite(texture);
 	}
 
 	public JSpriteActor(Texture texture, float x, float y) {
-		this.jSprite = new JSprite(texture);
+		this.JSPRITE = new JSprite(texture);
 		setPosition(x, y);
 	}
 
 	public JSpriteActor(Texture texture, float x, float y, float width,
 			float height) {
-		this.jSprite = new JSprite(texture);
+		this.JSPRITE = new JSprite(texture);
 		setBounds(x, y, width, height);
 	}
 
 	public JSpriteActor(TextureRegion region) {
-		this.jSprite = new JSprite(region);
+		this.JSPRITE = new JSprite(region);
 	}
 
 	public JSpriteActor(JSprite sprite) {
-		this.jSprite = new JSprite(sprite);
+		this.JSPRITE = new JSprite(sprite);
 	}
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		this.jSprite.setBounds(getX(), getY(), getWidth(), getHeight());
-		this.jSprite.render((SpriteBatch) batch);
+		this.JSPRITE.setBounds(getX(), getY(), getWidth(), getHeight());
+		this.JSPRITE.render((SpriteBatch) batch);
 	}
 
 	@Override
 	public boolean needRender() {
-		return this.jSprite.needRender();
+		return this.JSPRITE.needRender();
 	}
 
 	@Override
 	public boolean getData(String name) {
-		return this.jSprite.getData(name);
+		return this.JSPRITE.getData(name);
 	}
 
 	@Override
 	public Rectangle getRectangle() {
-		return this.jSprite.getRectangle();
+		return this.JSPRITE.getRectangle();
 	}
 
 	public void setTexture(Texture texture) {
-		this.jSprite.setTexture(texture);
+		this.JSPRITE.setTexture(texture);
 	}
 
 	public JSpriteActor setStatic(boolean value) {
-		this.jSprite.setStatic(value);
+		this.JSPRITE.setStatic(value);
 
 		return this;
 	}
 
 	@Override
 	public boolean hasTransparent() {
-		return this.jSprite.hasTransparent();
+		return this.JSPRITE.hasTransparent();
 	}
 
 	@Override

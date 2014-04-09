@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
 public class TextureResource extends Texture implements IResource {
-	private final String name;
+	private final String NAME;
 
 	public TextureResource(String name) {
 		super(Gdx.files.internal(name));
-		this.name = name;
+		this.NAME = name;
 	}
 
 	@Override
@@ -18,7 +18,7 @@ public class TextureResource extends Texture implements IResource {
 
 	@Override
 	public String getName() {
-		return this.name;
+		return this.NAME;
 	}
 
 }

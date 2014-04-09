@@ -22,11 +22,11 @@ public class Background {
 
 	public void update(SpriteBatch spriteBatch) {
 		if (this.mode == MODE.TEXTURE) {
-			final OrthographicCamera camera = Jemge.renderer2D.getCamera();
+			final OrthographicCamera CAMERA = Jemge.renderer2D.getCamera();
 
-			this.texture.setBounds(camera.position.x - camera.viewportWidth,
-					camera.position.y - camera.viewportHeight,
-					camera.viewportWidth * 2, camera.viewportHeight * 2);
+			this.texture.setBounds(CAMERA.position.x - CAMERA.viewportWidth,
+					CAMERA.position.y - CAMERA.viewportHeight,
+					CAMERA.viewportWidth * 2, CAMERA.viewportHeight * 2);
 
 			this.texture.render(spriteBatch);
 		}
