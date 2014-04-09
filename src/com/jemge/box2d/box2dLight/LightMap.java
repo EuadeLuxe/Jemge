@@ -126,9 +126,9 @@ class LightMap {
 		this.lightMapMesh = createLightMapMesh();
 
 		this.shadowShader = ShadowShader.createShadowShader();
-		this.diffuseShader = DiffuseShader.createShadowShader();
+		this.diffuseShader = DiffuseShader.createDiffuseShader();
 
-		this.withoutShadowShader = WithoutShadowShader.createShadowShader();
+		this.withoutShadowShader = WithoutShadowShader.createWithoutShadowShader();
 
 		this.blurShader = Gaussian.createBlurShader(fboWidth, fboHeight);
 	}

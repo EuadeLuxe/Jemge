@@ -1,6 +1,7 @@
 package com.jemge.box2d.shaders;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.jemge.box2d.box2dLight.Light;
 import com.jemge.box2d.box2dLight.RayHandler;
@@ -10,6 +11,11 @@ public class Gaussian {
 	public static ShaderProgram createBlurShader(int width, int heigth) {
 		final String FBO_W = Integer.toString(width);
 		final String FBO_H = Integer.toString(heigth);
+
+		// final FileHandle VERTEXSHADER =
+		// Gdx.files.classpath("com/jemge/box2d/shaders/gaussian.vertex.glsl");
+		// final FileHandle FRAGMENTSHADER =
+		// Gdx.files.internal("com/jemge/box2d/shaders/gaussian.fragment.glsl");
 		final String VERTEXSHADER = "attribute vec4 a_position;\n"
 				+ "uniform vec2  dir;\n"
 				+ "attribute vec2 a_texCoord;\n"
@@ -47,6 +53,7 @@ public class Gaussian {
 				+ "const float close  = 0.3162162162;\n"
 				+ "const float far    = 0.0702702703;\n" + "void main()\n"
 				+ "{	 \n" + useCenterLight() + "}\n";
+
 		ShaderProgram.pedantic = false;
 		ShaderProgram blurShader = new ShaderProgram(VERTEXSHADER,
 				FRAGMENTSHADER);

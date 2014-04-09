@@ -1,30 +1,24 @@
 package com.jemge.box2d.shaders;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 public final class WithoutShadowShader {
-	public static final ShaderProgram createShadowShader() {
-		final String VERTEXSHADER = "attribute vec4 a_position;\n"
-				+ "attribute vec2 a_texCoord;\n"
-				+ "varying vec2 v_texCoords;\n" + "\n" + "void main()\n"
-				+ "{\n" + "   v_texCoords = a_texCoord;\n"
-				+ "   gl_Position = a_position;\n" + "}\n";
+	public static final ShaderProgram createWithoutShadowShader() {
+		final FileHandle VERTEXSHADER = Gdx.files
+				.classpath("com/jemge/box2d/shaders/withoutshadow.vertex.glsl");
+		final FileHandle FRAGMENTSHADER = Gdx.files
+				.internal("com/jemge/box2d/shaders/withoutshadow.fragment.glsl");
 
-		final String FRAGMENTSHADER = "#ifdef GL_ES\n"
-				+ "precision lowp float;\n" + "#define MED mediump\n"
-				+ "#else\n" + "#define MED \n" + "#endif\n"
-				+ "varying MED vec2 v_texCoords;\n"
-				+ "uniform sampler2D u_texture;\n" + "void main()\n" + "{\n"
-				+ "gl_FragColor = texture2D(u_texture, v_texCoords);\n" + "}\n";
 		ShaderProgram.pedantic = false;
-		ShaderProgram woShadowShader = new ShaderProgram(VERTEXSHADER,
+		ShaderProgram withoutShadowShader = new ShaderProgram(VERTEXSHADER,
 				FRAGMENTSHADER);
-		if (woShadowShader.isCompiled() == false) {
-			Gdx.app.log("ERROR", woShadowShader.getLog());
+		if (withoutShadowShader.isCompiled() == false) {
+			Gdx.app.log("ERROR", withoutShadowShader.getLog());
 
 		}
 
-		return woShadowShader;
+		return withoutShadowShader;
 	}
 }
