@@ -36,7 +36,7 @@ public class JSprite extends Sprite implements IRendererObject, IEntity {
 	private boolean isStatic = false;
 	private boolean hasTransparent = false;
 	private Rectangle cachedBound;
-	public IUpdateListener listener;
+	public IUpdateListener<JSprite> listener;
 
 	public JSprite(Texture texture) {
 		super(texture);
@@ -91,11 +91,11 @@ public class JSprite extends Sprite implements IRendererObject, IEntity {
 	@Override
 	public boolean needRender() {
 		if (this.isStatic) {
-			return Jemge.renderer2D.cameraView.overlaps(this.cachedBound);
+			return Jemge.renderer2D.CAMERAVIEW.overlaps(this.cachedBound);
 		}
 
 		// Inside the camera view?
-		return Jemge.renderer2D.cameraView.overlaps(getBoundingRectangle());
+		return Jemge.renderer2D.CAMERAVIEW.overlaps(getBoundingRectangle());
 	}
 
 	@Override

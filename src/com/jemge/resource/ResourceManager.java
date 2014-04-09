@@ -22,31 +22,31 @@ import java.util.HashMap;
 
 public class ResourceManager extends EngineModule {
 
-	private final HashMap<String, IResource> resourceList;
+	private final HashMap<String, IResource> RESOURCELIST;
 
 	public ResourceManager() {
-		this.resourceList = new HashMap<>();
+		this.RESOURCELIST = new HashMap<>();
 	}
 
 	public void addResource(String name, IResource resource) {
-		this.resourceList.put(name, resource);
+		this.RESOURCELIST.put(name, resource);
 	}
 
 	public IResource getResource(String name) {
-		return this.resourceList.get(name);
+		return this.RESOURCELIST.get(name);
 	}
 
 	public TextureResource getTexture(String name) {
-		if (this.resourceList.get(name) instanceof TextureResource) {
-			return (TextureResource) this.resourceList.get(name);
+		if (this.RESOURCELIST.get(name) instanceof TextureResource) {
+			return (TextureResource) this.RESOURCELIST.get(name);
 		}
 
 		throw new NullPointerException("This texture doesn't exist.");
 	}
 
 	public AudioResource getSound(String name) {
-		if (this.resourceList.get(name) instanceof AudioResource) {
-			return (AudioResource) this.resourceList.get(name);
+		if (this.RESOURCELIST.get(name) instanceof AudioResource) {
+			return (AudioResource) this.RESOURCELIST.get(name);
 		}
 
 		throw new NullPointerException("This sound doesn't exist.");
@@ -62,7 +62,7 @@ public class ResourceManager extends EngineModule {
 
 	@Override
 	public void dispose() {
-		for (IResource resource : this.resourceList.values()) {
+		for (IResource resource : this.RESOURCELIST.values()) {
 			if (resource instanceof TextureResource) {
 				((TextureResource) resource).dispose();
 			}

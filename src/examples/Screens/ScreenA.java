@@ -7,7 +7,6 @@ public class ScreenA extends JScreen {
 
 	@Override
 	public void render(float v) {
-
 	}
 
 	@Override
@@ -18,6 +17,5 @@ public class ScreenA extends JScreen {
 
 	@Override
 	public void hide() {
-
 	}
 }

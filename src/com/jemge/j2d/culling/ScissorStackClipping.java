@@ -9,34 +9,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScissorStackClipping implements ICullingSystem {
-	final private List<IEntity> entities;
-	final Rectangle scissors = new Rectangle();
+	private final List<IEntity> ENTITIES;
+	final Rectangle SCISSORS = new Rectangle();
 
 	public ScissorStackClipping() {
-		entities = new ArrayList<>();
+		ENTITIES = new ArrayList<IEntity>();
 	}
 
 	@Override
 	public void putObject(IEntity entity) {
-		entities.add(entity);
+		ENTITIES.add(entity);
 	}
 
 	@Override
 	public void removeObject(IEntity entity) {
-		entities.remove(entity);
+		ENTITIES.remove(entity);
 	}
 
 	@Override
 	public void cull(Rectangle camera_view) {
 		ScissorStack.calculateScissors(Jemge.renderer2D.getCamera(),
 				Jemge.renderer2D.getSpriteBatch().getTransformMatrix(),
-				camera_view, scissors);
-		ScissorStack.pushScissors(scissors);
+				camera_view, SCISSORS);
+		ScissorStack.pushScissors(SCISSORS);
 	}
 
 	@Override
 	public List<IEntity> getFinalRenderList() {
-		return entities;
+		return ENTITIES;
 	}
 
 	@Override

@@ -12,7 +12,7 @@ public class CircleShape implements IShape, IEntity {
 	public float radius;
 	public Rectangle rectangle;
 
-	public IUpdateListener listener;
+	public IUpdateListener<CircleShape> listener;
 
 	public ShapeRenderer.ShapeType shapeType = ShapeRenderer.ShapeType.Filled;
 
@@ -60,7 +60,7 @@ public class CircleShape implements IShape, IEntity {
 	@Override
 	public boolean needRender() {
 		// Inside the camera view?
-		return Jemge.renderer2D.cameraView.overlaps(this.rectangle);
+		return Jemge.renderer2D.CAMERAVIEW.overlaps(this.rectangle);
 	}
 
 	@Override
