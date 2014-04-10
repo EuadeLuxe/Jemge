@@ -1,10 +1,6 @@
 package com.jemge.box2d.box2dLight;
 
-import com.jemge.box2d.shaders.DiffuseShader;
-import com.jemge.box2d.shaders.Gaussian;
-import com.jemge.box2d.shaders.ShadowShader;
-import com.jemge.box2d.shaders.WithoutShadowShader;
-
+import com.jemge.box2d.shaders.Shader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -28,6 +24,9 @@ class LightMap {
 	private ShaderProgram diffuseShader;
 
 	boolean lightMapDrawingDisabled;
+
+	private int fboWidth;
+	private int fboHeight;
 
 	public void render() {
 		boolean needed = this.rayHandler.lightRenderedLastFrame > 0;
@@ -83,6 +82,13 @@ class LightMap {
 				this.blurShader.begin();
 				// blurShader.setUniformi("u_texture", 0);
 				this.blurShader.setUniformf("dir", 1f, 0f);
+				// TODO wird benötigt?
+				this.blurShader.setUniformf("FBO_W", (float) this.fboWidth);
+				this.blurShader.setUniformf("FBO_H", (float) this.fboHeight);
+				this.blurShader.setUniformi("isDiffuse",
+						RayHandler.isDiffuse ? 1 : 0);
+				this.blurShader.setUniformi("centerLight",
+						Light.CENTERLIGHT ? 1 : 0);
 				this.lightMapMesh.render(this.blurShader, GL20.GL_TRIANGLE_FAN,
 						0, 4);
 				this.blurShader.end();
@@ -96,8 +102,12 @@ class LightMap {
 				this.blurShader.begin();
 				// blurShader.setUniformi("u_texture", 0);
 				this.blurShader.setUniformf("dir", 0f, 1f);
-				this.blurShader.setUniformi("intensive", Light.CENTERLIGHT ? 1
-						: 0);
+				this.blurShader.setUniformf("FBO_W", (float) this.fboWidth);
+				this.blurShader.setUniformf("FBO_H", (float) this.fboHeight);
+				this.blurShader.setUniformi("isDiffuse",
+						RayHandler.isDiffuse ? 1 : 0);
+				this.blurShader.setUniformi("centerLight",
+						Light.CENTERLIGHT ? 1 : 0);
 				this.lightMapMesh.render(this.blurShader, GL20.GL_TRIANGLE_FAN,
 						0, 4);
 				this.blurShader.end();
@@ -111,6 +121,8 @@ class LightMap {
 
 	public LightMap(RayHandler rayHandler, int fboWidth, int fboHeight) {
 		this.rayHandler = rayHandler;
+		this.fboWidth = fboWidth;
+		this.fboHeight = fboHeight;
 
 		if (fboWidth <= 0) {
 			fboWidth = 1;
@@ -125,12 +137,12 @@ class LightMap {
 
 		this.lightMapMesh = createLightMapMesh();
 
-		this.shadowShader = ShadowShader.createShadowShader();
-		this.diffuseShader = DiffuseShader.createShadowShader();
+		this.shadowShader = Shader.createShader("shadow");
+		this.diffuseShader = Shader.createShader("diffuse");
 
-		this.withoutShadowShader = WithoutShadowShader.createShadowShader();
+		this.withoutShadowShader = Shader.createShader("withoutshadow");
 
-		this.blurShader = Gaussian.createBlurShader(fboWidth, fboHeight);
+		this.blurShader = Shader.createShader("gaussian");
 	}
 
 	void dispose() {
