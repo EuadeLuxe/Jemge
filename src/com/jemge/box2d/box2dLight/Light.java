@@ -22,8 +22,10 @@ public abstract class Light {
 		public static final int VERY_NICE = 720;
 	}
 
-	static final Color DEFAULTCOLOR = new Color(0.75f, 0.75f, 0.5f, 0.75f);
-	static public boolean CENTERLIGHT = false;
+	protected static final Color DEFAULTCOLOR = new Color(0.75f, 0.75f, 0.5f,
+			0.75f);
+	protected static final float ZERO = Color.toFloatBits(0f, 0f, 0f, 0f);
+	public static boolean centerLight = false;
 	private boolean active = true;
 	protected boolean soft = true;
 	protected boolean xray = false;
@@ -43,13 +45,13 @@ public abstract class Light {
 
 	protected float colorF;
 
-	final static int MIN_RAYS = 3;
+	private static final int MIN_RAYS = 3;
 
-	float[] segments;
-	float[] mx;
-	float[] my;
-	float[] f;
-	int m_index = 0;
+	protected float[] segments;
+	protected float[] mx;
+	protected float[] my;
+	protected float[] f;
+	protected int m_index = 0;
 
 	public Light(int rays, Color color, float directionDegree, float distance) {
 		Jemge.renderer2D.getRayHandler().LIGHTLIST.add(this);
@@ -113,9 +115,9 @@ public abstract class Light {
 	public void setDistance(float dist) {
 	}
 
-	abstract void update();
+	public abstract void update();
 
-	abstract void render();
+	public abstract void render();
 
 	public abstract void setDirection(float directionDegree);
 
@@ -163,7 +165,7 @@ public abstract class Light {
 	 */
 	public abstract void setPosition(Vector2 position);
 
-	final Vector2 TMPPOSITION = new Vector2();
+	protected final Vector2 TMPPOSITION = new Vector2();
 
 	/**
 	 * starting position of light in world coordinates. directional light return
@@ -195,7 +197,8 @@ public abstract class Light {
 	 */
 	public abstract float getY();
 
-	void staticUpdate() {
+	// TODO protected or public?
+	protected void staticUpdate() {
 		boolean tmp = this.rayHandler.culling;
 		this.staticLight = !this.staticLight;
 		this.rayHandler.culling = false;
@@ -224,11 +227,9 @@ public abstract class Light {
 		} else {
 			this.rayHandler.DISABLEDLIGHTS.add(this);
 			this.rayHandler.LIGHTLIST.removeValue(this, true);
-
 		}
 
 		this.active = active;
-
 	}
 
 	/**
@@ -325,7 +326,6 @@ public abstract class Light {
 	}
 
 	private final void setRayNum(int rays) {
-
 		if (rays < MIN_RAYS) {
 			rays = MIN_RAYS;
 		}
@@ -337,10 +337,7 @@ public abstract class Light {
 		this.mx = new float[this.vertexNum];
 		this.my = new float[this.vertexNum];
 		this.f = new float[this.vertexNum];
-
 	}
-
-	static final float ZERO = Color.toFloatBits(0f, 0f, 0f, 0f);
 
 	/**
 	 * Color getColor
@@ -367,11 +364,10 @@ public abstract class Light {
 		return false;
 	}
 
-	final RayCastCallback RAY = new RayCastCallback() {
+	protected final RayCastCallback RAY = new RayCastCallback() {
 		@Override
-		final public float reportRayFixture(Fixture fixture, Vector2 point,
+		public final float reportRayFixture(Fixture fixture, Vector2 point,
 				Vector2 normal, float fraction) {
-
 			if ((filterA != null) && !contactFilter(fixture)) {
 				return -1;
 			}
@@ -384,7 +380,7 @@ public abstract class Light {
 		}
 	};
 
-	final boolean contactFilter(Fixture fixtureB) {
+	private final boolean contactFilter(Fixture fixtureB) {
 		Filter filterB = fixtureB.getFilterData();
 
 		if (filterA.groupIndex == filterB.groupIndex && filterA.groupIndex != 0) {
@@ -423,5 +419,4 @@ public abstract class Light {
 		filterA.groupIndex = groupIndex;
 		filterA.maskBits = maskBits;
 	}
-
 }

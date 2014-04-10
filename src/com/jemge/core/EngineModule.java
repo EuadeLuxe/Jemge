@@ -17,7 +17,6 @@
 package com.jemge.core;
 
 public abstract class EngineModule {
-
 	public String getName() {
 		return getClass().getName();
 	}

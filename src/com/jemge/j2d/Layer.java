@@ -27,10 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Layer {
-
 	private final List<Object> RENDEREROBJECTS;
 	protected ICullingSystem cullingSystem;
-
 	private static Renderer2D.RenderMode renderMode;
 
 	public Layer() {
@@ -51,7 +49,6 @@ public class Layer {
 		} else {
 			this.RENDEREROBJECTS.add(rend);
 		}
-
 		return rend;
 	}
 

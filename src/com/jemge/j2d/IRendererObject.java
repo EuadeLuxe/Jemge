@@ -26,7 +26,6 @@ package com.jemge.j2d;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public interface IRendererObject {
-
 	public boolean hasTransparent();
 
 	public void render(SpriteBatch spriteBatch);

@@ -12,11 +12,10 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.jemge.j2d.IEntity;
 
 public class DirectionalLight extends Light {
-
-	float sin;
-	float cos;
-	final Vector2[] start;
-	final Vector2[] end;
+	private float sin;
+	private float cos;
+	private final Vector2[] start;
+	private final Vector2[] end;
 
 	/**
 	 * Directional lights simulate light source that locations is at infinite
@@ -63,21 +62,21 @@ public class DirectionalLight extends Light {
 		}
 	}
 
-	float lastX;
+	// private float lastX;
 
 	@Override
-	void update() {
+	public void update() {
 		if (this.staticLight) {
 			return;
 		}
 
-		final float width = (this.rayHandler.x2 - this.rayHandler.x1);
-		final float height = (this.rayHandler.y2 - this.rayHandler.y1);
+		final float WIDTH = (this.rayHandler.x2 - this.rayHandler.x1);
+		final float HEIGHT = (this.rayHandler.y2 - this.rayHandler.y1);
 
-		final float sizeOfScreen = width > height ? width : height;
+		final float SIZEOFSCREEN = WIDTH > HEIGHT ? WIDTH : HEIGHT;
 
-		float xAxelOffSet = sizeOfScreen * this.cos;
-		float yAxelOffSet = sizeOfScreen * this.sin;
+		float xAxelOffSet = SIZEOFSCREEN * this.cos;
+		float yAxelOffSet = SIZEOFSCREEN * this.sin;
 
 		// preventing length <0 assertion error on box2d.
 		if ((xAxelOffSet * xAxelOffSet < 0.1f)
@@ -86,28 +85,28 @@ public class DirectionalLight extends Light {
 			yAxelOffSet = 1;
 		}
 
-		final float widthOffSet = sizeOfScreen * -this.sin;
-		final float heightOffSet = sizeOfScreen * this.cos;
+		final float WIDTHOFFSET = SIZEOFSCREEN * -this.sin;
+		final float HEIGHTOFFSET = SIZEOFSCREEN * this.cos;
 
 		float x = (this.rayHandler.x1 + this.rayHandler.x2) * 0.5f
-				- widthOffSet;
+				- WIDTHOFFSET;
 		float y = (this.rayHandler.y1 + this.rayHandler.y2) * 0.5f
-				- heightOffSet;
+				- HEIGHTOFFSET;
 
-		final float portionX = 2f * widthOffSet / (this.rayNum - 1);
-		x = (MathUtils.floor(x / (portionX * 2))) * portionX * 2;
-		final float portionY = 2f * heightOffSet / (this.rayNum - 1);
-		y = (MathUtils.ceil(y / (portionY * 2))) * portionY * 2;
+		final float PORTIONX = 2f * WIDTHOFFSET / (this.rayNum - 1);
+		x = (MathUtils.floor(x / (PORTIONX * 2))) * PORTIONX * 2;
+		final float PORTIONY = 2f * HEIGHTOFFSET / (this.rayNum - 1);
+		y = (MathUtils.ceil(y / (PORTIONY * 2))) * PORTIONY * 2;
 		for (int i = 0; i < this.rayNum; i++) {
 
-			final float steppedX = i * portionX + x;
-			final float steppedY = i * portionY + y;
+			final float STEPPEDX = i * PORTIONX + x;
+			final float STEPPEDY = i * PORTIONY + y;
 			this.m_index = i;
-			this.start[i].x = steppedX - xAxelOffSet;
-			this.start[i].y = steppedY - yAxelOffSet;
+			this.start[i].x = STEPPEDX - xAxelOffSet;
+			this.start[i].y = STEPPEDY - yAxelOffSet;
 
-			this.mx[i] = this.end[i].x = steppedX + xAxelOffSet;
-			this.my[i] = this.end[i].y = steppedY + yAxelOffSet;
+			this.mx[i] = this.end[i].x = STEPPEDX + xAxelOffSet;
+			this.my[i] = this.end[i].y = STEPPEDY + yAxelOffSet;
 
 			if (this.rayHandler.world != null && !this.xray) {
 				this.rayHandler.world.rayCast(this.RAY, this.start[i],
@@ -118,9 +117,9 @@ public class DirectionalLight extends Light {
 		// update light mesh
 		// ray starting point
 		int size = 0;
-		final int arraySize = this.rayNum;
+		final int ARRAYSIZE = this.rayNum;
 
-		for (int i = 0; i < arraySize; i++) {
+		for (int i = 0; i < ARRAYSIZE; i++) {
 			this.segments[size++] = this.start[i].x;
 			this.segments[size++] = this.start[i].y;
 			this.segments[size++] = this.colorF;
@@ -138,7 +137,7 @@ public class DirectionalLight extends Light {
 		}
 
 		size = 0;
-		for (int i = 0; i < arraySize; i++) {
+		for (int i = 0; i < ARRAYSIZE; i++) {
 			this.segments[size++] = this.mx[i];
 			this.segments[size++] = this.my[i];
 			this.segments[size++] = this.colorF;
@@ -155,7 +154,7 @@ public class DirectionalLight extends Light {
 	}
 
 	@Override
-	void render() {
+	public void render() {
 		this.rayHandler.lightRenderedLastFrame++;
 
 		this.lightMesh.render(this.rayHandler.lightShader,
@@ -167,11 +166,12 @@ public class DirectionalLight extends Light {
 	}
 
 	@Override
-	final public void attachToBody(Body body, float offsetX, float offSetY) {
+	public final void attachToBody(Body body, float offsetX, float offSetY) {
 	}
 
 	@Override
-	final public void attachToEntity(IEntity entity, float offsetX, float offSetY) {
+	public final void attachToEntity(IEntity entity, float offsetX,
+			float offSetY) {
 	}
 
 	@Override
@@ -223,5 +223,4 @@ public class DirectionalLight extends Light {
 		}
 		return oddNodes;
 	}
-
 }

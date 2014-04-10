@@ -31,7 +31,6 @@ import com.jemge.core.system.IUpdateListener;
  */
 
 public class JSprite extends Sprite implements IRendererObject, IEntity {
-
 	// for static jsprites
 	private boolean isStatic = false;
 	private boolean hasTransparent = false;
@@ -71,7 +70,6 @@ public class JSprite extends Sprite implements IRendererObject, IEntity {
 
 	public JSprite setOpaque(boolean is) {
 		this.hasTransparent = is;
-
 		return this;
 	}
 
@@ -108,7 +106,6 @@ public class JSprite extends Sprite implements IRendererObject, IEntity {
 		if (this.isStatic) {
 			return this.cachedBound;
 		}
-
 		return getBoundingRectangle();
 	}
 
@@ -125,8 +122,6 @@ public class JSprite extends Sprite implements IRendererObject, IEntity {
 		if (set && this.cachedBound == null) {
 			this.cachedBound = getBoundingRectangle();
 		}
-
 		return this;
 	}
-
 }

@@ -1,6 +1,6 @@
 package com.jemge.core.debug;
 
-class ProfilerObject {
+public class ProfilerObject {
 	protected long start_time;
 	protected long final_time;
 

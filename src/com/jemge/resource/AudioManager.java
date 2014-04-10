@@ -11,12 +11,12 @@ public class AudioManager extends EngineModule {
 	public void init() {
 	}
 
-	public Long playSoundAtPosition(AudioResource sound, Vector2 position) {
+	public long playSoundAtPosition(AudioResource sound, Vector2 position) {
 		if ((sound == null) || (position == null)) {
 			throw new NullPointerException(
 					"Position and/or sound can't be null!");
 		}
-		Long id = sound.getSound().play(1.0f);
+		final long id = sound.getSound().play(1.0f);
 
 		Jemge.renderer2D.CAMERAVIEW.getCenter(TEMP1);
 

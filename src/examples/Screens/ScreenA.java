@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.jemge.core.JScreen;
 
 public class ScreenA extends JScreen {
-
 	@Override
 	public void render(float v) {
 	}

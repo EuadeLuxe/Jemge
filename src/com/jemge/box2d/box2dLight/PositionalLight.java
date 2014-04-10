@@ -12,17 +12,16 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.jemge.j2d.IEntity;
 
 public abstract class PositionalLight extends Light {
-
 	private Body body;
 	private IEntity entity;
 	private float bodyOffsetX;
 	private float bodyOffsetY;
-	final float[] sin;
-	final float[] cos;
+	protected final float[] SIN;
+	protected final float[] COS;
 
-	final Vector2 start = new Vector2();
-	final float[] endX;
-	final float[] endY;
+	private final Vector2 START = new Vector2();
+	protected final float[] ENDX;
+	protected final float[] ENDY;
 
 	/**
 	 * attach positional light to automatically follow body. Position is fixed
@@ -50,8 +49,8 @@ public abstract class PositionalLight extends Light {
 
 	@Override
 	public Vector2 getPosition() {
-		this.TMPPOSITION.x = this.start.x;
-		this.TMPPOSITION.y = this.start.y;
+		this.TMPPOSITION.x = this.START.x;
+		this.TMPPOSITION.y = this.START.y;
 		return this.TMPPOSITION;
 	}
 
@@ -64,7 +63,7 @@ public abstract class PositionalLight extends Light {
 	 */
 	@Override
 	public float getX() {
-		return this.start.x;
+		return this.START.x;
 	}
 
 	/**
@@ -72,15 +71,13 @@ public abstract class PositionalLight extends Light {
 	 */
 	@Override
 	public float getY() {
-		return this.start.y;
+		return this.START.y;
 	}
-
-	private final Vector2 TMPEND = new Vector2();
 
 	@Override
 	public void setPosition(float x, float y) {
-		this.start.x = x;
-		this.start.y = y;
+		this.START.x = x;
+		this.START.y = y;
 		if (this.staticLight) {
 			staticUpdate();
 		}
@@ -88,41 +85,42 @@ public abstract class PositionalLight extends Light {
 
 	@Override
 	public void setPosition(Vector2 position) {
-		this.start.x = position.x;
-		this.start.y = position.y;
+		this.START.x = position.x;
+		this.START.y = position.y;
 		if (this.staticLight) {
 			staticUpdate();
 		}
 	}
 
 	@Override
-	void update() {
+	public void update() {
+		final Vector2 TMPEND = new Vector2();
 		if (this.body != null && !this.staticLight) {
-			final Vector2 vec = this.body.getPosition();
-			float angle = this.body.getAngle();
-			final float cos = MathUtils.cos(angle);
-			final float sin = MathUtils.sin(angle);
-			final float dX = this.bodyOffsetX * cos - this.bodyOffsetY * sin;
-			final float dY = this.bodyOffsetX * sin + this.bodyOffsetY * cos;
-			this.start.x = vec.x + dX;
-			this.start.y = vec.y + dY;
-			setDirection(angle * MathUtils.radiansToDegrees);
+			final Vector2 VEC = this.body.getPosition();
+			final float ANGLE = this.body.getAngle();
+			final float COS = MathUtils.cos(ANGLE);
+			final float SIN = MathUtils.sin(ANGLE);
+			final float DX = this.bodyOffsetX * COS - this.bodyOffsetY * SIN;
+			final float DY = this.bodyOffsetX * SIN + this.bodyOffsetY * COS;
+			this.START.x = VEC.x + DX;
+			this.START.y = VEC.y + DY;
+			setDirection(ANGLE * MathUtils.radiansToDegrees);
 		} else if (this.entity != null && !this.staticLight) {
-			final Vector2 vec = new Vector2(this.entity.getX(),
+			final Vector2 VEC = new Vector2(this.entity.getX(),
 					this.entity.getY());
-			float angle = this.entity.getRotation();
-			final float cos = MathUtils.cos(angle);
-			final float sin = MathUtils.sin(angle);
-			final float dX = this.bodyOffsetX * cos - this.bodyOffsetY * sin;
-			final float dY = this.bodyOffsetX * sin + this.bodyOffsetY * cos;
-			this.start.x = vec.x + dX;
-			this.start.y = vec.y + dY;
-			setDirection(angle * MathUtils.radiansToDegrees);
+			final float ANGLE = this.entity.getRotation();
+			final float COS = MathUtils.cos(ANGLE);
+			final float SIN = MathUtils.sin(ANGLE);
+			final float DX = this.bodyOffsetX * COS - this.bodyOffsetY * SIN;
+			final float DY = this.bodyOffsetX * SIN + this.bodyOffsetY * COS;
+			this.START.x = VEC.x + DX;
+			this.START.y = VEC.y + DY;
+			setDirection(ANGLE * MathUtils.radiansToDegrees);
 		}
 
 		if (this.rayHandler.culling) {
-			this.culled = ((!this.rayHandler.intersect(this.start.x,
-					this.start.y, this.distance + this.softShadowLenght)));
+			this.culled = ((!this.rayHandler.intersect(this.START.x,
+					this.START.y, this.distance + this.softShadowLenght)));
 			if (this.culled) {
 				return;
 			}
@@ -135,24 +133,24 @@ public abstract class PositionalLight extends Light {
 		for (int i = 0; i < this.rayNum; i++) {
 			this.m_index = i;
 			this.f[i] = 1f;
-			this.TMPEND.x = this.endX[i] + this.start.x;
-			this.mx[i] = this.TMPEND.x;
-			this.TMPEND.y = this.endY[i] + this.start.y;
-			this.my[i] = this.TMPEND.y;
+			TMPEND.x = this.ENDX[i] + this.START.x;
+			this.mx[i] = TMPEND.x;
+			TMPEND.y = this.ENDY[i] + this.START.y;
+			this.my[i] = TMPEND.y;
 			if (this.rayHandler.world != null && !this.xray) {
-				this.rayHandler.world
-						.rayCast(this.RAY, this.start, this.TMPEND);
+				this.rayHandler.world.rayCast(this.RAY, this.START, TMPEND);
 			}
 		}
 		setMesh();
 	}
 
-	void setMesh() {
+	// TODO private?
+	private void setMesh() {
 		// ray starting point
 		int size = 0;
 
-		this.segments[size++] = this.start.x;
-		this.segments[size++] = this.start.y;
+		this.segments[size++] = this.START.x;
+		this.segments[size++] = this.START.y;
 		this.segments[size++] = this.colorF;
 		this.segments[size++] = 1;
 		// rays ending points.
@@ -178,9 +176,9 @@ public abstract class PositionalLight extends Light {
 			final float s = (1 - this.f[i]);
 			this.segments[size++] = s;
 			this.segments[size++] = this.mx[i] + s * this.softShadowLenght
-					* this.cos[i];
+					* this.COS[i];
 			this.segments[size++] = this.my[i] + s * this.softShadowLenght
-					* this.sin[i];
+					* this.SIN[i];
 			this.segments[size++] = ZERO;
 			this.segments[size++] = 0f;
 		}
@@ -188,7 +186,7 @@ public abstract class PositionalLight extends Light {
 	}
 
 	@Override
-	void render() {
+	public void render() {
 		if (this.rayHandler.culling && this.culled) {
 			return;
 		}
@@ -206,12 +204,12 @@ public abstract class PositionalLight extends Light {
 	public PositionalLight(int rays, Color color, float distance, float x,
 			float y, float directionDegree) {
 		super(rays, color, directionDegree, distance);
-		this.start.x = x;
-		this.start.y = y;
-		this.sin = new float[rays];
-		this.cos = new float[rays];
-		this.endX = new float[rays];
-		this.endY = new float[rays];
+		this.START.x = x;
+		this.START.y = y;
+		this.SIN = new float[rays];
+		this.COS = new float[rays];
+		this.ENDX = new float[rays];
+		this.ENDY = new float[rays];
 
 		this.lightMesh = new Mesh(VertexDataType.VertexArray, false,
 				this.vertexNum, 0, new VertexAttribute(Usage.Position, 2,
@@ -229,20 +227,19 @@ public abstract class PositionalLight extends Light {
 
 	@Override
 	public boolean contains(float x, float y) {
-
 		// fast fail
-		final float x_d = this.start.x - x;
-		final float y_d = this.start.y - y;
-		final float dst2 = x_d * x_d + y_d * y_d;
-		if (this.distance * this.distance <= dst2) {
+		final float X_D = this.START.x - x;
+		final float Y_D = this.START.y - y;
+		final float DST2 = X_D * X_D + Y_D * Y_D;
+		if (this.distance * this.distance <= DST2) {
 			return false;
 		}
 
 		// actual check
 
 		boolean oddNodes = false;
-		float x2 = this.mx[this.rayNum] = this.start.x;
-		float y2 = this.my[this.rayNum] = this.start.y;
+		float x2 = this.mx[this.rayNum] = this.START.x;
+		float y2 = this.my[this.rayNum] = this.START.y;
 		float x1, y1;
 		for (int i = 0; i <= this.rayNum; x2 = x1, y2 = y1, ++i) {
 			x1 = this.mx[i];

@@ -147,7 +147,6 @@ public class InputManager extends EngineModule implements InputProcessor {
 				}
 			}
 		}
-
 		return true;
 	}
 
@@ -166,7 +165,6 @@ public class InputManager extends EngineModule implements InputProcessor {
 				this.listeners.get(a).clicked();
 			}
 		}
-
 		return true;
 	}
 

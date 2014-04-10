@@ -36,16 +36,16 @@ import java.util.List;
  */
 
 public class Engine {
-	private final List<EngineModule> modules;
+	private final List<EngineModule> MODULES;
 
 	public Engine() {
-		this.modules = new ArrayList<>();
-		this.modules.add(new Physics2D());
-		this.modules.add(new InputManager());
-		this.modules.add(new ResourceManager());
-		this.modules.add(new JUIManager());
+		this.MODULES = new ArrayList<>();
+		this.MODULES.add(new Physics2D());
+		this.MODULES.add(new InputManager());
+		this.MODULES.add(new ResourceManager());
+		this.MODULES.add(new JUIManager());
 
-		for (EngineModule module : this.modules) {
+		for (EngineModule module : this.MODULES) {
 			module.init();
 		}
 
@@ -58,16 +58,15 @@ public class Engine {
 	}
 
 	public void update() {
-		for (EngineModule module : this.modules) {
+		for (EngineModule module : this.MODULES) {
 			module.update();
 		}
-
 	}
 
 	public void dispose() {
 		Jemge.renderer2D.dispose();
 
-		for (EngineModule module : this.modules) {
+		for (EngineModule module : this.MODULES) {
 			module.dispose();
 		}
 
@@ -75,7 +74,7 @@ public class Engine {
 	}
 
 	public Physics2D getPhysics2D() {
-		for (EngineModule module : this.modules) {
+		for (EngineModule module : this.MODULES) {
 			if (module instanceof Physics2D) {
 				return (Physics2D) module;
 			}
@@ -86,7 +85,7 @@ public class Engine {
 	}
 
 	public InputManager getInputManager() {
-		for (EngineModule module : this.modules) {
+		for (EngineModule module : this.MODULES) {
 			if (module instanceof InputManager) {
 				return (InputManager) module;
 			}
@@ -97,7 +96,7 @@ public class Engine {
 	}
 
 	public JUIManager getJUIManager() {
-		for (EngineModule module : this.modules) {
+		for (EngineModule module : this.MODULES) {
 			if (module instanceof JUIManager) {
 				return (JUIManager) module;
 			}
@@ -108,7 +107,7 @@ public class Engine {
 	}
 
 	public ResourceManager getResourceManager() {
-		for (EngineModule module : this.modules) {
+		for (EngineModule module : this.MODULES) {
 			if (module instanceof ResourceManager) {
 				return (ResourceManager) module;
 			}
@@ -119,7 +118,7 @@ public class Engine {
 	}
 
 	public EngineModule getModule(String name) {
-		for (EngineModule module : this.modules) {
+		for (EngineModule module : this.MODULES) {
 			if (module.getName().equals(name)) {
 				return module;
 			}
@@ -129,9 +128,8 @@ public class Engine {
 	}
 
 	public EngineModule addModule(EngineModule module) {
-		this.modules.add(module);
+		this.MODULES.add(module);
 
 		return module;
 	}
-
 }

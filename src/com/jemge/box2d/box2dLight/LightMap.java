@@ -11,19 +11,19 @@ import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
-class LightMap {
-	private ShaderProgram shadowShader;
-	FrameBuffer frameBuffer;
+public class LightMap {
 	private Mesh lightMapMesh;
 
+	protected FrameBuffer frameBuffer;
 	private FrameBuffer pingPongBuffer;
 
 	private RayHandler rayHandler;
-	private ShaderProgram withoutShadowShader;
-	private ShaderProgram blurShader;
 	private ShaderProgram diffuseShader;
+	private ShaderProgram blurShader;
+	private ShaderProgram shadowShader;
+	private ShaderProgram withoutShadowShader;
 
-	boolean lightMapDrawingDisabled;
+	protected boolean lightMapDrawingDisabled;
 
 	private int fboWidth;
 	private int fboHeight;
@@ -42,7 +42,6 @@ class LightMap {
 
 		// at last lights are rendered over scene
 		if (this.rayHandler.shadows) {
-
 			final Color c = this.rayHandler.ambientLight;
 			ShaderProgram shader = this.shadowShader;
 			if (RayHandler.isDiffuse) {
@@ -60,7 +59,6 @@ class LightMap {
 			this.lightMapMesh.render(shader, GL20.GL_TRIANGLE_FAN);
 			shader.end();
 		} else if (needed) {
-
 			Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
 			this.withoutShadowShader.begin();
 			// withoutShadowShader.setUniformi("u_texture", 0);
@@ -88,7 +86,7 @@ class LightMap {
 				this.blurShader.setUniformi("isDiffuse",
 						RayHandler.isDiffuse ? 1 : 0);
 				this.blurShader.setUniformi("centerLight",
-						Light.CENTERLIGHT ? 1 : 0);
+						Light.centerLight ? 1 : 0);
 				this.lightMapMesh.render(this.blurShader, GL20.GL_TRIANGLE_FAN,
 						0, 4);
 				this.blurShader.end();
@@ -107,11 +105,10 @@ class LightMap {
 				this.blurShader.setUniformi("isDiffuse",
 						RayHandler.isDiffuse ? 1 : 0);
 				this.blurShader.setUniformi("centerLight",
-						Light.CENTERLIGHT ? 1 : 0);
+						Light.centerLight ? 1 : 0);
 				this.lightMapMesh.render(this.blurShader, GL20.GL_TRIANGLE_FAN,
 						0, 4);
 				this.blurShader.end();
-
 			}
 			this.frameBuffer.end();
 		}
@@ -145,7 +142,8 @@ class LightMap {
 		this.blurShader = Shader.createShader("gaussian");
 	}
 
-	void dispose() {
+	// TODO public or protected?
+	public void dispose() {
 		this.shadowShader.dispose();
 		this.blurShader.dispose();
 		this.lightMapMesh.dispose();

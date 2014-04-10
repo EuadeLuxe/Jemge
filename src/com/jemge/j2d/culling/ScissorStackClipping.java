@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ScissorStackClipping implements ICullingSystem {
 	private final List<IEntity> ENTITIES;
-	final Rectangle SCISSORS = new Rectangle();
+	private final Rectangle SCISSORS = new Rectangle();
 
 	public ScissorStackClipping() {
 		ENTITIES = new ArrayList<IEntity>();

@@ -19,15 +19,15 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
 public class RayHandler implements Disposable {
-	boolean culling = true;
-	boolean shadows = true;
-	boolean blur = true;
+	protected boolean culling = true;
+	protected boolean shadows = true;
+	protected boolean blur = true;
 
-	int blurNum = 1;
-	Color ambientLight = new Color();
+	protected int blurNum = 1;
+	protected Color ambientLight = new Color();
 
-	World world;
-	ShaderProgram lightShader;
+	protected World world;
+	protected ShaderProgram lightShader;
 
 	/**
 	 * gles1.0 shadows mesh
@@ -43,7 +43,7 @@ public class RayHandler implements Disposable {
 	/**
 	 * camera matrix corners
 	 */
-	float x1, x2, y1, y2;
+	protected float x1, x2, y1, y2;
 
 	private LightMap lightMap;
 
@@ -124,19 +124,19 @@ public class RayHandler implements Disposable {
 		System.arraycopy(combined.val, 0, this.COMBINED.val, 0, 16);
 
 		// updateCameraCorners
-		float invWidth = combined.val[Matrix4.M00];
+		final float INVWIDTH = combined.val[Matrix4.M00];
 
-		final float halfViewPortWidth = 1f / invWidth;
-		final float x = -halfViewPortWidth * combined.val[Matrix4.M03];
-		this.x1 = x - halfViewPortWidth;
-		this.x2 = x + halfViewPortWidth;
+		final float HALFVIEWPORTWIDTH = 1f / INVWIDTH;
+		final float X = -HALFVIEWPORTWIDTH * combined.val[Matrix4.M03];
+		this.x1 = X - HALFVIEWPORTWIDTH;
+		this.x2 = X + HALFVIEWPORTWIDTH;
 
-		float invHeight = combined.val[Matrix4.M11];
+		final float INVHEIGHT = combined.val[Matrix4.M11];
 
-		final float halfViewPortHeight = 1f / invHeight;
-		final float y = -halfViewPortHeight * combined.val[Matrix4.M13];
-		this.y1 = y - halfViewPortHeight;
-		this.y2 = y + halfViewPortHeight;
+		final float HALFVIEWPORTHEIGHT = 1f / INVHEIGHT;
+		final float Y = -HALFVIEWPORTHEIGHT * combined.val[Matrix4.M13];
+		this.y1 = Y - HALFVIEWPORTHEIGHT;
+		this.y2 = Y + HALFVIEWPORTHEIGHT;
 	}
 
 	/**
@@ -163,17 +163,17 @@ public class RayHandler implements Disposable {
 			float viewPortWidth, float viewPortHeight) {
 		System.arraycopy(combined.val, 0, this.COMBINED.val, 0, 16);
 		// updateCameraCorners
-		final float halfViewPortWidth = viewPortWidth * 0.5f;
-		this.x1 = x - halfViewPortWidth;
-		this.x2 = x + halfViewPortWidth;
+		final float HALFVIEWPORTWIDTH = viewPortWidth * 0.5f;
+		this.x1 = x - HALFVIEWPORTWIDTH;
+		this.x2 = x + HALFVIEWPORTWIDTH;
 
-		final float halfViewPortHeight = viewPortHeight * 0.5f;
-		this.y1 = y - halfViewPortHeight;
-		this.y2 = y + halfViewPortHeight;
-
+		final float HALFVIEWPORTHEIGHT = viewPortHeight * 0.5f;
+		this.y1 = y - HALFVIEWPORTHEIGHT;
+		this.y2 = y + HALFVIEWPORTHEIGHT;
 	}
 
-	boolean intersect(float x, float y, float side) {
+	// TODO protected?
+	protected boolean intersect(float x, float y, float side) {
 		return (this.x1 < (x + side) && this.x2 > (x - side)
 				&& this.y1 < (y + side) && this.y2 > (y - side));
 	}
@@ -196,8 +196,8 @@ public class RayHandler implements Disposable {
 	 * steps than rendering steps.
 	 */
 	public final void update() {
-		final int size = this.LIGHTLIST.size;
-		for (int j = 0; j < size; j++) {
+		final int SIZE = this.LIGHTLIST.size;
+		for (int j = 0; j < SIZE; j++) {
 			this.LIGHTLIST.get(j).update();
 		}
 	}
@@ -224,7 +224,8 @@ public class RayHandler implements Disposable {
 		renderWithShaders();
 	}
 
-	void renderWithShaders() {
+	// TODO private?
+	private void renderWithShaders() {
 		if (this.shadows || this.blur) {
 			this.lightMap.frameBuffer.begin();
 			Gdx.gl20.glClearColor(0f, 0f, 0f, 0f);
@@ -441,10 +442,10 @@ public class RayHandler implements Disposable {
 		this.world = world;
 	}
 
-	static boolean gammaCorrection = false;
-	static float gammaCorrectionParameter = 1f;
+	private static boolean gammaCorrection = false;
+	protected static float gammaCorrectionParameter = 1f;
 	public static boolean isDiffuse = false;
-	static final float GAMMA_COR = 0.625f;
+	private static final float GAMMA_COR = 0.625f;
 
 	/**
 	 * return is gamma correction enabled
@@ -515,5 +516,4 @@ public class RayHandler implements Disposable {
 	public FrameBuffer getLightMapBuffer() {
 		return this.lightMap.frameBuffer;
 	}
-
 }

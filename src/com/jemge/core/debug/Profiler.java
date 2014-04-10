@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import java.util.HashMap;
 
 public class Profiler {
-	private static final HashMap<String, ProfilerObject> results = new HashMap<>();
+	private static final HashMap<String, ProfilerObject> RESULTS = new HashMap<>();
 	public static boolean debugOn = false;
 	public static boolean logPerSecond = false;
 
@@ -23,8 +23,8 @@ public class Profiler {
 		}
 
 		ProfilerObject profiler = null;
-		if (results.keySet().contains(object.getClass().getSimpleName() + name)) {
-			profiler = results.get(object.getClass().getSimpleName() + name);
+		if (RESULTS.keySet().contains(object.getClass().getSimpleName() + name)) {
+			profiler = RESULTS.get(object.getClass().getSimpleName() + name);
 		} else {
 			profiler = new ProfilerObject();
 		}
@@ -32,16 +32,16 @@ public class Profiler {
 		profiler.class_name = object.getClass().getSimpleName();
 		profiler.start_time = System.nanoTime();
 
-		results.put(object.getClass().getSimpleName() + name, profiler);
+		RESULTS.put(object.getClass().getSimpleName() + name, profiler);
 	}
 
 	public static void stop(Object object, String name) {
 		if (!debugOn) {
 			return;
 		}
-		results.get(object.getClass().getSimpleName() + name).final_time = System
+		RESULTS.get(object.getClass().getSimpleName() + name).final_time = System
 				.nanoTime()
-				- results.get(object.getClass().getSimpleName() + name).start_time;
+				- RESULTS.get(object.getClass().getSimpleName() + name).start_time;
 	}
 
 	public static void getResults() {
@@ -49,12 +49,11 @@ public class Profiler {
 			return;
 		}
 
-		Gdx.app.log("Profiler List size", String.valueOf(results.size()));
-		for (ProfilerObject object : results.values()) {
+		Gdx.app.log("Profiler List size", String.valueOf(RESULTS.size()));
+		for (ProfilerObject object : RESULTS.values()) {
 			Gdx.app.log(object.class_name + " " + object.name,
 					String.valueOf(object.final_time / 100));
 		}
-		// todo: not nice output a.t.m. ...
+		// TODO: not nice output a.t.m. ...
 	}
-
 }

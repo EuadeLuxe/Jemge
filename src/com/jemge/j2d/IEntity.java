@@ -19,7 +19,6 @@ package com.jemge.j2d;
 import com.badlogic.gdx.math.Rectangle;
 
 public interface IEntity {
-
 	public float getX();
 
 	public float getY();
@@ -35,5 +34,4 @@ public interface IEntity {
 	public boolean getData(String name);
 
 	public Rectangle getRectangle();
-
 }
