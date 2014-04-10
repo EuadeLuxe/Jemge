@@ -5,10 +5,8 @@ package com.jemge.box2d.box2dLight;
  *
  */
 
-import com.jemge.box2d.shaders.LightShader;
-
+import com.jemge.box2d.shaders.Shader;
 import com.badlogic.gdx.Gdx;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
@@ -103,7 +101,7 @@ public class RayHandler implements Disposable {
 		this.world = world;
 
 		this.lightMap = new LightMap(this, fboWidth, fboHeight);
-		this.lightShader = LightShader.createLightShader();
+		this.lightShader = Shader.createShader("light");
 	}
 
 	/**
@@ -236,6 +234,7 @@ public class RayHandler implements Disposable {
 		this.lightShader.begin();
 		{
 			this.lightShader.setUniformMatrix("u_projTrans", this.COMBINED);
+			this.lightShader.setUniformi("gamma", getGammaCorrection() ? 1 : 0);
 			for (int i = 0, size = this.LIGHTLIST.size; i < size; i++) {
 				this.LIGHTLIST.get(i).render();
 			}

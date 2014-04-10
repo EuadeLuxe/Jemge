@@ -6,13 +6,8 @@ varying vec2 v_texCoords1;
 varying vec2 v_texCoords2;
 varying vec2 v_texCoords3;
 varying vec2 v_texCoords4;
-
-#define FBO_W
-FBO_W // TODO
-.0 // TODO
-#define FBO_H
-FBO_H // TODO
-.0 // TODO
+uniform float FBO_W;
+uniform float FBO_H;
 
 const vec2 futher = vec2(3.2307692308 / FBO_W, 3.2307692308 / FBO_H );
 const vec2 closer = vec2(1.3846153846 / FBO_W, 1.3846153846 / FBO_H );

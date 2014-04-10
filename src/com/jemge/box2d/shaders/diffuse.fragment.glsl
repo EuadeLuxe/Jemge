@@ -1,5 +1,5 @@
 #ifdef GL_ES
-precision lowp float;
+    precision lowp float;
 #define MED mediump
 #else
 #define MED
@@ -7,7 +7,7 @@ precision lowp float;
 
 varying MED vec2 v_texCoords;
 uniform sampler2D u_texture;
-uniform  vec4 ambient;
+uniform vec4 ambient;
 
 void main()
 {

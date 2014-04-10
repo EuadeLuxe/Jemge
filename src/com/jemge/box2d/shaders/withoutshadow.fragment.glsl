@@ -1,5 +1,5 @@
 #ifdef GL_ES
-precision lowp float;
+    precision lowp float;
 #define MED mediump
 #else
 #define MED
