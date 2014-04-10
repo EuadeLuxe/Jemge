@@ -44,12 +44,14 @@ void main()
         {
             gl_FragColor.rgb = far * texture2D(u_texture, v_texCoords0).rgb
                              + close * texture2D(u_texture, v_texCoords3).rgb
+                             + center * texture2D(u_texture, v_texCoords2).rgb
                              + far * texture2D(u_texture, v_texCoords4).rgb;
         }
         else
         {
             gl_FragColor = far * texture2D(u_texture, v_texCoords0)
                          + close * texture2D(u_texture, v_texCoords3)
+                         + center * texture2D(u_texture, v_texCoords2)
                          + far * texture2D(u_texture, v_texCoords4);
         }
     }

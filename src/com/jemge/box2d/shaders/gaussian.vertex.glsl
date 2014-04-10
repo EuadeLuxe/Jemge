@@ -9,11 +9,13 @@ varying vec2 v_texCoords4;
 uniform float FBO_W;
 uniform float FBO_H;
 
-const vec2 futher = vec2(3.2307692308 / FBO_W, 3.2307692308 / FBO_H );
-const vec2 closer = vec2(1.3846153846 / FBO_W, 1.3846153846 / FBO_H );
+vec2 futher;
+vec2 closer;
 
 void main()
 {
+    futher = vec2(3.2307692308 / FBO_W, 3.2307692308 / FBO_H );
+    closer = vec2(1.3846153846 / FBO_W, 1.3846153846 / FBO_H );
     vec2 f = futher * dir;
     vec2 c = closer * dir;
     v_texCoords0 = a_texCoord - f;

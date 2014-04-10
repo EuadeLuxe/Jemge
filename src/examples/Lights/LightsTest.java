@@ -63,7 +63,7 @@ public class LightsTest extends JGame {
 	public static void main(String[] args) {
 		JConfig config = new JConfig();
 		
-		Light.CENTERLIGHT = true;
+		//Light.CENTERLIGHT = false;
 		new JAppLWJGL(new LightsTest(), config); // finally create the lwjgl
 													// application.
 	}
