@@ -8,4 +8,6 @@ public class EngineConfiguration {
 	public static ICullingSystem cullingSystem = new ZoneBasedCulling();
 
 	public static boolean debugMode = false;
+
+    public static boolean debugPhysic = false;
 }

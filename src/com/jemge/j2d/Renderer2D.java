@@ -19,12 +19,16 @@ package com.jemge.j2d;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Disposable;
 import com.jemge.box2d.Physics2D;
 import com.jemge.box2d.box2dLight.RayHandler;
+import com.jemge.core.EngineConfiguration;
 import com.jemge.core.Jemge;
 import com.jemge.core.debug.Profiler;
 import com.jemge.input.IInputListener;
@@ -37,7 +41,7 @@ import java.util.HashMap;
  * the objects.
  * 
  * @author MrBarsack
- * @see RendererObject
+ * @see IRendererObject
  */
 
 public class Renderer2D implements Disposable {
@@ -47,13 +51,15 @@ public class Renderer2D implements Disposable {
 	private final ShapeRenderer SHAPERENDERER;
 	private final OrthographicCamera CAMERA;
 	private final Background BACKGROUND;
+    private final FrameBuffer FRAMEBUFFER;
+    private final Box2DDebugRenderer debugRenderer;
 
 	private final InputManager INPUTMANAGER;
 	private final JUIManager JUIMANAGER;
 
 	private RayHandler rayHandler;
 
-	// Protected
+	// public
 
 	public final Rectangle CAMERAVIEW;
 
@@ -73,6 +79,8 @@ public class Renderer2D implements Disposable {
 		this.SPRITEBATCH = new SpriteBatch();
 		this.SHAPERENDERER = new ShapeRenderer();
 		this.BACKGROUND = new Background();
+        this.FRAMEBUFFER = new FrameBuffer(Pixmap.Format.RGB888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+        debugRenderer = new Box2DDebugRenderer();
 
 		this.INPUTMANAGER = Jemge.engine.getInputManager();
 		this.JUIMANAGER = Jemge.engine.getJUIManager();
@@ -188,6 +196,10 @@ public class Renderer2D implements Disposable {
 		JUIMANAGER.render();
 
 		Profiler.stop(this, "");
+
+        if(EngineConfiguration.debugPhysic){
+            debugRenderer.render(Physics2D.getMainWorld(), getCamera().combined);
+        }
 	}
 
 	public void initLightSystem() {
@@ -221,6 +233,14 @@ public class Renderer2D implements Disposable {
 	public OrthographicCamera getCamera() {
 		return this.CAMERA;
 	}
+
+    public FrameBuffer renderFrameBuffer(){
+        FRAMEBUFFER.begin();
+        render();
+        FRAMEBUFFER.end();
+
+        return FRAMEBUFFER;
+    }
 
 	public Background getBackground() {
 		return this.BACKGROUND;
