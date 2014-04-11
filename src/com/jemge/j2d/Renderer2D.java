@@ -51,8 +51,8 @@ public class Renderer2D implements Disposable {
 	private final ShapeRenderer SHAPERENDERER;
 	private final OrthographicCamera CAMERA;
 	private final Background BACKGROUND;
-    private final FrameBuffer FRAMEBUFFER;
-    private final Box2DDebugRenderer debugRenderer;
+	private final FrameBuffer FRAMEBUFFER;
+	private final Box2DDebugRenderer debugRenderer;
 
 	private final InputManager INPUTMANAGER;
 	private final JUIManager JUIMANAGER;
@@ -79,8 +79,9 @@ public class Renderer2D implements Disposable {
 		this.SPRITEBATCH = new SpriteBatch();
 		this.SHAPERENDERER = new ShapeRenderer();
 		this.BACKGROUND = new Background();
-        this.FRAMEBUFFER = new FrameBuffer(Pixmap.Format.RGB888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-        debugRenderer = new Box2DDebugRenderer();
+		this.FRAMEBUFFER = new FrameBuffer(Pixmap.Format.RGB888,
+				Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+		debugRenderer = new Box2DDebugRenderer();
 
 		this.INPUTMANAGER = Jemge.engine.getInputManager();
 		this.JUIMANAGER = Jemge.engine.getJUIManager();
@@ -197,9 +198,10 @@ public class Renderer2D implements Disposable {
 
 		Profiler.stop(this, "");
 
-        if(EngineConfiguration.debugPhysic){
-            debugRenderer.render(Physics2D.getMainWorld(), getCamera().combined);
-        }
+		if (EngineConfiguration.debugPhysic) {
+			debugRenderer
+					.render(Physics2D.getMainWorld(), getCamera().combined);
+		}
 	}
 
 	public void initLightSystem() {
@@ -234,13 +236,13 @@ public class Renderer2D implements Disposable {
 		return this.CAMERA;
 	}
 
-    public FrameBuffer renderFrameBuffer(){
-        FRAMEBUFFER.begin();
-        render();
-        FRAMEBUFFER.end();
+	public FrameBuffer renderFrameBuffer() {
+		FRAMEBUFFER.begin();
+		render();
+		FRAMEBUFFER.end();
 
-        return FRAMEBUFFER;
-    }
+		return FRAMEBUFFER;
+	}
 
 	public Background getBackground() {
 		return this.BACKGROUND;
@@ -253,5 +255,4 @@ public class Renderer2D implements Disposable {
 	public SpriteBatch getSpriteBatch() {
 		return SPRITEBATCH;
 	}
-
 }

@@ -28,7 +28,6 @@ import com.jemge.resource.ResourceManager;
  */
 
 public class Jemge {
-
 	public static Engine engine;
 	public static Renderer2D renderer2D;
 	public static ResourceManager manager;

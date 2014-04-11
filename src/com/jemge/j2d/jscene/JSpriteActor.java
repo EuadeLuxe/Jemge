@@ -11,7 +11,6 @@ import com.jemge.j2d.JSprite;
 import com.jemge.j2d.IRendererObject;
 
 public class JSpriteActor extends Actor implements IEntity, IRendererObject {
-
 	private final JSprite JSPRITE;
 
 	public JSpriteActor(Texture texture) {
@@ -64,7 +63,6 @@ public class JSpriteActor extends Actor implements IEntity, IRendererObject {
 
 	public JSpriteActor setStatic(boolean value) {
 		this.JSPRITE.setStatic(value);
-
 		return this;
 	}
 

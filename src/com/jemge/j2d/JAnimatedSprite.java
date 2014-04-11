@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 
 public class JAnimatedSprite extends JSprite {
-
 	/** the {@link Animation} to display */
 	private Animation animation;
 
@@ -203,5 +202,4 @@ public class JAnimatedSprite extends JSprite {
 	public void setCenterFrames(boolean centerFrames) {
 		this.centerFrames = centerFrames;
 	}
-
 }

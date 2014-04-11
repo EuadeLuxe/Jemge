@@ -9,7 +9,6 @@ public abstract class JScreen implements Screen {
 
 	@Override
 	public void resize(int i, int i2) {
-
 	}
 
 	@Override
@@ -22,17 +21,14 @@ public abstract class JScreen implements Screen {
 
 	@Override
 	public void hide() {
-
 	}
 
 	@Override
 	public void pause() {
-
 	}
 
 	@Override
 	public void resume() {
-
 	}
 
 	@Override

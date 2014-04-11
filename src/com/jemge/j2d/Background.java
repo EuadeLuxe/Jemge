@@ -38,7 +38,6 @@ public class Background {
 
 	public void setColor(Color color) {
 		this.COLOR.set(color);
-
 		this.mode = MODE.COLOR;
 	}
 

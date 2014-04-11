@@ -23,7 +23,6 @@ import com.badlogic.gdx.physics.box2d.*;
 
 public class PolygonObject extends PhysicObject {
 	private static final BodyDef BODYDEF = new BodyDef();
-
 	protected float height;
 	protected float width;
 

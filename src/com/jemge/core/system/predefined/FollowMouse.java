@@ -11,5 +11,4 @@ public class FollowMouse implements IUpdateListener<JSprite> {
 				InputManager.getInputPosition().x - (object.getWidth() / 2),
 				InputManager.getInputPosition().y - (object.getHeight() / 2));
 	}
-
 }

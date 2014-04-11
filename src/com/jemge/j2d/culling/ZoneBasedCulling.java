@@ -107,5 +107,4 @@ public class ZoneBasedCulling implements ICullingSystem {
 	@Override
 	public void postRender() {
 	}
-
 }

@@ -9,7 +9,7 @@ public class ScreenTest extends JGame {
 	private final ScreenA SCREENA = new ScreenA();
 	private final ScreenB SCREENB = new ScreenB();
 
-	enum MODE {
+	private enum MODE {
 		SCREEN_A, SCREEN_B
 	}
 

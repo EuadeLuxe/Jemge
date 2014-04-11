@@ -51,7 +51,6 @@ public class BoxEditorLoader {
 
 	public void attachFixture(Body body, Texture texture, String name,
 			FixtureDef def) {
-
 		attachFixture(body, name, def, texture.getWidth());
 	}
 
@@ -213,7 +212,6 @@ public class BoxEditorLoader {
 		// polygons
 		JsonValue polygonsElem = bodyElem.getChild("polygons");
 		for (; polygonsElem != null; polygonsElem = polygonsElem.next()) {
-
 			PolygonModel polygon = new PolygonModel();
 			rbModel.POLYGONS.add(polygon);
 
@@ -225,7 +223,6 @@ public class BoxEditorLoader {
 			}
 
 			polygon.buffer = new Vector2[polygon.VERTICES.size()];
-
 		}
 
 		// circles

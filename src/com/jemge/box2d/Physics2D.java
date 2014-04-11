@@ -23,9 +23,7 @@ import com.jemge.core.EngineModule;
 import java.util.HashMap;
 
 public class Physics2D extends EngineModule {
-
 	private static HashMap<String, World> worlds;
-
 	public static int positionInteractions = 2;
 	public static int velocityInteractions = 2;
 	public static float timeStep = 1f / 30f;

@@ -9,7 +9,6 @@ import com.jemge.input.ListenKeyUp;
 import com.jemge.input.ListenWhilePressed;
 
 public class TestKeyListener implements IKeyListener {
-
 	@ListenWhilePressed(key = Input.Keys.A)
 	public void clicked() {
 		Gdx.app.log("Test App", "Key 'a'!");
@@ -26,5 +25,4 @@ public class TestKeyListener implements IKeyListener {
 
 		Jemge.inputManager.removeKeyListener(this);
 	}
-
 }

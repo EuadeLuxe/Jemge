@@ -20,5 +20,4 @@ public class TextureResource extends Texture implements IResource {
 	public String getName() {
 		return this.NAME;
 	}
-
 }

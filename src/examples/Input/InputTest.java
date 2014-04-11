@@ -6,11 +6,9 @@ import com.jemge.core.JGame;
 import com.jemge.core.Jemge;
 
 public class InputTest extends JGame {
-
 	@Override
 	public void create() {
 		super.create();
-
 		Jemge.inputManager.addKeyListener(new TestKeyListener());
 	}
 
