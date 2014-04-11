@@ -5,7 +5,7 @@ import com.jemge.core.EngineModule;
 import com.jemge.core.Jemge;
 
 public class AudioManager extends EngineModule {
-	private static final Vector2 TEMP1 = new Vector2();
+	private static final Vector2 CENTER = new Vector2();
 
 	@Override
 	public void init() {
@@ -18,14 +18,14 @@ public class AudioManager extends EngineModule {
 		}
 		final long id = sound.getSound().play(1.0f);
 
-		Jemge.renderer2D.CAMERAVIEW.getCenter(TEMP1);
+		Jemge.renderer2D.CAMERAVIEW.getCenter(CENTER);
 
-		if (position.x > TEMP1.x) {
-			sound.getSound().setPan(id, 0.25f, 0.8f); // TODO Should be relative
-														// to difference...
-		} else if (position.x < TEMP1.x) {
-			sound.getSound().setPan(id, -0.25f, 0.8f);
-		}
+		float dx = (position.x - CENTER.x)
+				/ (Jemge.renderer2D.CAMERAVIEW.width / 2);
+		float dvolume = dx < 0 ? dx + 1 : 1 - dx;
+
+		// System.out.println(dx + "," + dvolume); //DEBUG
+		sound.getSound().setPan(id, dx, 0.8f * dvolume);
 
 		return id;
 	}
