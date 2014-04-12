@@ -22,9 +22,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class PolygonObject extends PhysicObject {
-	private static final BodyDef BODYDEF = new BodyDef();
-	protected float height;
-	protected float width;
+	private float height;
+	private float width;
 
 	public PolygonObject(float x, float y, float width, float height,
 			BodyDef.BodyType type) {
@@ -39,14 +38,27 @@ public class PolygonObject extends PhysicObject {
 		PolygonShape polygonShape = new PolygonShape();
 		polygonShape.setAsBox(width / 2, height / 2);
 
-		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.shape = polygonShape;
-		fixtureDef.density = 1.5f; // from box2d example, TODO: maybe different
-									// values?
-		fixtureDef.friction = 0.4f;
-		fixtureDef.restitution = 0.1f;
+		this.fixture = this.body.createFixture(this
+				.setupFixtureDef(polygonShape));
 
-		this.fixture = this.body.createFixture(fixtureDef);
+		polygonShape.dispose();
+	}
+
+	public PolygonObject(float x, float y, float width, float height,
+			Filter filter, BodyDef.BodyType type) {
+		this.height = height;
+		this.width = width;
+
+		BODYDEF.type = type;
+		BODYDEF.position.set(x, y).add(this.width / 2, this.height / 2);
+
+		this.body = Physics2D.getMainWorld().createBody(BODYDEF);
+
+		PolygonShape polygonShape = new PolygonShape();
+		polygonShape.setAsBox(width / 2, height / 2);
+
+		this.fixture = this.body.createFixture(this.setupFixtureDef(
+				polygonShape, filter));
 
 		polygonShape.dispose();
 	}
@@ -55,40 +67,58 @@ public class PolygonObject extends PhysicObject {
 			String name, BodyDef.BodyType type) {
 		final BoxEditorLoader loader = new BoxEditorLoader(fileHandle);
 
-		BODYDEF.position.set(x, y);
 		BODYDEF.type = type;
-
-		FixtureDef def = new FixtureDef();
-		def.density = 1;
-		def.friction = 0.5f;
-		def.restitution = 0.3f;
+		BODYDEF.position.set(x, y);
 
 		Body body = Physics2D.getMainWorld().createBody(BODYDEF);
 
-		loader.attachFixture(body, name, def, size);
+		loader.attachFixture(body, name,
+				this.setupFixtureDef(null, 1.0f, 0.5f, 0.3f), size);
+	}
+
+	public PolygonObject(float x, float y, float size, FileHandle fileHandle,
+			String name, Filter filter, BodyDef.BodyType type) {
+		final BoxEditorLoader loader = new BoxEditorLoader(fileHandle);
+
+		BODYDEF.type = type;
+		BODYDEF.position.set(x, y);
+
+		Body body = Physics2D.getMainWorld().createBody(BODYDEF);
+
+		loader.attachFixture(body, name,
+				this.setupFixtureDef(null, filter, 1.0f, 0.5f, 0.3f), size);
 	}
 
 	public PolygonObject(float x, float y, Texture texture,
 			FileHandle fileHandle, String name, BodyDef.BodyType type) {
 		final BoxEditorLoader loader = new BoxEditorLoader(fileHandle);
 
-		BODYDEF.position.set(x, y);
 		BODYDEF.type = type;
-
-		FixtureDef def = new FixtureDef();
-		def.density = 1;
-		def.friction = 0.5f;
-		def.restitution = 0.3f;
+		BODYDEF.position.set(x, y);
 
 		Body body = Physics2D.getMainWorld().createBody(BODYDEF);
 
-		loader.attachFixture(body, texture, name, def);
+		loader.attachFixture(body, texture, name,
+				this.setupFixtureDef(null, 1.0f, 0.5f, 0.3f));
+	}
+
+	public PolygonObject(float x, float y, Texture texture,
+			FileHandle fileHandle, String name, Filter filter,
+			BodyDef.BodyType type) {
+		final BoxEditorLoader loader = new BoxEditorLoader(fileHandle);
+
+		BODYDEF.type = type;
+		BODYDEF.position.set(x, y);
+
+		Body body = Physics2D.getMainWorld().createBody(BODYDEF);
+
+		loader.attachFixture(body, texture, name,
+				this.setupFixtureDef(null, filter, 1.0f, 0.5f, 0.3f));
 	}
 
 	public Vector2 getPosition() {
 		this.position = this.body.getPosition();
 		this.position.sub(this.width / 2, this.height / 2);
-
 		return this.position;
 	}
 
