@@ -24,61 +24,61 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Filter;
 
 public class CircleObject extends PhysicObject implements Serializable {
-    private float radius;
+	private float radius;
 
-    public CircleObject(float x, float y, float radius, BodyDef.BodyType type) {
-        this.radius = radius;
+	public CircleObject(float x, float y, float radius, BodyDef.BodyType type) {
+		this.radius = radius;
 
-        BODYDEF.type = type;
-        BODYDEF.position.set(x, y).add(radius / 2, radius / 2);
+		BODYDEF.type = type;
+		BODYDEF.position.set(x, y).add(radius / 2, radius / 2);
 
-        this.body = Physics2D.getMainWorld().createBody(BODYDEF);
+		this.body = Physics2D.getMainWorld().createBody(BODYDEF);
 
-        CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(radius);
+		CircleShape circleShape = new CircleShape();
+		circleShape.setRadius(radius);
 
-        this.fixture = this.body.createFixture(this
-                .setupFixtureDef(circleShape));
+		this.fixture = this.body.createFixture(this
+				.setupFixtureDef(circleShape));
 
-        circleShape.dispose();
-    }
+		circleShape.dispose();
+	}
 
-    public CircleObject(float x, float y, float radius, Filter filter,
-                        BodyDef.BodyType type) {
-        this.radius = radius;
+	public CircleObject(float x, float y, float radius, Filter filter,
+			BodyDef.BodyType type) {
+		this.radius = radius;
 
-        BODYDEF.type = type;
-        BODYDEF.position.set(x, y).add(radius / 2, radius / 2);
+		BODYDEF.type = type;
+		BODYDEF.position.set(x, y).add(radius / 2, radius / 2);
 
-        this.body = Physics2D.getMainWorld().createBody(BODYDEF);
+		this.body = Physics2D.getMainWorld().createBody(BODYDEF);
 
-        CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(radius);
+		CircleShape circleShape = new CircleShape();
+		circleShape.setRadius(radius);
 
-        this.fixture = this.body.createFixture(this.setupFixtureDef(
-                circleShape, filter));
+		this.fixture = this.body.createFixture(this.setupFixtureDef(
+				circleShape, filter));
 
-        circleShape.dispose();
-    }
+		circleShape.dispose();
+	}
 
-    public void savePosition() {
-        this.position = this.body.getPosition();
-        this.position.sub(this.radius / 2, this.radius / 2);
-    }
+	public void savePosition() {
+		this.position = this.body.getPosition();
+		this.position.sub(this.radius / 2, this.radius / 2);
+	}
 
-    public Vector2 getPosition() {
-        if (this.body != null) {
-            this.position = this.body.getPosition();
-            this.position.sub(this.radius / 2, this.radius / 2);
-        }
-        return this.position;
-    }
+	public Vector2 getPosition() {
+		if (this.body != null) {
+			this.position = this.body.getPosition();
+			this.position.sub(this.radius / 2, this.radius / 2);
+		}
+		return this.position;
+	}
 
-    public void setRadius(float radius) {
-        this.radius = radius;
-    }
+	public void setRadius(float radius) {
+		this.radius = radius;
+	}
 
-    public float getRadius() {
-        return this.radius;
-    }
+	public float getRadius() {
+		return this.radius;
+	}
 }

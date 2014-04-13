@@ -24,118 +24,118 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class PolygonObject extends PhysicObject implements Serializable {
-    private float height;
-    private float width;
+	private float height;
+	private float width;
 
-    public PolygonObject(float x, float y, float width, float height,
-                         BodyDef.BodyType type) {
-        this.height = height;
-        this.width = width;
+	public PolygonObject(float x, float y, float width, float height,
+			BodyDef.BodyType type) {
+		this.height = height;
+		this.width = width;
 
-        BODYDEF.type = type;
-        BODYDEF.position.set(x, y).add(this.width / 2, this.height / 2);
+		BODYDEF.type = type;
+		BODYDEF.position.set(x, y).add(this.width / 2, this.height / 2);
 
-        this.body = Physics2D.getMainWorld().createBody(BODYDEF);
+		this.body = Physics2D.getMainWorld().createBody(BODYDEF);
 
-        PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(width / 2, height / 2);
+		PolygonShape polygonShape = new PolygonShape();
+		polygonShape.setAsBox(width / 2, height / 2);
 
-        this.fixture = this.body.createFixture(this
-                .setupFixtureDef(polygonShape));
+		this.fixture = this.body.createFixture(this
+				.setupFixtureDef(polygonShape));
 
-        polygonShape.dispose();
-    }
+		polygonShape.dispose();
+	}
 
-    public PolygonObject(float x, float y, float width, float height,
-                         Filter filter, BodyDef.BodyType type) {
-        this.height = height;
-        this.width = width;
+	public PolygonObject(float x, float y, float width, float height,
+			Filter filter, BodyDef.BodyType type) {
+		this.height = height;
+		this.width = width;
 
-        BODYDEF.type = type;
-        BODYDEF.position.set(x, y).add(this.width / 2, this.height / 2);
+		BODYDEF.type = type;
+		BODYDEF.position.set(x, y).add(this.width / 2, this.height / 2);
 
-        this.body = Physics2D.getMainWorld().createBody(BODYDEF);
+		this.body = Physics2D.getMainWorld().createBody(BODYDEF);
 
-        PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(width / 2, height / 2);
+		PolygonShape polygonShape = new PolygonShape();
+		polygonShape.setAsBox(width / 2, height / 2);
 
-        this.fixture = this.body.createFixture(this.setupFixtureDef(
-                polygonShape, filter));
+		this.fixture = this.body.createFixture(this.setupFixtureDef(
+				polygonShape, filter));
 
-        polygonShape.dispose();
-    }
+		polygonShape.dispose();
+	}
 
-    public PolygonObject(float x, float y, float size, FileHandle fileHandle,
-                         String name, BodyDef.BodyType type) {
-        final BoxEditorLoader loader = new BoxEditorLoader(fileHandle);
+	public PolygonObject(float x, float y, float size, FileHandle fileHandle,
+			String name, BodyDef.BodyType type) {
+		final BoxEditorLoader loader = new BoxEditorLoader(fileHandle);
 
-        BODYDEF.type = type;
-        BODYDEF.position.set(x, y);
+		BODYDEF.type = type;
+		BODYDEF.position.set(x, y);
 
-        Body body = Physics2D.getMainWorld().createBody(BODYDEF);
+		Body body = Physics2D.getMainWorld().createBody(BODYDEF);
 
-        loader.attachFixture(body, name,
-                this.setupFixtureDef(null, 1.0f, 0.5f, 0.3f), size);
-    }
+		loader.attachFixture(body, name,
+				this.setupFixtureDef(null, 1.0f, 0.5f, 0.3f), size);
+	}
 
-    public PolygonObject(float x, float y, float size, FileHandle fileHandle,
-                         String name, Filter filter, BodyDef.BodyType type) {
-        final BoxEditorLoader loader = new BoxEditorLoader(fileHandle);
+	public PolygonObject(float x, float y, float size, FileHandle fileHandle,
+			String name, Filter filter, BodyDef.BodyType type) {
+		final BoxEditorLoader loader = new BoxEditorLoader(fileHandle);
 
-        BODYDEF.type = type;
-        BODYDEF.position.set(x, y);
+		BODYDEF.type = type;
+		BODYDEF.position.set(x, y);
 
-        Body body = Physics2D.getMainWorld().createBody(BODYDEF);
+		Body body = Physics2D.getMainWorld().createBody(BODYDEF);
 
-        loader.attachFixture(body, name,
-                this.setupFixtureDef(null, filter, 1.0f, 0.5f, 0.3f), size);
-    }
+		loader.attachFixture(body, name,
+				this.setupFixtureDef(null, filter, 1.0f, 0.5f, 0.3f), size);
+	}
 
-    public PolygonObject(float x, float y, Texture texture,
-                         FileHandle fileHandle, String name, BodyDef.BodyType type) {
-        final BoxEditorLoader loader = new BoxEditorLoader(fileHandle);
+	public PolygonObject(float x, float y, Texture texture,
+			FileHandle fileHandle, String name, BodyDef.BodyType type) {
+		final BoxEditorLoader loader = new BoxEditorLoader(fileHandle);
 
-        BODYDEF.type = type;
-        BODYDEF.position.set(x, y);
+		BODYDEF.type = type;
+		BODYDEF.position.set(x, y);
 
-        Body body = Physics2D.getMainWorld().createBody(BODYDEF);
+		Body body = Physics2D.getMainWorld().createBody(BODYDEF);
 
-        loader.attachFixture(body, texture, name,
-                this.setupFixtureDef(null, 1.0f, 0.5f, 0.3f));
-    }
+		loader.attachFixture(body, texture, name,
+				this.setupFixtureDef(null, 1.0f, 0.5f, 0.3f));
+	}
 
-    public PolygonObject(float x, float y, Texture texture,
-                         FileHandle fileHandle, String name, Filter filter,
-                         BodyDef.BodyType type) {
-        final BoxEditorLoader loader = new BoxEditorLoader(fileHandle);
+	public PolygonObject(float x, float y, Texture texture,
+			FileHandle fileHandle, String name, Filter filter,
+			BodyDef.BodyType type) {
+		final BoxEditorLoader loader = new BoxEditorLoader(fileHandle);
 
-        BODYDEF.type = type;
-        BODYDEF.position.set(x, y);
+		BODYDEF.type = type;
+		BODYDEF.position.set(x, y);
 
-        Body body = Physics2D.getMainWorld().createBody(BODYDEF);
+		Body body = Physics2D.getMainWorld().createBody(BODYDEF);
 
-        loader.attachFixture(body, texture, name,
-                this.setupFixtureDef(null, filter, 1.0f, 0.5f, 0.3f));
-    }
+		loader.attachFixture(body, texture, name,
+				this.setupFixtureDef(null, filter, 1.0f, 0.5f, 0.3f));
+	}
 
-    public void savePosition() {
-        this.position = this.body.getPosition();
-        this.position.sub(this.width / 2, this.height / 2);
-    }
+	public void savePosition() {
+		this.position = this.body.getPosition();
+		this.position.sub(this.width / 2, this.height / 2);
+	}
 
-    public Vector2 getPosition() {
-        if (this.body != null) {
-            this.position = this.body.getPosition();
-            this.position.sub(this.width / 2, this.height / 2);
-        }
-        return this.position;
-    }
+	public Vector2 getPosition() {
+		if (this.body != null) {
+			this.position = this.body.getPosition();
+			this.position.sub(this.width / 2, this.height / 2);
+		}
+		return this.position;
+	}
 
-    public float getHeight() {
-        return this.height;
-    }
+	public float getHeight() {
+		return this.height;
+	}
 
-    public float getWidth() {
-        return this.width;
-    }
+	public float getWidth() {
+		return this.width;
+	}
 }
