@@ -16,19 +16,19 @@
 
 package com.jemge.box2d;
 
+import java.io.Serializable;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Filter;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 
-public abstract class PhysicObject {
+public abstract class PhysicObject extends PhysicObjectBody implements
+		Serializable {
 	protected static final BodyDef BODYDEF = new BodyDef();
 	protected Vector2 position;
-	protected Body body;
-	protected Fixture fixture;
 
 	// TODO wird nicht verwendet?
 	public PhysicObject setPhysicData(float density, float friction,
@@ -40,7 +40,7 @@ public abstract class PhysicObject {
 		return this;
 	}
 
-	public FixtureDef setupFixtureDef(Shape shape) {
+	protected FixtureDef setupFixtureDef(Shape shape) {
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.density = 1.5f; // from box2d example, TODO: maybe different
@@ -50,7 +50,7 @@ public abstract class PhysicObject {
 		return fixtureDef;
 	}
 
-	public final FixtureDef setupFixtureDef(Shape shape, float density,
+	protected final FixtureDef setupFixtureDef(Shape shape, float density,
 			float friction, float restitution) {
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
@@ -60,7 +60,7 @@ public abstract class PhysicObject {
 		return fixtureDef;
 	}
 
-	public FixtureDef setupFixtureDef(Shape shape, Filter filter) {
+	protected FixtureDef setupFixtureDef(Shape shape, Filter filter) {
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.filter.maskBits = filter.maskBits;
@@ -73,7 +73,7 @@ public abstract class PhysicObject {
 		return fixtureDef;
 	}
 
-	public final FixtureDef setupFixtureDef(Shape shape, Filter filter,
+	protected final FixtureDef setupFixtureDef(Shape shape, Filter filter,
 			float density, float friction, float restitution) {
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
@@ -86,9 +86,11 @@ public abstract class PhysicObject {
 		return fixtureDef;
 	}
 
+	public abstract void savePosition();
+
 	public abstract Vector2 getPosition();
 
-    public Body getBody(){
-        return body;
-    }
+	public Body getBody() {
+		return body;
+	}
 }
