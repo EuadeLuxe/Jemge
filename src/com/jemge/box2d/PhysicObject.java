@@ -87,4 +87,8 @@ public abstract class PhysicObject {
 	}
 
 	public abstract Vector2 getPosition();
+
+    public Body getBody(){
+        return body;
+    }
 }

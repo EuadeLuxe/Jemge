@@ -25,6 +25,34 @@ public class PolygonObject extends PhysicObject {
 	private float height;
 	private float width;
 
+    public PolygonObject(float x, float y, float width, float height, Filter filter,
+                         BodyDef.BodyType type) {
+        this.height = height;
+        this.width = width;
+
+        BODYDEF.type = type;
+        BODYDEF.position.set(x, y).add(this.width / 2, this.height / 2);
+
+        this.body = Physics2D.getMainWorld().createBody(BODYDEF);
+
+        PolygonShape polygonShape = new PolygonShape();
+        polygonShape.setAsBox(width / 2, height / 2);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = polygonShape;
+        fixtureDef.filter.maskBits = filter.maskBits;
+        fixtureDef.filter.categoryBits = filter.categoryBits;
+        fixtureDef.filter.groupIndex = filter.groupIndex;
+        fixtureDef.density = 1.5f; // from box2d example, TODO: maybe different
+        // values?
+        fixtureDef.friction = 0.4f;
+        fixtureDef.restitution = 0.1f;
+
+        this.fixture = this.body.createFixture(fixtureDef);
+
+        polygonShape.dispose();
+    }
+
 	public PolygonObject(float x, float y, float width, float height,
 			BodyDef.BodyType type) {
 		this.height = height;
@@ -40,25 +68,6 @@ public class PolygonObject extends PhysicObject {
 
 		this.fixture = this.body.createFixture(this
 				.setupFixtureDef(polygonShape));
-
-		polygonShape.dispose();
-	}
-
-	public PolygonObject(float x, float y, float width, float height,
-			Filter filter, BodyDef.BodyType type) {
-		this.height = height;
-		this.width = width;
-
-		BODYDEF.type = type;
-		BODYDEF.position.set(x, y).add(this.width / 2, this.height / 2);
-
-		this.body = Physics2D.getMainWorld().createBody(BODYDEF);
-
-		PolygonShape polygonShape = new PolygonShape();
-		polygonShape.setAsBox(width / 2, height / 2);
-
-		this.fixture = this.body.createFixture(this.setupFixtureDef(
-				polygonShape, filter));
 
 		polygonShape.dispose();
 	}
