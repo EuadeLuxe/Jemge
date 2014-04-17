@@ -27,8 +27,8 @@ import com.badlogic.gdx.physics.box2d.Shape;
 
 public abstract class PhysicObject extends PhysicObjectBody implements
 		Serializable {
-	protected static final BodyDef BODYDEF = new BodyDef();
-	protected Vector2 position;
+    protected static final BodyDef BODYDEF = new BodyDef();
+    protected Vector2 position;
 
 	// TODO wird nicht verwendet?
 	public PhysicObject setPhysicData(float density, float friction,

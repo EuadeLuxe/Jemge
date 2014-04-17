@@ -9,7 +9,7 @@ public final class Shader {
 		final FileHandle VERTEXSHADER = Gdx.files
 				.classpath("com/jemge/box2d/shaders/" + name + ".vertex.glsl");
 		final FileHandle FRAGMENTSHADER = Gdx.files
-				.internal("com/jemge/box2d/shaders/" + name + ".fragment.glsl");
+				.classpath("com/jemge/box2d/shaders/" + name + ".fragment.glsl");
 
 		ShaderProgram.pedantic = false;
 		ShaderProgram shader = new ShaderProgram(VERTEXSHADER, FRAGMENTSHADER);
