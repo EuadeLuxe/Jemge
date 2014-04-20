@@ -27,7 +27,7 @@ import com.jemge.core.system.IUpdateListener;
  * Default object for drawing textures.
  * 
  * @author MrBarsack
- * @see RendererObject
+ * @see IRendererObject
  */
 
 public class JSprite extends Sprite implements IRendererObject, IEntity {
@@ -124,4 +124,14 @@ public class JSprite extends Sprite implements IRendererObject, IEntity {
 		}
 		return this;
 	}
+
+    public void rotateTo(float x, float y, float additional){
+        rotate((float) ((Math.atan2 (x - getX() - 32,
+                -(y - getY() - 32))*180.0d/Math.PI) + additional));
+    }
+
+    public void rotateTo(float x, float y){
+        rotateTo(x, y, 180);
+    }
+
 }

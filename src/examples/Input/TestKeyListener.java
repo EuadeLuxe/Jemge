@@ -3,10 +3,7 @@ package examples.Input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.jemge.core.Jemge;
-import com.jemge.input.IKeyListener;
-import com.jemge.input.ListenKeyDown;
-import com.jemge.input.ListenKeyUp;
-import com.jemge.input.ListenWhilePressed;
+import com.jemge.input.*;
 
 public class TestKeyListener implements IKeyListener {
 	@ListenWhilePressed(key = Input.Keys.A)
@@ -25,4 +22,9 @@ public class TestKeyListener implements IKeyListener {
 
 		Jemge.inputManager.removeKeyListener(this);
 	}
+
+    @ListenTouchDown
+    public void Clicked(){
+        Gdx.app.log("Test App", "Mouse click");
+    }
 }
