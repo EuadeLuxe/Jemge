@@ -45,10 +45,10 @@ public class InputManager extends EngineModule implements InputProcessor {
 
     @Override
     public void init() {
-        this.listeners = new ArrayList<IInputListener>();
-        this.keyDownListener = new HashMap<Method, Object>();
-        this.keyUpListener = new HashMap<Method, Object>();
-        this.whileDownListener = new HashMap<Method, Object>();
+        this.listeners = new ArrayList<>();
+        this.keyDownListener = new HashMap<>();
+        this.keyUpListener = new HashMap<>();
+        this.whileDownListener = new HashMap<>();
         this.touchDownListener = new HashMap<>();
         this.touchUpListener = new HashMap<>();
 

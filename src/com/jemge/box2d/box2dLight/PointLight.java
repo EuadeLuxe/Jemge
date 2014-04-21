@@ -25,7 +25,7 @@ public class PointLight extends PositionalLight {
 		this(rays, Light.DEFAULTCOLOR, 15f, 0f, 0f);
 	}
 
-	private final void setEndPoints() {
+	protected void setEndPoints() {
 		float angleNum = 360f / (this.rayNum - 1);
 		for (int i = 0; i < this.rayNum; i++) {
 			final float angle = angleNum * i;
