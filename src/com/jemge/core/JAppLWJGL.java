@@ -19,6 +19,7 @@ package com.jemge.core;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglGraphics;
+import org.lwjgl.*;
 
 public class JAppLWJGL extends LwjglApplication {
 	public JAppLWJGL(ApplicationListener listener) {

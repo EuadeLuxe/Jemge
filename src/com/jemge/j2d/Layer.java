@@ -66,6 +66,11 @@ public class Layer {
 		this.cullingSystem.cull(Jemge.renderer2D.CAMERAVIEW);
 
 		renderMode = Renderer2D.RenderMode.INACTIVE;
+		ArrayList<IRendererObject> transparentObjects = new ArrayList<IRendererObject>();
+		
+		spriteBatch.disableBlending();
+		renderMode = Renderer2D.RenderMode.DISABLED;
+		
 		for (IEntity entity : this.cullingSystem.getFinalRenderList()) {
 			if (entity instanceof IShape) {
 				((IShape) entity).renderShape(shapeRenderer);
@@ -75,18 +80,9 @@ public class Layer {
 				continue;
 			}
 
-			if (((IRendererObject) entity).hasTransparent()
-					&& !(renderMode == Renderer2D.RenderMode.ENABLED)) { // with
-																			// blending
-				spriteBatch.enableBlending();
-
-				renderMode = Renderer2D.RenderMode.ENABLED;
-			} else if (!((IRendererObject) entity).hasTransparent()
-					&& !(renderMode == Renderer2D.RenderMode.DISABLED)) { // without
-																			// blending
-				spriteBatch.disableBlending();
-
-				renderMode = Renderer2D.RenderMode.DISABLED;
+			if (((IRendererObject) entity).hasTransparent()) {
+				transparentObjects.add((IRendererObject) entity);
+				continue; // <- Continue if the object is translucent.
 			}
 			((IRendererObject) entity).render(spriteBatch);
 
@@ -104,20 +100,20 @@ public class Layer {
 				continue;
 			}
 
-			if (((IRendererObject) object).hasTransparent()
-					&& !(renderMode == Renderer2D.RenderMode.ENABLED)) { // with
-																			// blending
-				spriteBatch.enableBlending();
-
-				renderMode = Renderer2D.RenderMode.ENABLED;
-			} else if (!((IRendererObject) object).hasTransparent()
-					&& !(renderMode == Renderer2D.RenderMode.DISABLED)) { // without
-																			// blending
-				spriteBatch.disableBlending();
-
-				renderMode = Renderer2D.RenderMode.DISABLED;
+			if (((IRendererObject) object).hasTransparent()) {
+				transparentObjects.add((IRendererObject) object);
+				continue;
 			}
 			((IRendererObject) object).render(spriteBatch);
+		}
+		
+		// Now do the alpha pass:
+		
+		for(IRendererObject object : transparentObjects)
+		{
+			object.render(spriteBatch);
+			if(object instanceof Actor)
+				((Actor) object).draw(spriteBatch, 1.0f);
 		}
 
 		this.cullingSystem.postRender();
